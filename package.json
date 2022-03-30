@@ -4,7 +4,9 @@
   "description": "Front-End Capstone project at Hack Reactor RFP2202 with Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:react": "webpack --config ./webpack.config.js --mode development -w",
+    "dev:webpack": "webpack serve",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,11 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.4",
+    "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
