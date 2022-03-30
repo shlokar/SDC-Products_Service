@@ -1,0 +1,40 @@
+{
+  "name": "project-atelier",
+  "version": "1.0.0",
+  "description": "Front-End Capstone project at Hack Reactor RFP2202 with Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "dev:react": "webpack --config ./webpack.config.js --mode development -w",
+    "dev:webpack": "webpack serve",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mob-Psycho-100/project-atelier.git"
+  },
+  "author": "Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mob-Psycho-100/project-atelier/issues"
+  },
+  "homepage": "https://github.com/Mob-Psycho-100/project-atelier#readme",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.4",
+    "express": "^4.17.3",
+    "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.15",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}
