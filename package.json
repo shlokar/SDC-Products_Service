@@ -1,0 +1,23 @@
+{
+  "name": "project-atelier",
+  "version": "1.0.0",
+  "description": "Front-End Capstone project at Hack Reactor RFP2202 with Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mob-Psycho-100/project-atelier.git"
+  },
+  "author": "Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mob-Psycho-100/project-atelier/issues"
+  },
+  "homepage": "https://github.com/Mob-Psycho-100/project-atelier#readme",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}
