@@ -1,10 +1,11 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = {
-  entry: path.join(__dirname, "react-client", "src", "index.js"),
+  entry: path.join(__dirname, "react-client/src", "index.jsx"),
   output: {
-    path: path.resolve(__dirname, "react-client", "dist")
+    path: path.resolve(__dirname, "react-client", "dist"),
+    clean: true
   },
   mode: 'production',
   module: {
@@ -24,11 +25,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "react-client", "src", "index.html"),
-    }),
-  ]
 }
 
 
