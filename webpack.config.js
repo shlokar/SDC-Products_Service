@@ -1,12 +1,19 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-
 module.exports = {
-  entry: path.join(__dirname, "react-client/src", "index.jsx"),
+  entry: path.join(__dirname, 'react-client/src', 'index.jsx'),
   output: {
-    path: path.resolve(__dirname, "react-client", "dist"),
-    clean: true
+    path: path.join(__dirname, './react-client/dist'),
+    filename: 'index_bundle.js',
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Project-Atelier',
+      filename: 'index.html',
+      template: './react-client/src/index.html',
+    }),
+  ],
   mode: 'production',
   module: {
     rules: [
@@ -14,18 +21,19 @@ module.exports = {
         test: /\.(js|jsx)?/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
               '@babel/preset-env',
-              '@babel/preset-react'
-            ]
-          }
-        }
-      }
-    ]
+              '@babel/preset-react',
+            ],
+          },
+        },
+      },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },
+    ],
   },
-}
-
-
-// test: /\.?js$/,
+};
