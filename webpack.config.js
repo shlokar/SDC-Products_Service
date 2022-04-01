@@ -14,7 +14,7 @@ module.exports = {
       template: './react-client/src/index.html',
     }),
   ],
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -29,6 +29,10 @@ module.exports = {
             ],
           },
         },
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        loader: 'url-loader',
       },
       {
         test: /\.html$/i,
