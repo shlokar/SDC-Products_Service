@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Mob-Psycho-100/project-atelier#readme",
   "dependencies": {
     "axios": "^0.26.1",
+    "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "styled-components": "^5.3.5",
