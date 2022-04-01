@@ -14,7 +14,7 @@ module.exports = {
       template: './react-client/src/index.html',
     }),
   ],
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
