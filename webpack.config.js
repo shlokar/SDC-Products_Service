@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
@@ -13,6 +14,7 @@ module.exports = {
       filename: 'index.html',
       template: './react-client/src/index.html',
     }),
+    new MiniCssExtractPlugin(),
   ],
   mode: 'development',
   module: {
@@ -33,6 +35,10 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         loader: 'url-loader',
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.html$/i,
