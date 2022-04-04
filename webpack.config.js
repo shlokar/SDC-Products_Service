@@ -5,22 +5,14 @@ const path = require('path');
 module.exports = {
   entry: path.join(__dirname, 'react-client/src', 'index.jsx'),
   output: {
-    path: path.join(__dirname, './react-client/dist'),
+    path: path.join(__dirname, 'react-client/dist'),
     filename: 'index_bundle.js',
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Project-Atelier',
-      filename: 'index.html',
-      template: './react-client/src/index.html',
-    }),
-    new MiniCssExtractPlugin(),
-  ],
   mode: 'development',
   module: {
     rules: [
       {
-        test: /\.(js|jsx)?/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -33,17 +25,26 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        loader: 'url-loader',
+        test: /\.html$/i,
+        loader: 'html-loader',
       },
       {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.html$/i,
-        loader: 'html-loader',
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
+
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Project-Atelier',
+      filename: 'index.html',
+      template: './react-client/src/index.html',
+    }),
+    new MiniCssExtractPlugin(),
+  ],
 };
