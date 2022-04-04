@@ -24,6 +24,7 @@ function ProductTitle({ className, title }) {
 const StyledProductTitle = styled(ProductTitle)`
   font-family: var(--fnt-bold);
   font-size: 2.5rem;
+  line-height: 1.2;
 `;
 
 ProductTitle.propTypes = {
