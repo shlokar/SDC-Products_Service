@@ -68,6 +68,16 @@ ThumbnailImg.propTypes = {
   clickHandler: propTypes.func.isRequired,
 };
 
+/**
+ * PROPERTIES
+ *
+ * id: (string) - a unique identifier
+ * src: (string) - image source
+ * alt: (string) - text that describes the image
+ * selected: (bool) - true or false depending on if the image is supposed to be selected.
+ * clickHandler: (func) - what you want to occur when the thumbnail is clicked.
+ */
+
 function Thumbnail({
   className, id, src, alt, selected, clickHandler,
 }) {
