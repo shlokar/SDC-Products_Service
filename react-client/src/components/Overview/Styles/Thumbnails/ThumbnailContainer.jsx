@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 import uniqid from 'uniqid';
@@ -7,11 +7,46 @@ import uniqid from 'uniqid';
 import StyledThumbnail from './Thumbnail.jsx';
 
 function ThumbnailContainer({ className, thumbnailData }) {
+  const [data, setData] = useState(thumbnailData.slice());
+
+  const updateSelectedThumbnail = (id) => {
+    const selectedTrue = (obj) => obj.selected === true
+    const matchingIds = (obj) => obj.id === id;
+
+    const dataCopy = data.slice();
+
+    for (let i = 0; i < dataCopy.length; i++) {
+      const currObj = dataCopy[i];
+      if (selectedTrue(currObj) && !matchingIds(currObj)) {
+        dataCopy[i].selected = false;
+        break;
+      } else if (selectedTrue(currObj) && matchingIds(currObj)) {
+        return;
+      }
+    }
+
+    for (let i = 0; i < dataCopy.length; i++) {
+      const currObj = dataCopy[i];
+      if (matchingIds(currObj)) {
+        dataCopy[i].selected = true;
+        break;
+      }
+    }
+
+    setData(dataCopy);
+  };
+
   return (
     <ul className={className}>
-      {thumbnailData.map((data) => (
+      {data.map((thumbnail) => (
         <li key={uniqid()}>
-          <StyledThumbnail src={data.src} alt={data.alt} selected={data.selected} />
+          <StyledThumbnail
+            id={thumbnail.id}
+            src={thumbnail.src}
+            alt={thumbnail.alt}
+            selected={thumbnail.selected}
+            clickHandler={updateSelectedThumbnail}
+          />
         </li>
       ))}
     </ul>
@@ -30,9 +65,10 @@ ThumbnailContainer.propTypes = {
   className: propTypes.string.isRequired,
   thumbnailData:
   propTypes.arrayOf(propTypes.shape({
-    src: propTypes.string,
-    alt: propTypes.string,
-    selected: propTypes.bool,
+    id: propTypes.string.isRequired,
+    src: propTypes.string.isRequired,
+    alt: propTypes.string.isRequired,
+    selected: propTypes.bool.isRequired,
   })).isRequired,
 };
 
