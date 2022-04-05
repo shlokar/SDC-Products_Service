@@ -4,15 +4,13 @@ import StyledStarsList from '../Overview/Stars/StarsList.jsx';
 import Key from './config.js';
 
 // To-do: put the following in a .env or something
-console.log(Key);
 const secretKey = Key;
 
-function Suggestions() {
-  // Get the current product ID
-  // Get the related product IDs of the current product ID
-
-  // 65685 is hard coded. Remove at a later time, with the ID of whatever product we're viewing in Overview.jsx
-  const [currentProductID, setCurrentProductID] = useState(65685);
+function Suggestions({currentProduct}) {
+  // Pass in props currentProduct to use. Otherwise, will display random product
+  const testIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
+  const [currentProductID, setCurrentProductID] = useState(currentProduct
+    || testIDs[Math.floor(Math.random() * testIDs.length)]);
   const [relatedProductIDs, setRelatedProductIDs] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [ratings, setRatings] = useState(null);
@@ -129,10 +127,11 @@ function Suggestions() {
         </div>
       </div>
       <div id="testing">
-        Some testing stuff:<br></br>
+        Suggestions.jsx Testing Dashboard:<br></br>
         <button onClick={() => {console.log(relatedProductIDs)}}>relatedProductIDs</button><br></br>
         <button onClick={() => {console.log(relatedProducts)}}>relatedProducts</button><br></br>
         <button onClick={() => {console.log(ratings)}}>ratingsAndReviews</button><br></br>
+        Current Product ID: {currentProductID}
       </div>
     </div>
   );
