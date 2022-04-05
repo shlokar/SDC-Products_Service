@@ -43,8 +43,10 @@ CheckMarkCircle.propTypes = {
   className: propTypes.string.isRequired,
 };
 
-function ThumbnailImg({ className, src, alt }) {
-  return <img className={className} src={src} alt={alt} />;
+function ThumbnailImg({
+  className, id, src, alt, clickHandler,
+}) {
+  return <input type="image" className={className} src={src} alt={alt} onClick={() => clickHandler(id)} />;
 }
 
 const StyledThumbnailImg = styled(ThumbnailImg)`
@@ -60,16 +62,18 @@ const StyledThumbnailImg = styled(ThumbnailImg)`
 
 ThumbnailImg.propTypes = {
   className: propTypes.string.isRequired,
+  id: propTypes.string.isRequired,
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 function Thumbnail({
-  className, src, alt, selected,
+  className, id, src, alt, selected, clickHandler,
 }) {
   return (
     <div className={className}>
-      <StyledThumbnailImg src={src} alt={alt} />
+      <StyledThumbnailImg id={id} src={src} alt={alt} clickHandler={clickHandler} />
       {selected && <StyledCheckMarkCircle />}
     </div>
   );
@@ -84,9 +88,11 @@ const StyledThumbnail = styled(Thumbnail)`
 
 Thumbnail.propTypes = {
   className: propTypes.string.isRequired,
+  id: propTypes.string.isRequired,
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
   selected: propTypes.bool.isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 export default StyledThumbnail;
