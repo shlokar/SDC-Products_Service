@@ -6,6 +6,18 @@ import uniqid from 'uniqid';
 // Components
 import StyledThumbnail from './Thumbnail.jsx';
 
+/**
+ * PROPERTIES
+ *
+ * thumbnailData: (array)
+ *   - array of objects that NEEDS to have the following properties per object.
+ *     - id: (string) - a uniqie identifier.
+ *     - src: (string) - the image source.
+ *     - alt: (string) - text describing the image.
+ *     - selected: (bool) - true or false depending if you want the item to be selected.
+ *       note: the thumbnailData should only have one item as selected.
+ */
+
 function ThumbnailContainer({ className, thumbnailData }) {
   const [data, setData] = useState(thumbnailData.slice());
 
