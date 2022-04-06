@@ -61,6 +61,16 @@ SelectionContainer.propTypes = {
   inStock: propTypes.bool.isRequired,
 };
 
+/**
+ * Properties
+ *
+ * selections: (array)
+ *   - An array of objects with the following properties needed per object.
+ *     - id: (string) - a unique identifier.
+ *     - value: (string) - the option that you want to appear in drop down (s, m, l, etc.).
+ *     - stock: (number) - the amount of items in stock for the current value.
+ */
+
 function StyledSelectSize({ selections }) {
   const inStock = selections.some((item) => item.stock > 0);
 
