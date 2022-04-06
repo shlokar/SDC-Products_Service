@@ -12,7 +12,7 @@ function SelectionContainer({
   className, selections, name, inStock,
 }) {
   return (
-    <select className={className} name={name} id="size-selection" disabled={!inStock}>
+    <select className={className} id={name} disabled={!inStock}>
       {!inStock && <StyledSelection value="Out of Stock" disabled={false} />}
 
       {inStock && <StyledSelection value="Select Size" disabled={false} hidden />}
