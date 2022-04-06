@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StyledStarsList from '../Overview/Stars/StarsList.jsx';
-import Key from './config.js';
+import key from './config.js';
 
 // To-do: put the following in a .env or something
-const secretKey = Key;
+const secretKey = key;
 
 function Suggestions({currentProduct}) {
   // Pass in props currentProduct to use. Otherwise, will display random product
@@ -94,7 +94,7 @@ function Suggestions({currentProduct}) {
         {/* This is to be its own component later */}
         Related Items
         <div id="carousel-container" style={carouselStyle}>
-          {relatedProducts.map((e) =>
+          {relatedProducts.map((e) => (
             <div style={cardStyle}>
               <button>Compare</button>
               <ul style={ulStyle}>
@@ -106,7 +106,7 @@ function Suggestions({currentProduct}) {
                 <li>{ratings ? ratings[e.id.toString()].reviewsCount : "loading"} reviews</li>
               </ul>
               <br></br>
-            </div>)}
+            </div>))}
         </div>
       </div>
       <div id="your-outfit">
@@ -138,3 +138,7 @@ function Suggestions({currentProduct}) {
 }
 
 export default Suggestions;
+
+module.exports = {
+  Suggestions
+}

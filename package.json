@@ -7,7 +7,8 @@
     "start": "nodemon server/index.js",
     "dev:react": "webpack --config ./webpack.config.js --mode development --watch",
     "dev:webpack": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/Mob-Psycho-100/project-atelier#readme",
   "dependencies": {
     "axios": "^0.26.1",
+    "babel-jest": "^27.5.1",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
