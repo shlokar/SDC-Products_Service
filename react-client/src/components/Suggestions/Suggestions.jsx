@@ -8,18 +8,32 @@ import YourOutfit from './YourOutfit.jsx';
 const secretKey = Key;
 
 function Suggestions({currentProduct}) {
-  // Pass in props currentProduct to use. Otherwise, will display random product
+  // Pass in props.currentProduct to use. Otherwise, will display random product
+  // Elbert to remember to remove dummy data before pushing to master
   const testIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
   const [currentProductID, setCurrentProductID] = useState(currentProduct
     || testIDs[Math.floor(Math.random() * testIDs.length)]);
   const [relatedProductIDs, setRelatedProductIDs] = useState([]);
+  const [currentProductData, setCurrentProductData] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [ratings, setRatings] = useState(null);
   const [favs, setFavs] = useState([]);
 
-  useEffect(() => {
-    // Populate relatedProductsIDs with an array of the IDs of products related to the
-    // current products, then
+  function getCurrentProductDataFromAPI() {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}`, {
+      headers: {
+        authorization: secretKey,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setCurrentProductData(res.data);
+      });
+  }
+
+  function getRelatedItemsDataFromAPI() {
+    // This function populates the relatedProductIDs, relatedProducts, and ratings state variables
+    // with data
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}/related`, {
       headers: {
         authorization: secretKey,
@@ -29,7 +43,7 @@ function Suggestions({currentProduct}) {
         const arrayOfRelatedProductIDs = res.data;
         setRelatedProductIDs(arrayOfRelatedProductIDs);
         // Get product information for the product IDs that are related to the current product
-        Promise.all(arrayOfRelatedProductIDs.map((e) => axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${e}`, {
+        Promise.all(arrayOfRelatedProductIDs.concat([currentProductID]).map((e) => axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${e}`, {
           headers: {
             authorization: secretKey,
           },
@@ -41,7 +55,7 @@ function Suggestions({currentProduct}) {
         // Get reviews for each Related Product
         // Run Promise.all to get all of the stars and #ratings info
         // Calculate the average of .results[i].rating for each related product
-        Promise.all(arrayOfRelatedProductIDs.map((e) => axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
+        Promise.all(arrayOfRelatedProductIDs.concat([currentProductID]).map((e) => axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
           headers: {
             authorization: secretKey,
           },
@@ -63,6 +77,11 @@ function Suggestions({currentProduct}) {
           setRatings(ratingsLookup);
         });
       });
+  }
+
+  useEffect(() => {
+    getCurrentProductDataFromAPI();
+    getRelatedItemsDataFromAPI();
   }, [currentProductID]);
 
   // The following is some temporary styling. Replace later.
@@ -99,11 +118,18 @@ function Suggestions({currentProduct}) {
         ulStyle={ulStyle}
         ratings={ratings}
         imgStyle={imgStyle}
+        currentProductData={currentProductData}
       />
       <YourOutfit
         carouselStyle={carouselStyle}
         cardStyle={cardStyle}
-        favorites={favs}
+        currentProductID={currentProductID}
+        ulStyle={ulStyle}
+        imgStyle={imgStyle}
+        ratings={ratings}
+        favs={favs}
+        setFavs={setFavs}
+        currentProductData={currentProductData}
       />
 
       {/* Testing Dashboard. Elbert to remember not to push to master. */}
@@ -112,7 +138,8 @@ function Suggestions({currentProduct}) {
         <button onClick={() => {console.log(relatedProductIDs)}}>relatedProductIDs</button><br></br>
         <button onClick={() => {console.log(relatedProducts)}}>relatedProducts</button><br></br>
         <button onClick={() => {console.log(ratings)}}>ratingsAndReviews</button><br></br>
-        Current Product ID: {currentProductID}
+        Current Product ID: {currentProductID}<br />
+        Current Product Name: {currentProductData ? currentProductData.name : 'loading'}
       </div>
     </div>
   );

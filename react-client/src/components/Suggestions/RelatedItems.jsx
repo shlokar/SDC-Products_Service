@@ -7,14 +7,15 @@ function RelatedItems({
   cardStyle,
   ulStyle,
   ratings,
-  imgStyle
+  imgStyle,
+  currentProductData,
 }) {
   return (
     <div id="related-items">
       {/* This is to be its own component later */}
       Related Items
       <div id="carousel-container" style={carouselStyle}>
-        {relatedProducts.map((e) =>
+        {relatedProducts.filter(e => e.name !== currentProductData.name).map((e) =>
           <div style={cardStyle}>
             <button>Compare</button>
             <ul style={ulStyle}>
