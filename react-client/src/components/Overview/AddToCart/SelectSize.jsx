@@ -71,7 +71,7 @@ SelectionContainer.propTypes = {
  *     - stock: (number) - the amount of items in stock for the current value.
  */
 
-function StyledSelectSize({ selections }) {
+function SelectSize({ selections }) {
   const inStock = selections.some((item) => item.stock > 0);
 
   return (
@@ -81,7 +81,7 @@ function StyledSelectSize({ selections }) {
   );
 }
 
-StyledSelectSize.propTypes = {
+SelectSize.propTypes = {
   selections: propTypes.arrayOf(propTypes.shape({
     id: propTypes.string.isRequired,
     value: propTypes.string.isRequired,
@@ -89,4 +89,4 @@ StyledSelectSize.propTypes = {
   })).isRequired,
 };
 
-export default StyledSelectSize;
+export default SelectSize;
