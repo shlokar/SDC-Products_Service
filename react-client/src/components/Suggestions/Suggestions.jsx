@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import StyledStarsList from '../Overview/Stars/StarsList.jsx';
 import Key from './config.js';
+import RelatedItems from './RelatedItems.jsx';
+import YourOutfit from './YourOutfit.jsx';
 
 // To-do: put the following in a .env or something
 const secretKey = Key;
@@ -64,6 +65,7 @@ function Suggestions({currentProduct}) {
       });
   }, [currentProductID]);
 
+  // The following is some temporary styling. Replace later.
   const cardStyle = {
     display: 'inline-block',
     width: '255px',
@@ -90,42 +92,21 @@ function Suggestions({currentProduct}) {
 
   return (
     <div>
-      <div id="related-items">
-        {/* This is to be its own component later */}
-        Related Items
-        <div id="carousel-container" style={carouselStyle}>
-          {relatedProducts.map((e) =>
-            <div style={cardStyle}>
-              <button>Compare</button>
-              <ul style={ulStyle}>
-                <li>{ratings ? <img style={imgStyle} src={ratings[e.id.toString()].results[0].photos[0].url}></img> : 0}</li>
-                <li>{e.category}</li>
-                <li>{e.name}</li>
-                <li>${e.default_price}</li>
-                <li>{ratings ? <StyledStarsList rating={ratings[e.id.toString()].averageScore} /> : "loading"} stars</li>
-                <li>{ratings ? ratings[e.id.toString()].reviewsCount : "loading"} reviews</li>
-              </ul>
-              <br></br>
-            </div>)}
-        </div>
-      </div>
-      <div id="your-outfit">
-        {/* This is to be its own component later */}
-        Your Outfit
-        <div id="carousel-container" style={carouselStyle}>
-          <div style={cardStyle}
-            onClick={() => {
-              const tempArray = [...favs];
-              tempArray.push("blank");
-              setFavs(tempArray);
-            }}>
-            + Add to Your Outfit
-          </div>
-          {favs.map((e) => <div style={cardStyle}>
-            <button>Remove</button><br />Empty Card</div>)}
+      <RelatedItems
+        carouselStyle={carouselStyle}
+        relatedProducts={relatedProducts}
+        cardStyle={cardStyle}
+        ulStyle={ulStyle}
+        ratings={ratings}
+        imgStyle={imgStyle}
+      />
+      <YourOutfit
+        carouselStyle={carouselStyle}
+        cardStyle={cardStyle}
+        favorites={favs}
+      />
 
-        </div>
-      </div>
+      {/* Testing Dashboard. Elbert to remember not to push to master. */}
       <div id="testing">
         Suggestions.jsx Testing Dashboard:<br></br>
         <button onClick={() => {console.log(relatedProductIDs)}}>relatedProductIDs</button><br></br>
