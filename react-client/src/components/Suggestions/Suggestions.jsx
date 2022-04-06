@@ -17,7 +17,8 @@ function Suggestions({currentProduct}) {
   const [currentProductData, setCurrentProductData] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [ratings, setRatings] = useState(null);
-  const [favs, setFavs] = useState([]);
+  const [favs, setFavs] = useState(localStorage.getItem('Your Outfit') !== null ? JSON.parse(localStorage.getItem('Your Outfit')) : []);
+  console.log(JSON.parse(localStorage.getItem('Your Outfit')));
 
   function getCurrentProductDataFromAPI() {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}`, {
@@ -138,6 +139,7 @@ function Suggestions({currentProduct}) {
         <button onClick={() => {console.log(relatedProductIDs)}}>relatedProductIDs</button><br></br>
         <button onClick={() => {console.log(relatedProducts)}}>relatedProducts</button><br></br>
         <button onClick={() => {console.log(ratings)}}>ratingsAndReviews</button><br></br>
+        <button onClick={() => localStorage.removeItem('Your Outfit')}>clear Local Storage</button>
         Current Product ID: {currentProductID}<br />
         Current Product Name: {currentProductData ? currentProductData.name : 'loading'}
       </div>
