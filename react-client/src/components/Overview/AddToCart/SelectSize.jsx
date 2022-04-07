@@ -20,7 +20,7 @@ function SelectionContainer({
       disabled={!inStock}
       value={selected}
       onChange={(e) => {
-        clickHandler(e.target.value);
+        clickHandler(e);
         setSelected(e.target.value);
       }}
     >
