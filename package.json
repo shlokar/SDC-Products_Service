@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "Front-End Capstone project at Hack Reactor RFP2202 with Alison Lee, Chris Padovan, Edgar Carrillo, and Elbert Chan",
   "main": "index.js",
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
   "scripts": {
     "start": "nodemon server/index.js",
     "dev:react": "webpack --config ./webpack.config.js --mode development --watch",
     "dev:webpack": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,9 @@
   },
   "homepage": "https://github.com/Mob-Psycho-100/project-atelier#readme",
   "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^14.0.4",
     "axios": "^0.26.1",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
@@ -33,7 +40,7 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@testing-library/dom": "^8.12.0",
+    "@testing-library/dom": "^8.13.0",
     "babel-loader": "^8.2.4",
     "css-loader": "^6.7.1",
     "eslint": "^8.12.0",
