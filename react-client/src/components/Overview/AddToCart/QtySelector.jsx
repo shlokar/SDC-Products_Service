@@ -14,11 +14,12 @@ function SelectionContainer({
   return (
     <select className={className} id={id} disabled={!inStock}>
       {qtyArr.length === 0
-      && <StyledSelection key={uniqid()} value=" - " disabled={false} hidden={false} />}
+      && <StyledSelection key={uniqid()} text=" - " disabled={false} hidden={false} />}
       {qtyArr.length > 0
       && qtyArr.map((strNum) => (
         <StyledSelection
           key={uniqid()}
+          text={strNum}
           value={strNum}
           disabled={false}
           hidden={false}
