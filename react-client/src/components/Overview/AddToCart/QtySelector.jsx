@@ -9,10 +9,15 @@ import dropDownDarkSrc from './drop-down-arrow-light-icon.svg';
 import StyledSelection from './Selection.jsx';
 
 function SelectionContainer({
-  className, qtyArr, id, inStock,
+  className, qtyArr, id, inStock, clickHandler,
 }) {
   return (
-    <select className={className} id={id} disabled={!inStock}>
+    <select
+      className={className}
+      id={id}
+      disabled={!inStock}
+      onChange={(e) => clickHandler(e.target.value)}
+    >
       {qtyArr.length === 0
       && <StyledSelection key={uniqid()} text=" - " disabled={false} hidden={false} />}
       {qtyArr.length > 0
@@ -53,6 +58,7 @@ SelectionContainer.propTypes = {
   qtyArr: propTypes.arrayOf(propTypes.string).isRequired,
   id: propTypes.string.isRequired,
   inStock: propTypes.bool.isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 /**
@@ -66,7 +72,7 @@ SelectionContainer.propTypes = {
  *  this is done by design per the Business requirements.
  */
 
-function QtySelector({ qty }) {
+function QtySelector({ qty, clickHandler }) {
   const qtyArr = [];
   let newQty = qty;
   if (newQty > 15) {
@@ -81,13 +87,14 @@ function QtySelector({ qty }) {
 
   return (
     <label htmlFor="qty-selection">
-      <StyledSelectionContainer qtyArr={qtyArr} id="qty-selection" inStock={newQty > 0} />
+      <StyledSelectionContainer qtyArr={qtyArr} id="qty-selection" inStock={newQty > 0} clickHandler={clickHandler} />
     </label>
   );
 }
 
 QtySelector.propTypes = {
   qty: propTypes.number.isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 export default QtySelector;
