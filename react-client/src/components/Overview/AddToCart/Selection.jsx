@@ -3,15 +3,34 @@ import styled from 'styled-components';
 import propTypes from 'prop-types';
 
 function Selection({
-  className, value, disabled,
+  className, value, text, disabled, clickHandler,
 }) {
-  return <option disabled={disabled} className={className} value={value.toLowerCase().replace(' ', '-')}>{value}</option>;
+  return (
+    <option
+      onChange={clickHandler}
+      disabled={disabled}
+      className={className}
+      value={value}
+    >
+      {text}
+    </option>
+  );
 }
+
+Selection.defaultProps = {
+  clickHandler: () => console.log('this is a default'),
+};
+
+Selection.defaultProps = {
+  value: '',
+};
 
 Selection.propTypes = {
   className: propTypes.string.isRequired,
-  value: propTypes.string.isRequired,
+  value: propTypes.string,
+  text: propTypes.string.isRequired,
   disabled: propTypes.bool.isRequired,
+  clickHandler: propTypes.func,
 };
 
 const StyledSelection = styled(Selection)`
