@@ -18,9 +18,9 @@ function YourOutfit({
 }) {
   const [favsRatings, setFavsRatings] = useState([]);
 
-  function getRatingsLookup() {
-    if (favs.length > 0) {
-      Promise.all(favs.map((e) => axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
+  function getRatingsLookup(favorites) {
+    if (favorites.length > 0) {
+      Promise.all(favorites.map((e) => axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
         headers: {
           authorization: secretKey,
         },
@@ -45,9 +45,9 @@ function YourOutfit({
     }
   }
 
-  // useEffect(() => {
-  //   getRatingsLookup();
-  // });
+  useEffect(() => {
+    getRatingsLookup(favs);
+  }, [favs]);
 
   return (
     <div id="your-outfit">
@@ -64,9 +64,9 @@ function YourOutfit({
               console.log(currentProductData);
               tempArray.push(currentProductData);
             }
+            getRatingsLookup(tempArray);
             setFavs(tempArray);
             localStorage.setItem('Your Outfit', JSON.stringify(tempArray));
-            getRatingsLookup();
           }}>
           + Add to Your Outfit
         </div>
