@@ -23,14 +23,16 @@
   src: url('../fonts/Roboto/Roboto-Black.ttf');
 }
 
-/* Fonts */
-
 :root {
+  /* Fonts */
   --fnt-regular: 'Roboto-Regular';
   --fnt-thin: 'Roboto-Thin';
   --fnt-light: 'Roboto-Light';
   --fnt-bold: 'Roboto-Bold';
   --fnt-dark: 'Roboto-Black';
+
+  /* Colors */
+  --clr-white: #FFFFFF;
 }
 
 body {
