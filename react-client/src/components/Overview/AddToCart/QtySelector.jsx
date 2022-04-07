@@ -34,7 +34,7 @@ const StyledSelectionContainer = styled(SelectionContainer)`
   font-size: 1.2rem;
   display: block;
   height: 65px;
-  min-width: 300px;  // remove this at some point
+  min-width: 150px;
   padding: 0 10px;
   text-transform: uppercase;
   appearance: none;
