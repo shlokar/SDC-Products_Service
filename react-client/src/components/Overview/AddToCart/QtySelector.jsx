@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import uniqid from 'uniqid';
 import propTypes from 'prop-types';
@@ -11,12 +11,18 @@ import StyledSelection from './Selection.jsx';
 function SelectionContainer({
   className, qtyArr, id, inStock, clickHandler,
 }) {
+  const [selected, setSelected] = useState('');
+
   return (
     <select
       className={className}
       id={id}
       disabled={!inStock}
-      onChange={(e) => clickHandler(e.target.value)}
+      value={selected}
+      onChange={(e) => {
+        setSelected(e.target.value);
+        clickHandler(e.target.value);
+      }}
     >
       {qtyArr.length === 0
       && <StyledSelection key={uniqid()} text=" - " disabled={false} hidden={false} />}
