@@ -35,9 +35,8 @@ const StyledSelectionContainer = styled(SelectionContainer)`
   display: flex;
   font-family: var(--fnt-bold);
   font-size: 1.2rem;
-  display: block;
   height: 65px;
-  min-width: 300px;  // remove this at some point
+  width: 100%;
   padding: 0 10px;
   text-transform: uppercase;
   appearance: none;
@@ -71,17 +70,18 @@ SelectionContainer.propTypes = {
  *     - stock: (number) - the amount of items in stock for the current value.
  */
 
-function SelectSize({ selections }) {
+function SelectSize({ className, selections }) {
   const inStock = selections.some((item) => item.stock > 0);
 
   return (
-    <label htmlFor="size-selection">
+    <label className={className} htmlFor="size-selection">
       <StyledSelectionContainer selections={selections} name="size-selection" inStock={inStock} />
     </label>
   );
 }
 
 SelectSize.propTypes = {
+  className: propTypes.string.isRequired,
   selections: propTypes.arrayOf(propTypes.shape({
     id: propTypes.string.isRequired,
     value: propTypes.string.isRequired,
@@ -89,4 +89,9 @@ SelectSize.propTypes = {
   })).isRequired,
 };
 
-export default SelectSize;
+const StyledSelectSize = styled(SelectSize)`
+  width: 220px;  // remove this at some point
+  flex-grow: 1;
+`;
+
+export default StyledSelectSize;
