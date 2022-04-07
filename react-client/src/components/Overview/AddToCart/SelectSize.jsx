@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import uniqid from 'uniqid';
 import propTypes from 'prop-types';
@@ -11,12 +11,18 @@ import StyledSelection from './Selection.jsx';
 function SelectionContainer({
   className, selections, name, inStock, clickHandler,
 }) {
+  const [selected, setSelected] = useState('');
+
   return (
     <select
       className={className}
       id={name}
       disabled={!inStock}
-      onClick={(e) => clickHandler(e.target.value)}
+      value={selected}
+      onChange={(e) => {
+        clickHandler(e.target.value);
+        setSelected(e.target.value);
+      }}
     >
       {!inStock && <StyledSelection text="Out of Stock" disabled={false} />}
 
