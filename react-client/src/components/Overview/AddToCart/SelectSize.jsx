@@ -9,19 +9,25 @@ import dropDownDarkSrc from './drop-down-arrow-light-icon.svg';
 import StyledSelection from './Selection.jsx';
 
 function SelectionContainer({
-  className, selections, name, inStock,
+  className, selections, name, inStock, clickHandler,
 }) {
   return (
-    <select className={className} id={name} disabled={!inStock}>
-      {!inStock && <StyledSelection value="Out of Stock" disabled={false} />}
+    <select
+      className={className}
+      id={name}
+      disabled={!inStock}
+      onClick={(e) => clickHandler(e.target.value)}
+    >
+      {!inStock && <StyledSelection text="Out of Stock" disabled={false} />}
 
-      {inStock && <StyledSelection value="Select Size" disabled={false} hidden />}
+      {inStock && <StyledSelection text="Select Size" disabled={false} hidden />}
       {inStock && selections.map((item) => {
         const isOutOfStock = item.stock === 0;
         return (
           <StyledSelection
             key={uniqid()}
-            value={item.value}
+            value={item.id}
+            text={item.value}
             disabled={isOutOfStock}
             hidden={isOutOfStock}
           />
@@ -58,6 +64,7 @@ SelectionContainer.propTypes = {
   })).isRequired,
   name: propTypes.string.isRequired,
   inStock: propTypes.bool.isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 /**
@@ -70,12 +77,12 @@ SelectionContainer.propTypes = {
  *     - stock: (number) - the amount of items in stock for the current value.
  */
 
-function SelectSize({ className, selections }) {
+function SelectSize({ className, selections, selectHandler }) {
   const inStock = selections.some((item) => item.stock > 0);
 
   return (
     <label className={className} htmlFor="size-selection">
-      <StyledSelectionContainer selections={selections} name="size-selection" inStock={inStock} />
+      <StyledSelectionContainer selections={selections} name="size-selection" inStock={inStock} clickHandler={selectHandler} />
     </label>
   );
 }
@@ -87,6 +94,7 @@ SelectSize.propTypes = {
     value: propTypes.string.isRequired,
     stock: propTypes.number.isRequired,
   })).isRequired,
+  selectHandler: propTypes.func.isRequired,
 };
 
 const StyledSelectSize = styled(SelectSize)`
