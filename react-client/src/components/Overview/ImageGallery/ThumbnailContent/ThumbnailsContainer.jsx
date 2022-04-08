@@ -44,21 +44,25 @@ function ThumbnailsContainer({
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
 
-  const lowerImgsContainer = () => {
-    if (selectedThumbnail.index - 1 < tracker.firstItemIndex) {
+  const lowerImgsContainer = (startingIndex) => {
+    const index = startingIndex || selectedThumbnail.index;
+    if (index - 1 < tracker.firstItemIndex) {
       setRiseHeight(tnailHeight * ((tracker.firstItemIndex - 1)));
       tracker.trackPrevItem();
     }
   };
 
-  const riseImgsContainer = () => {
-    if (selectedThumbnail.index + 1 > tracker.lastItemIndex) {
+  const riseImgsContainer = (startingIndex) => {
+    const index = startingIndex || selectedThumbnail.index;
+    if (index + 1 > tracker.lastItemIndex) {
       setRiseHeight(tnailHeight * ((tracker.lastItemIndex + 1) - 6));
       tracker.trackNextItem();
     }
   };
 
   useEffect(() => {
+    lowerImgsContainer(selectedThumbnail.index - 1);
+    riseImgsContainer(selectedThumbnail.index - 1);
     clickHandler(selectedThumbnail);
   }, [selectedThumbnail]);
 
