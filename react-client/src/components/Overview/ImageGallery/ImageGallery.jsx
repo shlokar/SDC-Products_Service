@@ -75,6 +75,7 @@ function ImageGallery({ className, data }) {
           <StyledThumbnailsContainer
             imagesArr={customImgsArr}
             clickHandler={(img) => setCurrImg(img)}
+            selectedImg={currImg}
           />
         </LeftDiv>
         <RightDiv>
