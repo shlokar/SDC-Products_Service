@@ -64,7 +64,7 @@ const ArrowContainer = styled.div`
 
 function LeftArrow({ className, clickHandler }) {
   return (
-    <ArrowContainer onClick={() => console.log('asdf')}>
+    <ArrowContainer onClick={() => clickHandler()}>
       <input type="image" src={leftArrowSrc} alt="scroll-down-button" className={className} />
       <ArrowBody right />
     </ArrowContainer>
@@ -87,7 +87,7 @@ LeftArrow.propTypes = {
 
 function RightArrow({ className, clickHandler }) {
   return (
-    <ArrowContainer onClick={() => console.log('asdf')}>
+    <ArrowContainer onClick={() => clickHandler()}>
       <input type="image" src={rightArrowSrc} alt="scroll-down-button" className={className} />
       <ArrowBody left />
     </ArrowContainer>
