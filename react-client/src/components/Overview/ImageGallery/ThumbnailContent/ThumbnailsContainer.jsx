@@ -33,25 +33,13 @@ function ThumbnailsContainer({
   const [selectedThumbnail, setSelectedThumbnail] = useState(selectedImg);
   const [riseHeight, setRiseHeight] = useState(0);
 
-  const getIndexInImagesArr = (image) => {
-    let index;
-
-    for (let i = 0; i < imagesArr.length; i++) {
-      if (image.id === imagesArr[i].id) {
-        index = i;
-      }
-    }
-
-    return index;
-  };
-
   const goToNextImg = () => {
-    const newIndex = getIndexInImagesArr(selectedThumbnail) + 1;
+    const newIndex = selectedThumbnail.index + 1;
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
 
   const goToPrevImg = () => {
-    const newIndex = getIndexInImagesArr(selectedThumbnail) - 1;
+    const newIndex = selectedThumbnail.index - 1;
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
 
