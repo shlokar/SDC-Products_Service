@@ -29,7 +29,8 @@ const StyledDiv = styled.div`
 function ThumbnailsContainer({
   className, imagesArr, clickHandler, selectedImg,
 }) {
-  const [tracker] = useState(useTracker(imagesArr, 7));
+  const tnailHeight = 92;
+  const tracker = useTracker(imagesArr, 7);
   const [selectedThumbnail, setSelectedThumbnail] = useState(selectedImg);
   const [riseHeight, setRiseHeight] = useState(0);
 
@@ -43,7 +44,19 @@ function ThumbnailsContainer({
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
 
-  const tnailHeight = 92;
+  const lowerImgsContainer = () => {
+    if (selectedThumbnail.index - 1 < tracker.firstItemIndex) {
+      setRiseHeight(tnailHeight * ((tracker.firstItemIndex - 1)));
+      tracker.trackPrevItem();
+    }
+  };
+
+  const riseImgsContainer = () => {
+    if (selectedThumbnail.index + 1 > tracker.lastItemIndex) {
+      setRiseHeight(tnailHeight * ((tracker.lastItemIndex + 1) - 6));
+      tracker.trackNextItem();
+    }
+  };
 
   useEffect(() => {
     clickHandler(selectedThumbnail);
@@ -58,10 +71,7 @@ function ThumbnailsContainer({
       <StyledUpArrow
         clickHandler={() => {
           goToPrevImg();
-          if (selectedThumbnail.index - 1 < tracker.tracker.firstItemIndex) {
-            setRiseHeight(tnailHeight * ((tracker.tracker.firstItemIndex - 1)));
-            tracker.trackPrevItem();
-          }
+          lowerImgsContainer();
         }}
         visible={selectedThumbnail.id !== imagesArr[0].id}
       />
@@ -82,10 +92,7 @@ function ThumbnailsContainer({
       <StyledDownArrow
         clickHandler={() => {
           goToNextImg();
-          if (selectedThumbnail.index + 1 > tracker.tracker.lastItemIndex) {
-            setRiseHeight(tnailHeight * ((tracker.tracker.lastItemIndex + 1) - 6));
-            tracker.trackNextItem();
-          }
+          riseImgsContainer();
         }}
         visible={selectedThumbnail.id !== imagesArr[imagesArr.length - 1].id}
       />
