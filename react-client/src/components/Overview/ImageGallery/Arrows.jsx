@@ -6,6 +6,7 @@ import propTypes from 'prop-types';
 import upArrowSrc from './up-arrow-icon.svg';
 import downArrowSrc from './down-arrow-icon.svg';
 import leftArrowSrc from './left-arrow-icon.svg';
+import rightArrowSrc from './right-arrow-icon.svg';
 
 function UpArrow({ className, clickHandler }) {
   return (
@@ -82,4 +83,30 @@ LeftArrow.propTypes = {
   clickHandler: propTypes.func.isRequired,
 };
 
-export { StyledUpArrow, StyledDownArrow, StyledLeftArrow };
+function RightArrow({ className, clickHandler }) {
+  return (
+    <ArrowContainer onClick={() => console.log('asdf')}>
+      <input type="image" src={rightArrowSrc} alt="scroll-down-button" className={className} />
+      <ArrowBody />
+    </ArrowContainer>
+  );
+}
+
+const StyledRightArrow = styled(RightArrow)`
+  position: absolute;
+  cursor: pointer;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  right: -11px;
+  ${({ visible }) => !visible && 'visibility: hidden;'}
+`;
+
+RightArrow.propTypes = {
+  className: propTypes.string.isRequired,
+  clickHandler: propTypes.func.isRequired,
+};
+
+export {
+  StyledUpArrow, StyledDownArrow, StyledLeftArrow, StyledRightArrow,
+ };
