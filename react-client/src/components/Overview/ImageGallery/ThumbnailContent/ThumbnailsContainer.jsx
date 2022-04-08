@@ -70,6 +70,10 @@ function ThumbnailsContainer({
 
   const tnailHeight = 92;
 
+  useEffect(() => {
+    clickHandler(selectedThumbnail);
+  }, [selectedThumbnail]);
+
   return (
     <div className={className}>
       <StyledUpArrow
