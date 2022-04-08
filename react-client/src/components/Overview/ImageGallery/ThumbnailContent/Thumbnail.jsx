@@ -4,26 +4,10 @@ import propTypes from 'prop-types';
 
 // Components
 
-const StyledDiv = styled.div`
-  display: inline-block;
-`;
-
-const StyledEmphasis = styled.div`
-  width: 100%;
-  height: 4px;
-  background-color: black;
-  margin-top: 2px;
-`;
-
 function Thumbnail({
-  className, image, clickHandler, selected,
+  className, image, clickHandler,
 }) {
-  return (
-    <StyledDiv>
-      <input className={className} onClick={() => clickHandler(image)} />
-      {selected && <StyledEmphasis />}
-    </StyledDiv>
-  );
+  return <input className={className} onClick={() => clickHandler(image)} />;
 }
 
 const StyledThumbnail = styled(Thumbnail)`
@@ -46,7 +30,6 @@ Thumbnail.propTypes = {
     alt: propTypes.string.isRequired,
   }).isRequired,
   clickHandler: propTypes.func.isRequired,
-  selected: propTypes.bool.isRequired,
 };
 
 export default StyledThumbnail;
