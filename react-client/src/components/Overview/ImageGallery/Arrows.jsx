@@ -47,7 +47,8 @@ const ArrowBody = styled.div`
   height: 4px;
   background-color: black;
   width: 15px;
-  left: 8px;
+  ${({ right }) => right && 'left: 8px;'}
+  ${({ left }) => left && 'right: 8px;'}
 `;
 
 const ArrowContainer = styled.div`
@@ -58,13 +59,14 @@ const ArrowContainer = styled.div`
   height: 20px;
   width: 20px;
   cursor: pointer;
+  z-index: 99;
 `;
 
 function LeftArrow({ className, clickHandler }) {
   return (
     <ArrowContainer onClick={() => console.log('asdf')}>
       <input type="image" src={leftArrowSrc} alt="scroll-down-button" className={className} />
-      <ArrowBody />
+      <ArrowBody right />
     </ArrowContainer>
   );
 }
@@ -87,7 +89,7 @@ function RightArrow({ className, clickHandler }) {
   return (
     <ArrowContainer onClick={() => console.log('asdf')}>
       <input type="image" src={rightArrowSrc} alt="scroll-down-button" className={className} />
-      <ArrowBody />
+      <ArrowBody left />
     </ArrowContainer>
   );
 }
@@ -98,7 +100,7 @@ const StyledRightArrow = styled(RightArrow)`
   object-fit: cover;
   width: 100%;
   height: 100%;
-  right: -11px;
+  right: 0;
   ${({ visible }) => !visible && 'visibility: hidden;'}
 `;
 
