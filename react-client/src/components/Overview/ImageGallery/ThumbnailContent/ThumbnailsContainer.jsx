@@ -49,6 +49,10 @@ function ThumbnailsContainer({
     clickHandler(selectedThumbnail);
   }, [selectedThumbnail]);
 
+  useEffect(() => {
+    setSelectedThumbnail(selectedImg);
+  }, [selectedImg]);
+
   return (
     <div className={className}>
       <StyledUpArrow
