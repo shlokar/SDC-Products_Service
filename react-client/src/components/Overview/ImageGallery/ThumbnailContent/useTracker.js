@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useTracker = (array, numItemsToTrack) => {
   const [tracker, setTracker] = useState({ firstItemIndex: 0, lastItemIndex: numItemsToTrack - 1 });
@@ -37,10 +37,6 @@ const useTracker = (array, numItemsToTrack) => {
 
     return false;
   };
-
-  useEffect(() => {
-    console.log('tracker: ', tracker);
-  }, [tracker]);
 
   return {
     trackNextItem,
