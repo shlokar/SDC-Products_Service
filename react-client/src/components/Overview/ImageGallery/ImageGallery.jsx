@@ -11,6 +11,7 @@ import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer.js
 import StyledMainImage from './MainImage.jsx';
 import StyledExpandedImage from './ExpandedImage.jsx';
 import StyledAnimateImg from './AnimateImg.jsx';
+import { StyledLeftArrow, StyledRightArrow } from './Arrows.jsx';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -23,9 +24,17 @@ const LeftDiv = styled.div`
 `;
 
 const RightDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
   width: 100%;
   overflow: hidden;
+`;
+
+const StyledArrowPadding = styled.div`
+  ${({ left }) => left && 'margin-left: 20px;'}
+  ${({ right }) => right && 'margin-right: 20px;'}
 `;
 
 const createCustomImgsArr = (arr) => {
@@ -55,6 +64,12 @@ function ImageGallery({ className, data }) {
           />
         </LeftDiv>
         <RightDiv>
+          <StyledArrowPadding left>
+            <StyledLeftArrow visible />
+          </StyledArrowPadding>
+          <StyledArrowPadding right>
+            <StyledRightArrow visible />
+          </StyledArrowPadding>
           {customImgsArr.map((image) => (
             <StyledAnimateImg key={image.id} selected={currImg.id === image.id}>
               <StyledMainImage
