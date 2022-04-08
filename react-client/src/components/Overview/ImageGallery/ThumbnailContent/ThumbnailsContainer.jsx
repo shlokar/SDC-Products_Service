@@ -58,12 +58,12 @@ function ThumbnailsContainer({
     return index;
   };
 
-  const goUpImgsArr = () => {
+  const goToNextImg = () => {
     const newIndex = getIndexInImagesArr(selectedThumbnail) + 1;
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
 
-  const goDownImgsArr = () => {
+  const goToPrevImg = () => {
     const newIndex = getIndexInImagesArr(selectedThumbnail) - 1;
     setSelectedThumbnail(tracker.arr[newIndex]);
   };
@@ -78,7 +78,7 @@ function ThumbnailsContainer({
     <div className={className}>
       <StyledUpArrow
         clickHandler={() => {
-          goDownImgsArr();
+          goToPrevImg();
           if (selectedThumbnail.index - 1 < tracker.tracker.firstItemIndex) {
             setRiseHeight(tnailHeight * ((tracker.tracker.firstItemIndex - 1)));
             tracker.trackPrevItem();
@@ -102,7 +102,7 @@ function ThumbnailsContainer({
       </StyledDiv>
       <StyledDownArrow
         clickHandler={() => {
-          goUpImgsArr();
+          goToNextImg();
           if (selectedThumbnail.index + 1 > tracker.tracker.lastItemIndex) {
             setRiseHeight(tnailHeight * ((tracker.tracker.lastItemIndex + 1) - 6));
             tracker.trackNextItem();
