@@ -37,7 +37,7 @@ const StyledArrowPadding = styled.div`
   ${({ right }) => right && 'margin-right: 20px;'}
 `;
 
-const createCustomImgsArr = (arr) => {
+const updateImgsArr = (arr) => {
   const arrCopy = arr.map((obj) => {
     const newObj = { ...obj };
     newObj.id = uniqid();
@@ -49,20 +49,20 @@ const createCustomImgsArr = (arr) => {
 };
 
 function ImageGallery({ className, data }) {
-  const [customImgsArr] = useState(createCustomImgsArr(data));
-  const [currImg, setCurrImg] = useState(customImgsArr[0]);
+  const [imgsArr] = useState(updateImgsArr(data));
+  const [currImg, setCurrImg] = useState(imgsArr[0]);
   const [expandedViewVisible, setExpandedViewVisible] = useState(false);
 
   const goToPrevImg = () => {
     if (currImg.index > 0) {
-      const prevImg = customImgsArr[currImg.index - 1];
+      const prevImg = imgsArr[currImg.index - 1];
       setCurrImg(prevImg);
     }
   };
 
   const goToNextImg = () => {
-    if (currImg.index + 1 < customImgsArr.length) {
-      const nextImg = customImgsArr[currImg.index + 1];
+    if (currImg.index + 1 < imgsArr.length) {
+      const nextImg = imgsArr[currImg.index + 1];
       setCurrImg(nextImg);
     }
   };
@@ -73,19 +73,22 @@ function ImageGallery({ className, data }) {
       <StyledContainer>
         <LeftDiv>
           <StyledThumbnailsContainer
-            imagesArr={customImgsArr}
+            imagesArr={imgsArr}
             clickHandler={(img) => setCurrImg(img)}
             selectedImg={currImg}
           />
         </LeftDiv>
         <RightDiv>
           <StyledArrowPadding left>
-            <StyledLeftArrow visible clickHandler={() => goToPrevImg()} />
+            <StyledLeftArrow isVisible={currImg.index !== 0} clickHandler={() => goToPrevImg()} />
           </StyledArrowPadding>
           <StyledArrowPadding right>
-            <StyledRightArrow visible clickHandler={() => goToNextImg()} />
+            <StyledRightArrow
+              isVisible={currImg.index !== imgsArr.length - 1}
+              clickHandler={() => goToNextImg()}
+            />
           </StyledArrowPadding>
-          {customImgsArr.map((image) => (
+          {imgsArr.map((image) => (
             <StyledAnimateImg key={image.id} selected={currImg.id === image.id}>
               <StyledMainImage
                 src={image.url}
