@@ -52,6 +52,12 @@ const ArrowBody = styled.div`
 `;
 
 const ArrowContainer = styled.div`
+  visibility: visible;
+  opacity: 1;
+  ${({ isVisible }) => !isVisible && `
+  visibility: hidden;
+  opacity: 0;
+  `}
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,11 +66,12 @@ const ArrowContainer = styled.div`
   width: 20px;
   cursor: pointer;
   z-index: 99;
+  transition: all .3s;
 `;
 
-function LeftArrow({ className, clickHandler }) {
+function LeftArrow({ className, clickHandler, isVisible }) {
   return (
-    <ArrowContainer onClick={() => clickHandler()}>
+    <ArrowContainer onClick={() => clickHandler()} isVisible={isVisible}>
       <input type="image" src={leftArrowSrc} alt="scroll-down-button" className={className} />
       <ArrowBody right />
     </ArrowContainer>
@@ -77,17 +84,17 @@ const StyledLeftArrow = styled(LeftArrow)`
   object-fit: cover;
   width: 100%;
   height: 100%;
-  ${({ visible }) => !visible && 'visibility: hidden;'}
 `;
 
 LeftArrow.propTypes = {
   className: propTypes.string.isRequired,
   clickHandler: propTypes.func.isRequired,
+  isVisible: propTypes.bool.isRequired,
 };
 
-function RightArrow({ className, clickHandler }) {
+function RightArrow({ className, clickHandler, isVisible }) {
   return (
-    <ArrowContainer onClick={() => clickHandler()}>
+    <ArrowContainer onClick={() => clickHandler()} isVisible={isVisible}>
       <input type="image" src={rightArrowSrc} alt="scroll-down-button" className={className} />
       <ArrowBody left />
     </ArrowContainer>
@@ -101,14 +108,14 @@ const StyledRightArrow = styled(RightArrow)`
   width: 100%;
   height: 100%;
   right: 0;
-  ${({ visible }) => !visible && 'visibility: hidden;'}
 `;
 
 RightArrow.propTypes = {
   className: propTypes.string.isRequired,
   clickHandler: propTypes.func.isRequired,
+  isVisible: propTypes.bool.isRequired,
 };
 
 export {
   StyledUpArrow, StyledDownArrow, StyledLeftArrow, StyledRightArrow,
- };
+};
