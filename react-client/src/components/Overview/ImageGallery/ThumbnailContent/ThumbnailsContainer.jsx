@@ -26,24 +26,11 @@ const StyledDiv = styled.div`
   overflow: hidden;
 `;
 
-const setSelected = (def, arr) => {
-  let newSelected;
-  if (def === undefined) {
-    newSelected = { ...arr[0] };
-  } else {
-    newSelected = { ...def };
-  }
-
-  return newSelected;
-};
-
 function ThumbnailsContainer({
-  className, imagesArr, clickHandler, defaultSelected,
+  className, imagesArr, clickHandler, selectedImg,
 }) {
-  const tracker = useTracker(imagesArr, 7);
-  const selected = setSelected(defaultSelected, tracker.arr);
-
-  const [selectedThumbnail, setSelectedThumbnail] = useState(selected);
+  const [tracker] = useState(useTracker(imagesArr, 7));
+  const [selectedThumbnail, setSelectedThumbnail] = useState(selectedImg);
   const [riseHeight, setRiseHeight] = useState(0);
 
   const getIndexInImagesArr = (image) => {
@@ -122,10 +109,6 @@ const StyledThumbnailsContainer = styled(ThumbnailsContainer)`
   overflow: hidden;
 `;
 
-ThumbnailsContainer.defaultProps = {
-  defaultSelected: undefined,
-};
-
 ThumbnailsContainer.propTypes = {
   className: propTypes.string.isRequired,
   imagesArr: propTypes.arrayOf(propTypes.shape({
@@ -134,11 +117,12 @@ ThumbnailsContainer.propTypes = {
     alt: propTypes.string.isRequired,
   })).isRequired,
   clickHandler: propTypes.func.isRequired,
-  defaultSelected: propTypes.shape({
+  selectedImg: propTypes.shape({
     id: propTypes.string.isRequired,
     url: propTypes.string.isRequired,
     alt: propTypes.string.isRequired,
-  }),
+    index: propTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default StyledThumbnailsContainer;
