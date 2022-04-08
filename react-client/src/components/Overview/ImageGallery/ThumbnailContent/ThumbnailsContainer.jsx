@@ -61,7 +61,7 @@ function ThumbnailsContainer({
   };
 
   useEffect(() => {
-    lowerImgsContainer(selectedThumbnail.index - 1);
+    lowerImgsContainer(selectedThumbnail.index + 1);
     riseImgsContainer(selectedThumbnail.index - 1);
     clickHandler(selectedThumbnail);
   }, [selectedThumbnail]);
