@@ -46,8 +46,9 @@ const StyledExpandedImage = styled(ExpandedImage)`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, .5);
-  transition: all 1s;
+  transition: all .4s;
   cursor: zoom-out;
+  backdrop-filter: blur(10px);
 `;
 
 export default StyledExpandedImage;
