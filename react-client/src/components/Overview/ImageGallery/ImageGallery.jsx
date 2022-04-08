@@ -53,6 +53,20 @@ function ImageGallery({ className, data }) {
   const [currImg, setCurrImg] = useState(customImgsArr[0]);
   const [expandedViewVisible, setExpandedViewVisible] = useState(false);
 
+  const goToPrevImg = () => {
+    if (currImg.index > 0) {
+      const prevImg = customImgsArr[currImg.index - 1];
+      setCurrImg(prevImg);
+    }
+  };
+
+  const goToNextImg = () => {
+    if (currImg.index + 1 < customImgsArr.length) {
+      const nextImg = customImgsArr[currImg.index + 1];
+      setCurrImg(nextImg);
+    }
+  };
+
   return (
     <div className={className}>
       <StyledExpandedImage src={currImg.url} alt="#" clickHandler={() => setExpandedViewVisible(false)} visible={expandedViewVisible} />
@@ -65,10 +79,10 @@ function ImageGallery({ className, data }) {
         </LeftDiv>
         <RightDiv>
           <StyledArrowPadding left>
-            <StyledLeftArrow visible />
+            <StyledLeftArrow visible clickHandler={() => goToPrevImg()} />
           </StyledArrowPadding>
           <StyledArrowPadding right>
-            <StyledRightArrow visible />
+            <StyledRightArrow visible clickHandler={() => goToNextImg()} />
           </StyledArrowPadding>
           {customImgsArr.map((image) => (
             <StyledAnimateImg key={image.id} selected={currImg.id === image.id}>
