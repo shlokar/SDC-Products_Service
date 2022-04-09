@@ -26,15 +26,6 @@ const createRatingsArr = (rating) => {
   return ratingsArr;
 };
 
-/**
- * Properties
- *
- * rating:
- *   - (integer) - A integer between 0 and 5, this number will determine
- *   the amount of fill the star will have. Decimal values are acceptable.
- *
- */
-
 function StarsList({ className, rating }) {
   const ratingsArr = createRatingsArr(rating);
   return (
@@ -46,7 +37,7 @@ function StarsList({ className, rating }) {
 
 StarsList.propTypes = {
   className: propTypes.string.isRequired,
-  rating: propTypes.number.isRequired,
+  rating: propTypes.number.isRequired, // integer between 0 and 5.
 };
 
 const StyledStarsList = styled(StarsList)`
