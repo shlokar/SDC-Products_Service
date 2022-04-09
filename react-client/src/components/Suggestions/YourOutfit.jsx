@@ -19,8 +19,10 @@ function YourOutfit({
   btnStyle,
   favPosn,
   setFavPosn,
+  getStylesDataFromAPI,
 }) {
   const [favsRatings, setFavsRatings] = useState([]);
+  const [favsStyles, setFavsStyles] = useState([]);
 
   function getRatingsLookup(favorites) {
     if (favorites.length > 0) {
@@ -49,8 +51,18 @@ function YourOutfit({
     }
   }
 
+  function getFavsStyles(favorites) {
+    if (favorites.length > 0) {
+      Promise.all(favorites.map((e) => getStylesDataFromAPI(e)))
+        .then((results) => {
+          setFavsStyles(results);
+        });
+    }
+  }
+
   useEffect(() => {
     getRatingsLookup(favs);
+    getFavsStyles(favs.map((e) => e.id));
   }, [favs]);
 
   const plusStyle = {
@@ -85,15 +97,13 @@ function YourOutfit({
         {favs.length > 0 ?
         favs.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
           <div style={cardStyle}>
-            <div style={btnStyle} onClick={()=>{const favsCopy = [...favs]; favsCopy.splice(i + favPosn,1); setFavs(favsCopy);}}>
+            <div style={btnStyle} onClick={()=>{const favsCopy = [...favs]; favsCopy.splice(i + favPosn,1); localStorage.setItem('Your Outfit', JSON.stringify(favsCopy));setFavs(favsCopy);}}>
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.597 17.954l-4.591-4.55-4.555 4.596-1.405-1.405 4.547-4.592-4.593-4.552 1.405-1.405 4.588 4.543 4.545-4.589 1.416 1.403-4.546 4.587 4.592 4.548-1.403 1.416z"/>
               </svg>
             </div>
             <ul style={ulStyle}>
               <li>
-                {favsRatings[e.id]
-                  ? <img style={imgStyle} alt="" src={favsRatings[e.id].results[0].photos[0].url} />
-                  : 0}
+                {favsStyles ? (favsStyles.filter((element) => element.product_id == e.id).length !== 0 ? <img style={imgStyle} src={favsStyles.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url}></img> : "loading") : "loading"}
               </li>
               <li>{e.category}</li>
               <li>{e.name}</li>

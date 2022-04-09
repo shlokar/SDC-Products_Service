@@ -17,6 +17,7 @@ function Suggestions({currentProduct}) {
   const [relatedProductIDs, setRelatedProductIDs] = useState([]);
   const [currentProductData, setCurrentProductData] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [relatedStyles, setRelatedStyles] = useState([]);
   const [comparedProduct, setComparedProduct] = useState(null);
   const [ratings, setRatings] = useState(null);
   const [favs, setFavs] = useState(localStorage.getItem('Your Outfit') !== null ? JSON.parse(localStorage.getItem('Your Outfit')) : []);
@@ -110,7 +111,29 @@ function Suggestions({currentProduct}) {
           console.log(ratingsLookup);
           setRatings(ratingsLookup);
         });
+        // Get styles for each Related Product
+        Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
+          .then((results) => {
+            console.log('Styles: ');
+            console.log(results);
+            setRelatedStyles(results);
+          });
       });
+  }
+
+  function getStylesDataFromAPI(productIdParam) {
+    return new Promise((resolve, reject) => {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
+        headers: {
+          authorization: secretKey,
+        },
+      })
+        .then((results) => {
+          // .results[0].photos[0].thumbnail_url
+          resolve(results.data);
+        })
+        .catch((err) => console.log(err));
+    });
   }
 
   useEffect(() => {
@@ -176,6 +199,7 @@ function Suggestions({currentProduct}) {
         setModalXY={setModalXY}
         relPosn={relPosn}
         setRelPosn={setRelPosn}
+        relatedStyles={relatedStyles}
       />
       <YourOutfit
         carouselStyle={carouselStyle}
@@ -190,6 +214,7 @@ function Suggestions({currentProduct}) {
         btnStyle={btnStyle}
         favPosn={favPosn}
         setFavPosn={setFavPosn}
+        getStylesDataFromAPI={getStylesDataFromAPI}
       />
       <Compare
         modalIsVisible={modalIsVisible}

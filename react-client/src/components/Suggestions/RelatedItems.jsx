@@ -18,6 +18,7 @@ function RelatedItems({
   setModalXY,
   relPosn,
   setRelPosn,
+  relatedStyles,
 }) {
   return (
     <div id="related-items">
@@ -31,7 +32,7 @@ function RelatedItems({
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.326 18.266l-4.326-2.314-4.326 2.313.863-4.829-3.537-3.399 4.86-.671 2.14-4.415 2.14 4.415 4.86.671-3.537 3.4.863 4.829z"/></svg>
             </div>
             <ul style={ulStyle}>
-              <li>{ratings ? (ratings[e.id] ? <img style={imgStyle} src={ratings[e.id.toString()].results[0].photos[0].url}></img> : "loading") : "loading"}</li>
+              <li>{relatedStyles ? (relatedStyles.filter((element) => element.product_id == e.id).length !== 0 ? <img style={imgStyle} src={relatedStyles.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url}></img> : "loading") : "loading"}</li>
               <li>{e.category}</li>
               <li>{e.name}</li>
               <li>${e.default_price}</li>

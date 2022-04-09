@@ -36,8 +36,8 @@ function ArrowBtn({ type, dir, relPosn, setRelPosn, favPosn, setFavPosn, relLeng
     >
       <div style={arrowStyle}>
         {(((type === 'rel' && relPosn === 0) || (type === 'fav' && favPosn === 0)) && dir === '<')
-        || (((type === 'rel' && relPosn >= relLength - 4 - 1) || (type === 'fav' && favPosn >= favLength -3)) && dir === '>')
-          ? '' : dir}
+        || (((type === 'rel' && relPosn >= relLength - 4 - 1) || (type === 'fav' && favPosn >= favLength - 3)) && dir === '>')
+          ? '.' : dir}
         </div>
     </div>
   );
