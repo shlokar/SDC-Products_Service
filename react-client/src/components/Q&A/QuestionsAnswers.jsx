@@ -29,7 +29,7 @@ const newQaContext = createContext(
   axios({
     method: 'get',
     url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions?product_id=62635',
-    headers: { authorization: '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' },
+    headers: { authorization: {auth_code} },
   }).then((results) => {
     return results.data
   }),
