@@ -26,7 +26,7 @@ function RelatedItems({
       <div id="carousel-container" style={carouselStyle}>
         <ArrowBtn dir="<" type="rel" relPosn={relPosn} setRelPosn={setRelPosn} relLength={relatedProducts.length}/>
         {relatedProducts.slice(0 + relPosn, 4 + relPosn).filter(e => e.name !== currentProductData.name).map((e) =>
-          <div style={cardStyle} onClick={()=>{setCurrentProductID(e.id);console.log("e.id: " + e.id + e.name);}}>
+          <div style={cardStyle} onClick={()=>{setRelPosn(0);setCurrentProductID(e.id);console.log("e.id: " + e.id + e.name);}}>
             <div style={btnStyle} onClick={(event)=>{event.stopPropagation(); setModalIsVisible(true); setModalXY([event.clientX, event.clientY]); setComparedProduct(e);}}>
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.326 18.266l-4.326-2.314-4.326 2.313.863-4.829-3.537-3.399 4.86-.671 2.14-4.415 2.14 4.415 4.86.671-3.537 3.4.863 4.829z"/></svg>
             </div>
