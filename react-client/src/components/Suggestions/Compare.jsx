@@ -69,9 +69,9 @@ function Compare({
             && comparedProduct !== null
             && createDataTable(currentProductData.features, comparedProduct.features)
               .map((e) => <tr style={trStyle}>
-                <td>{e[Object.keys(e)[0]].a || ''}</td>
+                <td>{e[Object.keys(e)[0]].a ? (e[Object.keys(e)[0]].a === 'Yes' ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg> : e[Object.keys(e)[0]].a ) : ''}</td>
                 <td>{Object.keys(e)[0]}</td>
-                <td>{e[Object.keys(e)[0]].b || ''}</td>
+                <td>{e[Object.keys(e)[0]].b ? (e[Object.keys(e)[0]].b === 'Yes' ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg> : e[Object.keys(e)[0]].b ) : ''}</td>
               </tr>)
             }
 
