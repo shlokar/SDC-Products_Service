@@ -6,7 +6,7 @@ import propTypes from 'prop-types';
 import StyledStarsList from './StarsList.jsx';
 import StyledReviewsRedirect from '../ReviewsRedirect.jsx';
 
-function StarsListAndReviews({
+function StarsAndReviews({
   className, rating, internalLink, numOfReviews,
 }) {
   return (
@@ -17,18 +17,17 @@ function StarsListAndReviews({
   );
 }
 
-const StyledStarsListAndReviews = styled(StarsListAndReviews)`
+const StyledStarsAndReviews = styled(StarsAndReviews)`
   display: inline-flex;
   align-items: center;
-  height: 50px;
   gap: 10px;
 `;
 
-StarsListAndReviews.propTypes = {
+StarsAndReviews.propTypes = {
   className: propTypes.string.isRequired,
   rating: propTypes.number.isRequired,
   internalLink: propTypes.string.isRequired,
   numOfReviews: propTypes.number.isRequired,
 };
 
-export default StyledStarsListAndReviews;
+export default StyledStarsAndReviews;
