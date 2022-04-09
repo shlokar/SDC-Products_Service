@@ -4,7 +4,7 @@ import uniqid from 'uniqid';
 import styled from 'styled-components';
 
 // Components
-import StyledStar from './Star.jsx';
+import Star from './Star.jsx';
 
 const createRatingsArr = (rating) => {
   const ratingsArr = [];
@@ -39,7 +39,7 @@ function StarsList({ className, rating }) {
   const ratingsArr = createRatingsArr(rating);
   return (
     <ul className={className}>
-      {ratingsArr.map((score) => <StyledStar key={uniqid()} id={uniqid()} fillPercent={score} />)}
+      {ratingsArr.map((score) => <Star key={uniqid()} fillPercent={score} />)}
     </ul>
   );
 }
