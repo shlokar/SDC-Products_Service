@@ -3,22 +3,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
 
-/**
- * Properties
- *
- * fillPercent:
- *   - (string) - a percentage between 0% and 100%.
- *   the percentage dictates the amount of star to be filled.
- *
- * id:
- *   - (string) - a unique identifier needed to style the linear gradient
- *   and to prevent other stars from having the same styling.
- *
- * className:
- *   - (styled-components)
- *
-*/
-
 const Path = styled.path`
   fill: none;
   stroke: #000;
@@ -45,7 +29,7 @@ function Star({ fillPercent }) {
 }
 
 Star.propTypes = {
-  fillPercent: PropTypes.string.isRequired,
+  fillPercent: PropTypes.string.isRequired, // must be written as 0% - 100%
 };
 
 export default Star;
