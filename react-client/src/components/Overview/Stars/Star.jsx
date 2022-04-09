@@ -16,7 +16,7 @@ function Star({ fillPercent }) {
   const [id] = useState(uniqid());
 
   return (
-    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
       <defs>
         <linearGradient id={id}>
           <stop offset={fillPercent} stopColor="black" />
