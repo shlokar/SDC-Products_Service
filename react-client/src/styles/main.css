@@ -33,6 +33,7 @@
 
   /* Colors */
   --clr-white: #FFFFFF;
+  --clr-light-grey: rgb(133, 133, 133);
 }
 
 body {
