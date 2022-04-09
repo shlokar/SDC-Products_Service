@@ -107,7 +107,7 @@ const StyledImageGallery = styled(ImageGallery)`
   position: relative;
   box-sizing: border-box;
   height: 800px;
-  width: 1000px;
+  width: 900px;
   background-color: #EDEFF0;
   padding: 20px;
 `;
