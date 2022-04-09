@@ -26,6 +26,7 @@ ReviewsRedirect.propTypes = {
 
 const StyledReviewsRedirect = styled(ReviewsRedirect)`
   color: var(--clr-black-cow);
+  font-size: .9rem;
 `;
 
 export default StyledReviewsRedirect;
