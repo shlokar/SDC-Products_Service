@@ -8,7 +8,7 @@ function ProductCategory({ className, title }) {
 
 const StyledProductCategory = styled(ProductCategory)`
   font-family: var(--fnt-regular);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
 `;
 
@@ -23,7 +23,7 @@ function ProductTitle({ className, title }) {
 
 const StyledProductTitle = styled(ProductTitle)`
   font-family: var(--fnt-bold);
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   line-height: 1.2;
 `;
 
