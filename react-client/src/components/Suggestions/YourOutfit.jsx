@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import StyledStarsList from '../Overview/Stars/StarsList.jsx'
 import Key from './config.js';
 import axios from 'axios';
+import ArrowBtn from './ArrowBtn.jsx';
 
 const secretKey = Key;
 
@@ -15,6 +16,9 @@ function YourOutfit({
   favs,
   setFavs,
   currentProductData,
+  btnStyle,
+  favPosn,
+  setFavPosn,
 }) {
   const [favsRatings, setFavsRatings] = useState([]);
 
@@ -49,10 +53,18 @@ function YourOutfit({
     getRatingsLookup(favs);
   }, [favs]);
 
+  const plusStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '10%',
+  };
+
   return (
     <div id="your-outfit">
-      Your Outfit
+      <div>Your Outfit ({favs.length}) (viewing {favPosn + 1} through {favPosn + 1 + 2})</div>
+
       <div id="carousel-container" style={carouselStyle}>
+        <ArrowBtn dir="<" type="fav" favPosn={favPosn} setFavPosn={setFavPosn} favLength={favs.length}/>
         <div style={cardStyle}
           onClick={() => {
             const tempArray = [...favs];
@@ -68,12 +80,15 @@ function YourOutfit({
             setFavs(tempArray);
             localStorage.setItem('Your Outfit', JSON.stringify(tempArray));
           }}>
-          + Add to Your Outfit
+          <div style={plusStyle}> + Add to Your Outfit</div>
         </div>
         {favs.length > 0 ?
-        favs.map((e) => (
+        favs.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
           <div style={cardStyle}>
-            <button>Remove</button>
+            <div style={btnStyle} onClick={()=>{const favsCopy = [...favs]; favsCopy.splice(i + favPosn,1); setFavs(favsCopy);}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.597 17.954l-4.591-4.55-4.555 4.596-1.405-1.405 4.547-4.592-4.593-4.552 1.405-1.405 4.588 4.543 4.545-4.589 1.416 1.403-4.546 4.587 4.592 4.548-1.403 1.416z"/>
+              </svg>
+            </div>
             <ul style={ulStyle}>
               <li>
                 {favsRatings[e.id]
@@ -95,14 +110,13 @@ function YourOutfit({
               <li>
                 {favsRatings[e.id]
                   ? favsRatings[e.id].reviewsCount
-                  : 'loading'}
-                reviews
+                  : 'loading'} reviews
               </li>
             </ul>
             <br />
           </div>
         )) : null}
-
+        <ArrowBtn dir=">" type="fav" favPosn={favPosn} setFavPosn={setFavPosn} favLength={favs.length} />
       </div>
     </div>
   );
