@@ -2,18 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
+const StyledCost = styled.p`
+  display: inline-block;
+`;
+
 function DefaultCost({ className, cost }) {
   const styledCost = `$${cost}`;
   return (
-    <p className={className}>
+    <StyledCost className={className}>
       {styledCost}
-    </p>
+    </StyledCost>
   );
 }
 
 const StyledDefaultCost = styled(DefaultCost)`
-  display: inline-block;
-  font-size: 1.3rem;
   ${(props) => props.onSale && 'text-decoration: line-through;'}
 `;
 
@@ -25,15 +27,13 @@ DefaultCost.propTypes = {
 function SaleCost({ className, cost }) {
   const styledCost = `$${cost}`;
   return (
-    <div className={className}>
+    <StyledCost className={className}>
       {styledCost}
-    </div>
+    </StyledCost>
   );
 }
 
 const StyledSaleCost = styled(SaleCost)`
-  display: inline-block;
-  font-size: 1.3rem;
   color: red;
 `;
 
