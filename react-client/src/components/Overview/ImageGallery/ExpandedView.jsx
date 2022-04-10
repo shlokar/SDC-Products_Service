@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
+
+// Assets
+import { GalleryContext } from './ImageGalleryContext';
 
 // Components
 import StyledExpandedImage from './ExpandedImage';
 import { StyledLeftArrow, StyledRightArrow } from './Arrows';
+import StyledAnimateImg from './AnimateImg';
 
 const ArrowContainer = styled.div`
   position: absolute;
@@ -19,21 +23,33 @@ const RightArrowContainer = styled(ArrowContainer)`
   right: 0;
 `;
 
-function ExpandedView({
-  className, img, clickHandler, goToNextImg, goToPrevImg,
-}) {
+function ExpandedView({ className }) {
+  const {
+    imgsArr,
+    currImg,
+    goToNextImg,
+    goToPrevImg,
+    setExpandedViewVisible,
+    firstImgIsSelected,
+    lastImgIsSelected,
+  } = useContext(GalleryContext);
+
   return (
     <div className={className}>
       <LeftArrowContainer>
-        <StyledLeftArrow isVisible clickHandler={() => goToPrevImg()} />
+        <StyledLeftArrow isVisible={!firstImgIsSelected()} clickHandler={() => goToPrevImg()} />
       </LeftArrowContainer>
-      <StyledExpandedImage
-        src={img.url}
-        alt="#"
-        clickHandler={() => clickHandler()}
-      />
+      {imgsArr.map((img) => (
+        <StyledAnimateImg key={img.id} selected={currImg.id === img.id}>
+          <StyledExpandedImage
+            src={img.url}
+            alt="#"
+            clickHandler={() => setExpandedViewVisible(false)}
+          />
+        </StyledAnimateImg>
+      ))}
       <RightArrowContainer>
-        <StyledRightArrow isVisible clickHandler={() => goToNextImg()} />
+        <StyledRightArrow isVisible={!lastImgIsSelected()} clickHandler={() => goToNextImg()} />
       </RightArrowContainer>
     </div>
   );
@@ -41,23 +57,15 @@ function ExpandedView({
 
 ExpandedView.propTypes = {
   className: propTypes.string.isRequired,
-  img: propTypes.shape({
-    id: propTypes.string.isRequired,
-    url: propTypes.string.isRequired,
-    alt: propTypes.string.isRequired,
-    index: propTypes.number.isRequired,
-  }).isRequired,
-  clickHandler: propTypes.func.isRequired,
-  goToNextImg: propTypes.func.isRequired,
-  goToPrevImg: propTypes.func.isRequired,
 };
 
 const StyledExpandedView = styled(ExpandedView)`
-  z-index: 999;
+  z-index: 0;
   visibility: hidden;
   opacity: 0;
   width: 100%;
   ${({ isVisible, viewWidth }) => isVisible && `
+  z-index: 999;
   visibility: visible;
   opacity: 1;
   width: ${viewWidth}px;
