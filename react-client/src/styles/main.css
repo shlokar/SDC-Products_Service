@@ -23,6 +23,21 @@
   src: url('../fonts/Roboto/Roboto-Black.ttf');
 }
 
+@font-face {
+  font-family: 'Roboto-Bold-Italic';
+  src: url('../fonts/Roboto/Roboto-BoldItalic.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Italic';
+  src: url('../fonts/Roboto/Roboto-Italic.ttf');
+}
+
+@font-face {
+  font-family: 'Roboto-Light-Italic';
+  src: url('../fonts/Roboto/Roboto-LightItalic.ttf');
+}
+
 :root {
   /* Fonts */
   --fnt-regular: 'Roboto-Regular';
@@ -30,10 +45,14 @@
   --fnt-light: 'Roboto-Light';
   --fnt-bold: 'Roboto-Bold';
   --fnt-dark: 'Roboto-Black';
+  --fnt-bld-italic: 'Roboto-Bold-Italic';
+  --fnt-italic: 'Roboto-Bold-Italic';
+  --fnt-light-italic: 'Roboto-Light-Italic';
 
   /* Colors */
   --clr-white: #FFFFFF;
   --clr-light-grey: rgb(133, 133, 133);
+  --clr-light-black: #525252;
 }
 
 body {

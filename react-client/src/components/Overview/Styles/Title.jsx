@@ -20,7 +20,7 @@ function TitleContainer({ className, styleName }) {
 
 const StyledTitleContainer = styled(TitleContainer)`
   display: flex;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-family: var(--fnt-light);
   text-transform: uppercase;
 `;

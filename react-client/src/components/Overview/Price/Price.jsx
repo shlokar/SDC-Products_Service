@@ -3,20 +3,6 @@ import styled from 'styled-components';
 import propTypes from 'prop-types';
 import { StyledDefaultCost, StyledSaleCost } from './Costs.jsx';
 
-/**
- * Properties
- *
- * cost: (number) - required
- *   - The default cost of a product
- *
- * onSale: (boolean) - required
- *   - true or false depending if the product is onSale
- *
- *  saleCost: (number) - optional
- *   - The sale cost of the product.
- *
- */
-
 function Price({
   className, cost, onSale, saleCost,
 }) {
@@ -31,8 +17,7 @@ function Price({
 const StyledPrice = styled(Price)`
   display: inline-flex;
   gap: 10px;
-  font-size: 1.3rem;
-  padding: 25px 0;
+  font-size: 1.2rem;
 `;
 
 Price.defaultProps = {
