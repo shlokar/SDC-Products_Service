@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
-import uniqid from 'uniqid';
 
 // Assets
-import useTracker from './ThumbnailContent/useTracker';
+import { GalleryProvider, GalleryContext } from './ImageGalleryContext';
 
 // Components
 import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer';
@@ -45,49 +44,41 @@ const StyledArrowPadding = styled.div`
   ${({ right }) => right && 'margin-right: 20px;'}
 `;
 
-const updateImgsArr = (arr) => {
-  const arrCopy = arr.map((obj) => {
-    const newObj = { ...obj };
-    newObj.id = uniqid();
-    newObj.alt = '#';
-    return newObj;
-  });
+function ImageGalleryContainer({ data, expandedImgWidth }) {
+  return (
+    <GalleryProvider newData={{ data, expandedImgWidth }}>
+      <StyledImageGallery />
+    </GalleryProvider>
+  );
+}
 
-  return useTracker(arrCopy).arr;
+ImageGalleryContainer.propTypes = {
+  data: propTypes.arrayOf(propTypes.shape({
+    thumbnail_url: propTypes.string.isRequired,
+    url: propTypes.string.isRequired,
+  })).isRequired,
+  expandedImgWidth: propTypes.number.isRequired,
 };
 
-function ImageGallery({ className, data, expandedImgWidth }) {
-  const [imgsArr] = useState(updateImgsArr(data));
-  const [currImg, setCurrImg] = useState(imgsArr[0]);
-  const [expandedViewVisible, setExpandedViewVisible] = useState(false);
-
-  const goToPrevImg = () => {
-    if (currImg.index > 0) {
-      const prevImg = imgsArr[currImg.index - 1];
-      setCurrImg(prevImg);
-    }
-  };
-
-  const goToNextImg = () => {
-    if (currImg.index + 1 < imgsArr.length) {
-      const nextImg = imgsArr[currImg.index + 1];
-      setCurrImg(nextImg);
-    }
-  };
-
-  const firstImgIsSelected = () => currImg.index === 0;
-
-  const lastImgIsSelected = () => currImg.index === imgsArr.length - 1;
+function ImageGallery({ className }) {
+  const {
+    currImg,
+    setCurrImg,
+    imgsArr,
+    goToNextImg,
+    goToPrevImg,
+    expandedViewVisible,
+    setExpandedViewVisible,
+    firstImgIsSelected,
+    lastImgIsSelected,
+    expandedImgWidth,
+  } = useContext(GalleryContext);
 
   return (
     <div className={className}>
       <StyledExpandedView
-        img={currImg}
-        clickHandler={() => setExpandedViewVisible(false)}
         isVisible={expandedViewVisible}
         viewWidth={expandedImgWidth}
-        goToNextImg={() => goToNextImg()}
-        goToPrevImg={() => goToPrevImg()}
       />
       <StyledContainer>
         <LeftDiv>
@@ -138,11 +129,6 @@ const StyledImageGallery = styled(ImageGallery)`
 
 ImageGallery.propTypes = {
   className: propTypes.string.isRequired,
-  data: propTypes.arrayOf(propTypes.shape({
-    thumbnail_url: propTypes.string.isRequired,
-    url: propTypes.string.isRequired,
-  })).isRequired,
-  expandedImgWidth: propTypes.number.isRequired,
 };
 
-export default StyledImageGallery;
+export default ImageGalleryContainer;
