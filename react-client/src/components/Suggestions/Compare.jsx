@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import propTypes from 'prop-types';
 
 function Compare({
   modalIsVisible,
@@ -82,5 +83,13 @@ function Compare({
     </div>
   );
 }
+
+Compare.propTypes = {
+  modalIsVisible: propTypes.bool.isRequired,
+  setModalIsVisible: propTypes.func.isRequired,
+  comparedProduct: propTypes.object.isRequired,
+  currentProductData: propTypes.object.isRequired,
+  modalXY: propTypes.array.isRequired,
+};
 
 export default Compare;

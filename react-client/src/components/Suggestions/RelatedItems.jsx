@@ -1,4 +1,7 @@
 import React from 'react';
+import propTypes from 'prop-types';
+
+// Components
 import StyledStarsList from '../Overview/Stars/StarsList.jsx';
 import ArrowBtn from './ArrowBtn.jsx';
 
@@ -12,7 +15,6 @@ function RelatedItems({
   currentProductData,
   btnStyle,
   setModalIsVisible,
-  currentProductID,
   setCurrentProductID,
   setComparedProduct,
   setModalXY,
@@ -23,7 +25,7 @@ function RelatedItems({
   return (
     <div id="related-items">
       {/* This is to be its own component later */}
-      <div>Related Items ({relatedProducts.length - 1}) (viewing {relPosn + 1} through {relPosn + 1 + 3})</div>
+      <div>Related Items ({relatedProducts.length - 1}) (viewing {relPosn + 1} through {Math.min(relPosn + 1 + 3, relatedProducts.length - 1)})</div>
       <div id="carousel-container" style={carouselStyle}>
         <ArrowBtn dir="<" type="rel" relPosn={relPosn} setRelPosn={setRelPosn} relLength={relatedProducts.length}/>
         {relatedProducts.slice(0 + relPosn, 4 + relPosn).filter(e => e.name !== currentProductData.name).map((e) =>
@@ -52,5 +54,23 @@ function RelatedItems({
     </div>
   );
 }
+
+RelatedItems.propTypes = {
+  carouselStyle: propTypes.object.isRequired,
+  relatedProducts: propTypes.array.isRequired,
+  cardStyle: propTypes.object.isRequired,
+  ulStyle: propTypes.object.isRequired,
+  ratings: propTypes.object.isRequired,
+  imgStyle: propTypes.object.isRequired,
+  currentProductData: propTypes.object.isRequired,
+  btnStyle: propTypes.object.isRequired,
+  setModalIsVisible: propTypes.func.isRequired,
+  setCurrentProductID: propTypes.func.isRequired,
+  setComparedProduct: propTypes.func.isRequired,
+  setModalXY: propTypes.func.isRequired,
+  relPosn: propTypes.number.isRequired,
+  setRelPosn: propTypes.func.isRequired,
+  relatedStyles: propTypes.array.isRequired,
+};
 
 export default RelatedItems;

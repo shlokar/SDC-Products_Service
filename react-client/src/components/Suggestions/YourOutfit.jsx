@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import StyledStarsList from '../Overview/Stars/StarsList.jsx'
-import Key from './config.js';
+import propTypes from 'prop-types';
 import axios from 'axios';
+
+// Components
+import StyledStarsList from '../Overview/Stars/StarsList.jsx'
 import ArrowBtn from './ArrowBtn.jsx';
+
+// Secret GitHub Key
+import Key from './config.js';
 
 const secretKey = Key;
 
 function YourOutfit({
   carouselStyle,
   cardStyle,
-  currentProductID,
   ulStyle,
   imgStyle,
-  ratings,
   favs,
   setFavs,
   currentProductData,
@@ -73,7 +76,7 @@ function YourOutfit({
 
   return (
     <div id="your-outfit">
-      <div>Your Outfit ({favs.length}) (viewing {favPosn + 1} through {favPosn + 1 + 2})</div>
+      <div>Your Outfit ({favs.length}) (viewing {favPosn + 1} through {Math.min(favPosn + 1 + 2, favs.length)})</div>
 
       <div id="carousel-container" style={carouselStyle}>
         <ArrowBtn dir="<" type="fav" favPosn={favPosn} setFavPosn={setFavPosn} favLength={favs.length}/>
@@ -131,5 +134,19 @@ function YourOutfit({
     </div>
   );
 }
+
+YourOutfit.propTypes = {
+  carouselStyle: propTypes.object.isRequired,
+  cardStyle: propTypes.object.isRequired,
+  ulStyle: propTypes.object.isRequired,
+  imgStyle: propTypes.object.isRequired,
+  favs: propTypes.array.isRequired,
+  setFavs: propTypes.func.isRequired,
+  currentProductData: propTypes.object.isRequired,
+  btnStyle: propTypes.object.isRequired,
+  favPosn: propTypes.number.isRequired,
+  setFavPosn: propTypes.func.isRequired,
+  getStylesDataFromAPI: propTypes.func.isRequired,
+};
 
 export default YourOutfit;

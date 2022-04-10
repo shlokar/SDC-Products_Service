@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import propTypes from 'prop-types';
 import axios from 'axios';
-import Key from './config.js';
+
+// Components
 import RelatedItems from './RelatedItems.jsx';
 import YourOutfit from './YourOutfit.jsx';
 import Compare from './Compare.jsx';
 
+// Secret Key
+import Key from './config.js';
+
 // To-do: put the following in a .env or something
 const secretKey = Key;
 
-function Suggestions({currentProduct}) {
+function Suggestions({ currentProduct }) {
   // Pass in props.currentProduct to use. Otherwise, will display random product
   // Elbert to remember to remove dummy data before pushing to master
   const testIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
@@ -52,8 +57,9 @@ function Suggestions({currentProduct}) {
   }
 
   function getRelatedItemsDataFromAPI() {
-    // This function populates the relatedProductIDs, relatedProducts, and ratings state variables
-    // with data
+    // This function populates the (1) relatedProductIDs, (2) relatedProducts, and
+    // (3) ratings state variables with data
+
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}/related`, {
       headers: {
         authorization: secretKey,
@@ -61,6 +67,8 @@ function Suggestions({currentProduct}) {
     })
       .then((res) => {
         const arrayOfRelatedProductIDs = res.data;
+
+        // The following code saves the related items for the current product id
         let relatedCache;
         if (localStorage.getItem('relatedcache') === null) {
           relatedCache = [];
@@ -74,6 +82,7 @@ function Suggestions({currentProduct}) {
         console.log('Testing Related Cache');
         console.log(relatedCache);
 
+        // (1)
         setRelatedProductIDs(arrayOfRelatedProductIDs);
         // Get product information for the product IDs that are related to the current product
         Promise.all(arrayOfRelatedProductIDs.concat([currentProductID]).map((e) => axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${e}`, {
@@ -82,8 +91,7 @@ function Suggestions({currentProduct}) {
           },
         })))
           .then((results) => {
-            console.log('The RelatedProducts data to set: ')
-            console.log(results.map((e) => e.data));
+            // (2) Set Related Products
             setRelatedProducts(results.map((e) => e.data));
           });
         // Get reviews for each Related Product
@@ -109,13 +117,12 @@ function Suggestions({currentProduct}) {
           });
           console.log('testing ratingsLookup');
           console.log(ratingsLookup);
+          // (3) Set Ratings state variable (which contains star rating information)
           setRatings(ratingsLookup);
         });
         // Get styles for each Related Product
         Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
           .then((results) => {
-            console.log('Styles: ');
-            console.log(results);
             setRelatedStyles(results);
           });
       });
@@ -129,8 +136,7 @@ function Suggestions({currentProduct}) {
         },
       })
         .then((results) => {
-          // .results[0].photos[0].thumbnail_url
-          resolve(results.data);
+          resolve(results.data); // returns a Promise with the styles data for the given product id#
         })
         .catch((err) => console.log(err));
     });
@@ -239,5 +245,9 @@ function Suggestions({currentProduct}) {
     </div>
   );
 }
+
+Suggestions.propTypes = {
+  currentProduct: propTypes.number.isRequired,
+};
 
 export default Suggestions;
