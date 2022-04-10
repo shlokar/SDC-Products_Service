@@ -1,5 +1,4 @@
 import React, { createContext, useState, useMemo, useEffect } from 'react';
-import propTypes from 'prop-types';
 import uniqid from 'uniqid';
 
 // Assets
@@ -56,7 +55,6 @@ function GalleryProvider({ children, newData }) {
   }), [currImg, expandedViewVisible]);
 
   useEffect(() => {
-    console.log(expandedViewVisible);
   }, [expandedViewVisible]);
 
   return (
@@ -67,8 +65,5 @@ function GalleryProvider({ children, newData }) {
     </GalleryContext.Provider>
   );
 }
-
-GalleryProvider.propTypes = {
-};
 
 export { GalleryProvider, GalleryContext };
