@@ -21,7 +21,7 @@ function GalleryProvider({ children, newData }) {
   const [imgsArr] = useState(updateImgsArr(newData.data));
   const [currImg, setCurrImg] = useState(imgsArr[0]);
   const [expandedViewVisible, setExpandedViewVisible] = useState(false);
-  const [expandedImgWidth] = useState(newData.expandedImgWidth);
+  const [expandedImgWidth, setExpandedImgWidth] = useState(newData.expandedImgWidth);
 
   const goToPrevImg = () => {
     if (currImg.index > 0) {
@@ -52,10 +52,13 @@ function GalleryProvider({ children, newData }) {
     firstImgIsSelected,
     lastImgIsSelected,
     expandedImgWidth,
-  }), [currImg, expandedViewVisible]);
+  }), [currImg, expandedViewVisible, expandedImgWidth]);
 
   useEffect(() => {
-  }, [expandedViewVisible]);
+    if (window.innerWidth <= 1400) {
+      setExpandedImgWidth(window.innerWidth);
+    }
+  }, [window.innerWidth]);
 
   return (
     <GalleryContext.Provider
