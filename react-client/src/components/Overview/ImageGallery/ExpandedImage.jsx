@@ -6,7 +6,7 @@ const StyledInput = styled.input`
   position: absolute;
   box-sizing: border-box;
   object-fit: cover;
-  width: 80%;
+  width: 70%;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   cursor: zoom-out;
 `;
@@ -32,9 +32,11 @@ const StyledExpandedImage = styled(ExpandedImage)`
   z-index: 999;
   visibility: hidden;
   opacity: 0;
-  ${({ visible }) => visible && `
+  width: 100%;
+  ${({ visible, width }) => visible && `
   visibility: visible;
   opacity: 1;
+  width: ${width}px;
   `}
   position: absolute;
   top: 0;
@@ -43,12 +45,10 @@ const StyledExpandedImage = styled(ExpandedImage)`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
   transition: all .4s;
   cursor: zoom-out;
-  backdrop-filter: blur(10px);
+  background-color: var(--clr-soft-peach);
 `;
 
 export default StyledExpandedImage;
