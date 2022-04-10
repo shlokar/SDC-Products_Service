@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
 const StyledInput = styled.input`
-  box-sizing: border-box;
-  object-fit: cover;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  cursor: zoom-in;
   width: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
 `;
 
 const StyledContainer = styled.div`
+  display: flex;
   position: absolute;
   width: 60%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   overflow: hidden;
 `;
 
