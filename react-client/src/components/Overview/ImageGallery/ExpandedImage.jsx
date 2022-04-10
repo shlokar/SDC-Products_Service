@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import propTypes from 'prop-types';
 
 const StyledInput = styled.input`
-  position: absolute;
   box-sizing: border-box;
   object-fit: cover;
-  width: 60%;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
   cursor: zoom-in;
+  width: 100%;
+`;
+
+const StyledContainer = styled.div`
+  position: absolute;
+  width: 60%;
+  overflow: hidden;
 `;
 
 function ExpandedImage({
@@ -16,7 +21,9 @@ function ExpandedImage({
 }) {
   return (
     <div className={className}>
-      <StyledInput type="image" src={src} alt={alt} onClick={() => clickHandler()} />
+      <StyledContainer>
+        <StyledInput type="image" src={src} alt={alt} onClick={() => clickHandler()} />
+      </StyledContainer>
     </div>
   );
 }
