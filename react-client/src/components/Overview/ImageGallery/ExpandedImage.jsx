@@ -6,17 +6,17 @@ const StyledInput = styled.input`
   position: absolute;
   box-sizing: border-box;
   object-fit: cover;
-  width: 70%;
+  width: 60%;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  cursor: zoom-out;
+  cursor: zoom-in;
 `;
 
 function ExpandedImage({
   className, src, alt, clickHandler,
 }) {
   return (
-    <div tabIndex="0" role="button" className={className} onClick={() => clickHandler()} onKeyDown={() => clickHandler()}>
-      <StyledInput id="expanded-img" type="image" src={src} alt={alt} />
+    <div className={className}>
+      <StyledInput type="image" src={src} alt={alt} onClick={() => clickHandler()} />
     </div>
   );
 }
@@ -29,26 +29,13 @@ ExpandedImage.propTypes = {
 };
 
 const StyledExpandedImage = styled(ExpandedImage)`
-  z-index: 999;
-  visibility: hidden;
-  opacity: 0;
   width: 100%;
-  ${({ visible, width }) => visible && `
-  visibility: visible;
-  opacity: 1;
-  width: ${width}px;
-  `}
   position: absolute;
-  top: 0;
-  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   height: 100%;
-  transition: all .4s;
-  cursor: zoom-out;
-  background-color: var(--clr-soft-peach);
 `;
 
 export default StyledExpandedImage;
