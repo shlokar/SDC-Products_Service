@@ -7,11 +7,11 @@ import uniqid from 'uniqid';
 import useTracker from './ThumbnailContent/useTracker';
 
 // Components
-import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer.jsx';
-import StyledMainImage from './MainImage.jsx';
-import StyledExpandedImage from './ExpandedImage.jsx';
-import StyledAnimateImg from './AnimateImg.jsx';
-import { StyledLeftArrow, StyledRightArrow } from './Arrows.jsx';
+import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer';
+import StyledMainImage from './MainImage';
+import StyledExpandedImage from './ExpandedImage';
+import StyledAnimateImg from './AnimateImg';
+import { StyledLeftArrow, StyledRightArrow } from './Arrows';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const updateImgsArr = (arr) => {
   return useTracker(arrCopy).arr;
 };
 
-function ImageGallery({ className, data }) {
+function ImageGallery({ className, data, expandedImgWidth }) {
   const [imgsArr] = useState(updateImgsArr(data));
   const [currImg, setCurrImg] = useState(imgsArr[0]);
   const [expandedViewVisible, setExpandedViewVisible] = useState(false);
@@ -69,7 +69,13 @@ function ImageGallery({ className, data }) {
 
   return (
     <div className={className}>
-      <StyledExpandedImage src={currImg.url} alt="#" clickHandler={() => setExpandedViewVisible(false)} visible={expandedViewVisible} />
+      <StyledExpandedImage
+        src={currImg.url}
+        alt="#"
+        clickHandler={() => setExpandedViewVisible(false)}
+        visible={expandedViewVisible}
+        width={expandedImgWidth}
+      />
       <StyledContainer>
         <LeftDiv>
           <StyledThumbnailsContainer
@@ -118,6 +124,7 @@ ImageGallery.propTypes = {
     thumbnail_url: propTypes.string.isRequired,
     url: propTypes.string.isRequired,
   })).isRequired,
+  expandedImgWidth: propTypes.number.isRequired,
 };
 
 export default StyledImageGallery;
