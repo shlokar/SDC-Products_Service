@@ -9,7 +9,7 @@ import useTracker from './ThumbnailContent/useTracker';
 // Components
 import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer';
 import StyledMainImage from './MainImage';
-import StyledExpandedImage from './ExpandedImage';
+import StyledExpandedView from './ExpandedView';
 import StyledAnimateImg from './AnimateImg';
 import { StyledLeftArrow, StyledRightArrow } from './Arrows';
 
@@ -75,14 +75,19 @@ function ImageGallery({ className, data, expandedImgWidth }) {
     }
   };
 
+  const firstImgIsSelected = () => currImg.index === 0;
+
+  const lastImgIsSelected = () => currImg.index === imgsArr.length - 1;
+
   return (
     <div className={className}>
-      <StyledExpandedImage
-        src={currImg.url}
-        alt="#"
+      <StyledExpandedView
+        img={currImg}
         clickHandler={() => setExpandedViewVisible(false)}
-        visible={expandedViewVisible}
-        width={expandedImgWidth}
+        isVisible={expandedViewVisible}
+        viewWidth={expandedImgWidth}
+        goToNextImg={() => goToNextImg()}
+        goToPrevImg={() => goToPrevImg()}
       />
       <StyledContainer>
         <LeftDiv>
@@ -94,7 +99,10 @@ function ImageGallery({ className, data, expandedImgWidth }) {
         </LeftDiv>
         <RightDiv>
           <StyledArrowPadding left>
-            <StyledLeftArrow isVisible={currImg.index !== 0} clickHandler={() => goToPrevImg()} />
+            <StyledLeftArrow
+              isVisible={!firstImgIsSelected()}
+              clickHandler={() => goToPrevImg()}
+            />
           </StyledArrowPadding>
           <ImgContainer>
             {imgsArr.map((image) => (
@@ -109,7 +117,7 @@ function ImageGallery({ className, data, expandedImgWidth }) {
           </ImgContainer>
           <StyledArrowPadding right>
             <StyledRightArrow
-              isVisible={currImg.index !== imgsArr.length - 1}
+              isVisible={!lastImgIsSelected()}
               clickHandler={() => goToNextImg()}
             />
           </StyledArrowPadding>
