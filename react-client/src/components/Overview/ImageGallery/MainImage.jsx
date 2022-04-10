@@ -29,7 +29,7 @@ MainImage.propTypes = {
 };
 
 const StyledMainImage = styled(MainImage)`
-  position: absolute;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
