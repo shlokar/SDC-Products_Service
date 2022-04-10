@@ -9,6 +9,7 @@ import { GalleryContext } from './ImageGalleryContext';
 import StyledExpandedImage from './ExpandedImage';
 import { StyledLeftArrow, StyledRightArrow } from './Arrows';
 import StyledAnimateImg from './AnimateImg';
+import StyledIconList from './IconList';
 
 const ArrowContainer = styled.div`
   position: absolute;
@@ -23,10 +24,17 @@ const RightArrowContainer = styled(ArrowContainer)`
   right: 0;
 `;
 
+const IconListContainer = styled.div`
+  position: absolute;
+  bottom: 50px;
+  z-index: 999;
+`;
+
 function ExpandedView({ className }) {
   const {
     imgsArr,
     currImg,
+    setCurrImg,
     goToNextImg,
     goToPrevImg,
     setExpandedViewVisible,
@@ -51,6 +59,13 @@ function ExpandedView({ className }) {
       <RightArrowContainer>
         <StyledRightArrow isVisible={!lastImgIsSelected()} clickHandler={() => goToNextImg()} />
       </RightArrowContainer>
+      <IconListContainer>
+        <StyledIconList
+          imgs={imgsArr}
+          selectedImg={currImg}
+          setSelectedImg={(img) => setCurrImg(img)}
+        />
+      </IconListContainer>
     </div>
   );
 }
