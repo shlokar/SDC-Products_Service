@@ -21,6 +21,7 @@ const StyledContainer = styled.div`
 `;
 
 const LeftDiv = styled.div`
+  z-index: 2;
 `;
 
 const RightDiv = styled.div`
@@ -30,6 +31,13 @@ const RightDiv = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
+`;
+
+const ImgContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 `;
 
 const StyledArrowPadding = styled.div`
@@ -88,21 +96,23 @@ function ImageGallery({ className, data, expandedImgWidth }) {
           <StyledArrowPadding left>
             <StyledLeftArrow isVisible={currImg.index !== 0} clickHandler={() => goToPrevImg()} />
           </StyledArrowPadding>
+          <ImgContainer>
+            {imgsArr.map((image) => (
+              <StyledAnimateImg key={image.id} selected={currImg.id === image.id}>
+                <StyledMainImage
+                  src={image.url}
+                  alt="#"
+                  clickHandler={() => setExpandedViewVisible(true)}
+                />
+              </StyledAnimateImg>
+            ))}
+          </ImgContainer>
           <StyledArrowPadding right>
             <StyledRightArrow
               isVisible={currImg.index !== imgsArr.length - 1}
               clickHandler={() => goToNextImg()}
             />
           </StyledArrowPadding>
-          {imgsArr.map((image) => (
-            <StyledAnimateImg key={image.id} selected={currImg.id === image.id}>
-              <StyledMainImage
-                src={image.url}
-                alt="#"
-                clickHandler={() => setExpandedViewVisible(true)}
-              />
-            </StyledAnimateImg>
-          ))}
         </RightDiv>
       </StyledContainer>
     </div>
@@ -114,7 +124,7 @@ const StyledImageGallery = styled(ImageGallery)`
   box-sizing: border-box;
   height: 800px;
   width: 900px;
-  background-color: #EDEFF0;
+  background-color: var(--clr-soft-peach);
   padding: 20px;
 `;
 
