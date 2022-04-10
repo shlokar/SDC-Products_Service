@@ -4,7 +4,7 @@ import uniqid from 'uniqid';
 import styled from 'styled-components';
 
 // Components
-import StyledStar from './Star.jsx';
+import Star from './Star.jsx';
 
 const createRatingsArr = (rating) => {
   const ratingsArr = [];
@@ -26,27 +26,18 @@ const createRatingsArr = (rating) => {
   return ratingsArr;
 };
 
-/**
- * Properties
- *
- * rating:
- *   - (integer) - A integer between 0 and 5, this number will determine
- *   the amount of fill the star will have. Decimal values are acceptable.
- *
- */
-
 function StarsList({ className, rating }) {
   const ratingsArr = createRatingsArr(rating);
   return (
     <ul className={className}>
-      {ratingsArr.map((score) => <StyledStar key={uniqid()} id={uniqid()} fillPercent={score} />)}
+      {ratingsArr.map((score) => <Star key={uniqid()} fillPercent={score} />)}
     </ul>
   );
 }
 
 StarsList.propTypes = {
   className: propTypes.string.isRequired,
-  rating: propTypes.number.isRequired,
+  rating: propTypes.number.isRequired, // integer between 0 and 5.
 };
 
 const StyledStarsList = styled(StarsList)`
