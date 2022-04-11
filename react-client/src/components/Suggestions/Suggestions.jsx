@@ -8,14 +8,11 @@ import YourOutfit from './YourOutfit.jsx';
 import Compare from './Compare.jsx';
 
 // Secret Key
-import Key from './config.js';
-
-// To-do: put the following in a .env or something
-const secretKey = Key;
+import secretKey from './config.js';
 
 function Suggestions({ currentProduct }) {
-  // Pass in props.currentProduct to use. Otherwise, will display random product
-  // Elbert to remember to remove dummy data before pushing to master
+  // Pass in props.currentProduct to use. Otherwise, will display random
+  // product from tmestIDs
   const testIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
   const [currentProductID, setCurrentProductID] = useState(currentProduct
     || testIDs[Math.floor(Math.random() * testIDs.length)]);
@@ -30,7 +27,6 @@ function Suggestions({ currentProduct }) {
   const [modalXY, setModalXY] = useState([200, 200]);
   const [relPosn, setRelPosn] = useState(0);
   const [favPosn, setFavPosn] = useState(0);
-  console.log(JSON.parse(localStorage.getItem('Your Outfit')));
 
   function getCurrentProductDataFromAPI() {
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}`, {
@@ -39,27 +35,26 @@ function Suggestions({ currentProduct }) {
       },
     })
       .then((res) => {
-        console.log(res.data);
         setCurrentProductData(res.data);
-        let productDataCache;
-        if (localStorage.getItem('productdatacache') === null) {
-          productDataCache = [];
-        } else {
-          productDataCache = JSON.parse(localStorage.getItem('productdatacache'));
-        }
-        if (productDataCache.filter(e => Object.keys(e)[0] == currentProductID).length === 0) {
-          productDataCache.push({ [currentProductID]: res.data });
-          localStorage.setItem('productdatacache', JSON.stringify(productDataCache));
-        }
-        console.log('Testing Product Data Cache');
-        console.log(productDataCache);
       });
   }
 
-  function getRelatedItemsDataFromAPI() {
-    // This function populates the (1) relatedProductIDs, (2) relatedProducts, and
-    // (3) ratings state variables with data
+  function getStylesDataFromAPI(productIdParam) {
+    return new Promise((resolve) => {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
+        headers: {
+          authorization: secretKey,
+        },
+      })
+        .then((results) => {
+          resolve(results.data); // returns a Promise with the styles data for the given product id#
+        });
+    });
+  }
 
+  function getRelatedItemsDataFromAPI() {
+    // This function populates the data for (1) relatedProductIDs, (2) related products,
+    // (3) ratings state variables, and (4) related product styles
     axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}/related`, {
       headers: {
         authorization: secretKey,
@@ -69,18 +64,18 @@ function Suggestions({ currentProduct }) {
         const arrayOfRelatedProductIDs = res.data;
 
         // The following code saves the related items for the current product id
-        let relatedCache;
-        if (localStorage.getItem('relatedcache') === null) {
-          relatedCache = [];
-        } else {
-          relatedCache = JSON.parse(localStorage.getItem('relatedcache'));
-        }
-        if (relatedCache.filter(e => Object.keys(e)[0] == currentProductID).length === 0) {
-          relatedCache.push({ [currentProductID]: res.data });
-          localStorage.setItem('relatedcache', JSON.stringify(relatedCache));
-        }
-        console.log('Testing Related Cache');
-        console.log(relatedCache);
+        // let relatedCache;
+        // if (localStorage.getItem('relatedcache') === null) {
+        //   relatedCache = [];
+        // } else {
+        //   relatedCache = JSON.parse(localStorage.getItem('relatedcache'));
+        // }
+        // if (relatedCache.filter(e => Object.keys(e)[0] == currentProductID).length === 0) {
+        //   relatedCache.push({ [currentProductID]: res.data });
+        //   localStorage.setItem('relatedcache', JSON.stringify(relatedCache));
+        // }
+        // console.log('Testing Related Cache');
+        // console.log(relatedCache);
 
         // (1)
         setRelatedProductIDs(arrayOfRelatedProductIDs);
@@ -115,31 +110,17 @@ function Suggestions({ currentProduct }) {
               results: e.results,
             };
           });
-          console.log('testing ratingsLookup');
-          console.log(ratingsLookup);
           // (3) Set Ratings state variable (which contains star rating information)
           setRatings(ratingsLookup);
         });
         // Get styles for each Related Product
         Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
           .then((results) => {
+            // (4) Set RelatedStyles variable (which contains an array of styles information
+            // for each related product of current product)
             setRelatedStyles(results);
           });
       });
-  }
-
-  function getStylesDataFromAPI(productIdParam) {
-    return new Promise((resolve, reject) => {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
-        headers: {
-          authorization: secretKey,
-        },
-      })
-        .then((results) => {
-          resolve(results.data); // returns a Promise with the styles data for the given product id#
-        })
-        .catch((err) => console.log(err));
-    });
   }
 
   useEffect(() => {
@@ -154,12 +135,12 @@ function Suggestions({ currentProduct }) {
     top: '0px',
     width: '175px',
     height: '360px',
-    border: '1px lightgray solid',
-    borderRadius: '7px',
     margin: '5px',
+    border: '2px lightgray solid',
     verticalAlign: 'text-top',
     alignItems: 'center',
     textAlign: 'center',
+    cursor: 'pointer',
   };
 
   const carouselStyle = {
@@ -169,12 +150,10 @@ function Suggestions({ currentProduct }) {
     whiteSpace: 'nowrap',
     margin: '5px',
 
-    padding: '5px',
   };
 
   const imgStyle = {
     width: '175px',
-    borderRadius: '7px',
   };
 
   const ulStyle = {
@@ -183,8 +162,9 @@ function Suggestions({ currentProduct }) {
 
   const btnStyle = {
     position: 'absolute',
-    top: '0',
-    right: '0px',
+    top: '5px',
+    right: '5px',
+    cursor: 'pointer',
   };
 
   return (
@@ -229,19 +209,6 @@ function Suggestions({ currentProduct }) {
         currentProductData={currentProductData}
         modalXY={modalXY}
       />
-
-      {/* Testing Dashboard. Elbert to remember not to push to master. */}
-      <div id="testing">
-        Suggestions.jsx Testing Dashboard:<br></br>
-        <button onClick={() => {console.log(relatedProductIDs)}}>relatedProductIDs</button><br></br>
-        <button onClick={() => {console.log(relatedProducts)}}>relatedProducts</button><br></br>
-        <button onClick={() => {console.log(ratings)}}>ratingsAndReviews</button><br></br>
-        <button onClick={() => localStorage.removeItem('Your Outfit')}>clear Local Storage</button> <br />
-        Current Product ID: {currentProductID}<br />
-        Current Product Name: {currentProductData ? currentProductData.name : 'loading'} <br />
-        Current Product Data: {JSON.stringify(currentProductData)}<br />
-        Current Product Data: {JSON.stringify(relatedProducts[0])}<br />
-      </div>
     </div>
   );
 }

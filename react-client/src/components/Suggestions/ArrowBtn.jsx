@@ -1,6 +1,9 @@
 import React from 'react';
 import propTypes from 'prop-types';
 
+// Components
+import { StyledLeftArrow, StyledRightArrow } from '../Overview/ImageGallery/Arrows.jsx';
+
 function ArrowBtn({ type, dir, relPosn, setRelPosn, favPosn, setFavPosn, relLength, favLength}) {
   const arrowBtnStyle = {
     display: 'inline-block',
@@ -8,8 +11,6 @@ function ArrowBtn({ type, dir, relPosn, setRelPosn, favPosn, setFavPosn, relLeng
     top: '0px',
     width: '2em',
     height: '360px',
-    border: '1px lightgray solid',
-    borderRadius: '7px',
     margin: '5px',
     verticalAlign: 'text-top',
     alignItems: 'center',
@@ -20,7 +21,7 @@ function ArrowBtn({ type, dir, relPosn, setRelPosn, favPosn, setFavPosn, relLeng
     display: 'inline-block',
     position: 'absolute',
     top: '50%',
-    left: '15%',
+    left: '20%',
   };
 
   return (
@@ -38,7 +39,7 @@ function ArrowBtn({ type, dir, relPosn, setRelPosn, favPosn, setFavPosn, relLeng
       <div style={arrowStyle}>
         {(((type === 'rel' && relPosn === 0) || (type === 'fav' && favPosn === 0)) && dir === '<')
         || (((type === 'rel' && relPosn >= relLength - 4 - 1) || (type === 'fav' && favPosn >= favLength - 3)) && dir === '>')
-          ? '' : dir === '<' ? <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z"/></svg>}
+          ? '' : dir === '<' ? <StyledLeftArrow className="Carousel Left" clickHandler={()=>{}} isVisible={dir === '<'}/> : <StyledRightArrow className="Carousel Right" clickHandler={()=>{}} isVisible={dir === '>'} />}
         </div>
     </div>
   );

@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import axios from 'axios';
 
+// Assets
+import plusSignSrc from '../Overview/AddToCart/plus-sign-icon.svg';
+import deleteIcon from './iconmonstr-x-mark-4.svg';
+
 // Components
 import StyledStarsList from '../Overview/Stars/StarsList.jsx'
 import ArrowBtn from './ArrowBtn.jsx';
 
 // Secret GitHub Key
-import Key from './config.js';
-
-const secretKey = Key;
+import secretKey from './config.js';
 
 function YourOutfit({
   carouselStyle,
@@ -39,7 +41,6 @@ function YourOutfit({
       }))).then((results) => {
         const ratingsLookup = {};
         const resultsRestructured = results.map((e) => e.data);
-        console.log(resultsRestructured);
         resultsRestructured.forEach((e) => {
           ratingsLookup[e.product] = {
             reviewsCount: e.results.length,
@@ -48,7 +49,6 @@ function YourOutfit({
             results: e.results,
           };
         });
-        // console.log(ratingsLookup);
         setFavsRatings(ratingsLookup);
       });
     }
@@ -70,8 +70,9 @@ function YourOutfit({
 
   const plusStyle = {
     position: 'absolute',
-    top: '50%',
-    left: '10%',
+    top: '45%',
+    left: '15%',
+    cursor: 'pointer',
   };
 
   return (
@@ -87,22 +88,21 @@ function YourOutfit({
             if (tempArray.filter((e) => e.id == currentProductData.id).length > 0) {
               console.log('duplicate found!');
             } else {
-              console.log(tempArray);
-              console.log(currentProductData);
               tempArray.push(currentProductData);
             }
             getRatingsLookup(tempArray);
             setFavs(tempArray);
             localStorage.setItem('Your Outfit', JSON.stringify(tempArray));
           }}>
-          <div style={plusStyle}> + Add to Your Outfit</div>
+          <div style={plusStyle}>
+            <img src={plusSignSrc} /><br /> Add to Your Outfit
+          </div>
         </div>
         {favs.length > 0 ?
         favs.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
           <div style={cardStyle}>
             <div style={btnStyle} onClick={()=>{const favsCopy = [...favs]; favsCopy.splice(i + favPosn,1); localStorage.setItem('Your Outfit', JSON.stringify(favsCopy));setFavs(favsCopy);}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.597 17.954l-4.591-4.55-4.555 4.596-1.405-1.405 4.547-4.592-4.593-4.552 1.405-1.405 4.588 4.543 4.545-4.589 1.416 1.403-4.546 4.587 4.592 4.548-1.403 1.416z"/>
-              </svg>
+              <img src={deleteIcon} />
             </div>
             <ul style={ulStyle}>
               <li>
@@ -118,7 +118,6 @@ function YourOutfit({
                 {favsRatings[e.id]
                   ? <StyledStarsList rating={favsRatings[e.id].averageScore} />
                   : 'loading'}
-                stars
               </li>
               <li>
                 {favsRatings[e.id]

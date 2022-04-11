@@ -19,14 +19,15 @@ function Compare({
 
   const compareModal = {
     padding: '10px',
-    border: '1px gray solid',
+    border: '2px gray solid',
     backgroundColor: 'white',
-    borderRadius: '7px',
+
     position: 'absolute',
     top: `${modalXY[1]}px`,
     left: `${modalXY[0]}px`,
     alignItems: 'center',
     textAlign: 'center',
+    zIndex: '150',
   };
 
   function createDataTable(featuresArrayA, featuresArrayB) {
@@ -61,7 +62,7 @@ function Compare({
           <thead>
             <tr style={trStyle}>
               <th>{currentProductData ? currentProductData.name : 'Current Product'}</th>
-              <th />
+              <th> </th>
               <th>{comparedProduct ? comparedProduct.name : 'Compared Product'}</th>
             </tr>
           </thead>
