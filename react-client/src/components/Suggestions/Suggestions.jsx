@@ -10,58 +10,98 @@ import Compare from './Compare.jsx';
 // Secret Key
 import secretKey from './config.js';
 
+// Helper Functions (3):
+// These helper functions take a product id (Number) and return a promise with data from the API
+// endpoint in question (product, reviews, or styles).
+
+// (1)
+function getProductDataFromAPI(productIdParam) {
+  return new Promise((resolve) => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}`, {
+      headers: {
+        authorization: secretKey,
+      },
+    })
+      .then((results) => {
+        resolve(results.data);
+      });
+  });
+}
+
+// (2)
+function getReviewsDataFromAPI(productIdParam) {
+  return new Promise((resolve) => {
+    axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
+      headers: {
+        authorization: secretKey,
+      },
+      params: {
+        product_id: productIdParam,
+      },
+    }).then((results) => {
+      const ratingsLookup = {
+        id: Number(results.data.product),
+        reviewsCount: results.data.results.length,
+        averageScore: results.data.results.map((element) => element.rating)
+          .reduce((a, b) => a + b) / results.data.results.length,
+        results: results.data.results,
+      };
+      resolve(ratingsLookup);
+    });
+  });
+}
+
+// (3)
+function getStylesDataFromAPI(productIdParam) {
+  return new Promise((resolve) => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
+      headers: {
+        authorization: secretKey,
+      },
+    })
+      .then((results) => {
+        resolve(results.data); // returns a Promise with the styles data for the given product id#
+      });
+  });
+}
+
+// (4)
+function getRelatedItemsArrayFromAPI(productIdParam) {
+  return new Promise((resolve) => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/related`, {
+      headers: {
+        authorization: secretKey,
+      },
+    })
+      .then((results) => {
+        resolve(results.data);
+      });
+  });
+}
+
 function Suggestions({ currentProduct }) {
-  // Pass in props.currentProduct to use. Otherwise, will display random
-  // product from tmestIDs
-  const testIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
+  const dummyIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
+  // Display a random product from dummyIDs if no product id is passed in
   const [currentProductID, setCurrentProductID] = useState(currentProduct
-    || testIDs[Math.floor(Math.random() * testIDs.length)]);
-  const [relatedProductIDs, setRelatedProductIDs] = useState([]);
+    || dummyIDs[Math.floor(Math.random() * dummyIDs.length)]);
   const [currentProductData, setCurrentProductData] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const [relatedStyles, setRelatedStyles] = useState([]);
-  const [comparedProduct, setComparedProduct] = useState(null);
-  const [ratings, setRatings] = useState(null);
-  const [favs, setFavs] = useState(localStorage.getItem('Your Outfit') !== null ? JSON.parse(localStorage.getItem('Your Outfit')) : []);
+  const [comparedProductData, setComparedProductData] = useState(null);
+  const [relatedProductData, setRelatedProductData] = useState([]);
+  const [relatedStylesData, setRelatedStylesData] = useState([]);
+  const [relatedReviewsData, setRelatedReviewsData] = useState(null);
+  const [favoriteProductData, setFavoriteProductData] = useState(localStorage.getItem('Your Outfit') !== null ? JSON.parse(localStorage.getItem('Your Outfit')) : []);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [modalXY, setModalXY] = useState([200, 200]);
   const [relPosn, setRelPosn] = useState(0);
   const [favPosn, setFavPosn] = useState(0);
 
-  function getCurrentProductDataFromAPI() {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}`, {
-      headers: {
-        authorization: secretKey,
-      },
-    })
-      .then((res) => {
-        setCurrentProductData(res.data);
-      });
-  }
-
-  function getStylesDataFromAPI(productIdParam) {
-    return new Promise((resolve) => {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
-        headers: {
-          authorization: secretKey,
-        },
-      })
-        .then((results) => {
-          resolve(results.data); // returns a Promise with the styles data for the given product id#
-        });
-    });
-  }
-
-  function getRelatedItemsDataFromAPI() {
-    // This function populates the data for (1) relatedProductIDs, (2) related products,
-    // (3) ratings state variables, and (4) related product styles
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${currentProductID}/related`, {
-      headers: {
-        authorization: secretKey,
-      },
-    })
-      .then((res) => {
-        const arrayOfRelatedProductIDs = res.data;
+  function fetchRelatedItemsDataFromAPI(productIdParam) {
+    // This function gets a list of product IDs related to the passed in product ID which should be
+    // the current product ID and populates the data for (1) related products product information,
+    // (2) related product reviews, and (3) related product styles
+    getRelatedItemsArrayFromAPI(productIdParam)
+      .then((results) => {
+        const arrayOfRelatedProductIDs = results;
 
         // The following code saves the related items for the current product id
         // let relatedCache;
@@ -77,135 +117,68 @@ function Suggestions({ currentProduct }) {
         // console.log('Testing Related Cache');
         // console.log(relatedCache);
 
-        // (1)
-        setRelatedProductIDs(arrayOfRelatedProductIDs);
         // Get product information for the product IDs that are related to the current product
-        Promise.all(arrayOfRelatedProductIDs.concat([currentProductID]).map((e) => axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${e}`, {
-          headers: {
-            authorization: secretKey,
-          },
-        })))
+        Promise.all(arrayOfRelatedProductIDs.map((e) => getProductDataFromAPI(e)))
           .then((results) => {
-            // (2) Set Related Products
-            setRelatedProducts(results.map((e) => e.data));
+            // (1) Set Related Products
+            setRelatedProductData(results);
           });
         // Get reviews for each Related Product
         // Run Promise.all to get all of the stars and #ratings info
         // Calculate the average of .results[i].rating for each related product
-        Promise.all(arrayOfRelatedProductIDs.concat([currentProductID]).map((e) => axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
-          headers: {
-            authorization: secretKey,
-          },
-          params: {
-            product_id: e,
-          },
-        }))).then((results) => {
-          const ratingsLookup = {};
-          const resultsRestructured = results.map((e) => e.data);
-          resultsRestructured.forEach((e) => {
-            ratingsLookup[e.product] = {
-              reviewsCount: e.results.length,
-              averageScore: e.results.map((element) => element.rating)
-                .reduce((a, b) => a + b) / e.results.length,
-              results: e.results,
-            };
+        Promise.all(arrayOfRelatedProductIDs.map((e) => getReviewsDataFromAPI(e)))
+          .then((results) => {
+            // (2) Set Ratings state variable (which contains star rating information)
+            setRelatedReviewsData(results);
           });
-          // (3) Set Ratings state variable (which contains star rating information)
-          setRatings(ratingsLookup);
-        });
         // Get styles for each Related Product
         Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
           .then((results) => {
-            // (4) Set RelatedStyles variable (which contains an array of styles information
+            // (3) Set RelatedStyles variable (which contains an array of styles information
             // for each related product of current product)
-            setRelatedStyles(results);
+            setRelatedStylesData(results);
           });
       });
   }
 
   useEffect(() => {
-    getCurrentProductDataFromAPI();
-    getRelatedItemsDataFromAPI();
+    // if currentProductID changes, make an HTTP request to get new data for currentProductData
+    getProductDataFromAPI(currentProductID)
+      .then((data) => setCurrentProductData(data));
+    // if currentProductID changes, make an HTTP request to get product data for related items
+    fetchRelatedItemsDataFromAPI(currentProductID);
   }, [currentProductID]);
-
-  // The following is some temporary styling. Replace later.
-  const cardStyle = {
-    display: 'inline-block',
-    position: 'relative',
-    top: '0px',
-    width: '175px',
-    height: '360px',
-    margin: '5px',
-    border: '2px lightgray solid',
-    verticalAlign: 'text-top',
-    alignItems: 'center',
-    textAlign: 'center',
-    cursor: 'pointer',
-  };
-
-  const carouselStyle = {
-    display: 'inline-block',
-    position: 'relative',
-    top: '0px',
-    whiteSpace: 'nowrap',
-    margin: '5px',
-
-  };
-
-  const imgStyle = {
-    width: '175px',
-  };
-
-  const ulStyle = {
-    listStyle: 'none',
-  };
-
-  const btnStyle = {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    cursor: 'pointer',
-  };
 
   return (
     <div>
       <RelatedItems
-        carouselStyle={carouselStyle}
-        relatedProducts={relatedProducts}
-        cardStyle={cardStyle}
-        ulStyle={ulStyle}
-        ratings={ratings}
-        imgStyle={imgStyle}
+        relatedProductData={relatedProductData}
+        relatedReviewsData={relatedReviewsData}
         currentProductData={currentProductData}
-        btnStyle={btnStyle}
         setModalIsVisible={setModalIsVisible}
         currentProductID={currentProductID}
         setCurrentProductID={setCurrentProductID}
-        setComparedProduct={setComparedProduct}
+        setComparedProductData={setComparedProductData}
         setModalXY={setModalXY}
         relPosn={relPosn}
         setRelPosn={setRelPosn}
-        relatedStyles={relatedStyles}
+        relatedStylesData={relatedStylesData}
       />
       <YourOutfit
-        carouselStyle={carouselStyle}
-        cardStyle={cardStyle}
         currentProductID={currentProductID}
-        ulStyle={ulStyle}
-        imgStyle={imgStyle}
-        ratings={ratings}
-        favs={favs}
-        setFavs={setFavs}
+        relatedReviewsData={relatedReviewsData}
+        favoriteProductData={favoriteProductData}
+        setFavoriteProductData={setFavoriteProductData}
         currentProductData={currentProductData}
-        btnStyle={btnStyle}
         favPosn={favPosn}
         setFavPosn={setFavPosn}
         getStylesDataFromAPI={getStylesDataFromAPI}
+        getReviewsDataFromAPI={getReviewsDataFromAPI}
       />
       <Compare
         modalIsVisible={modalIsVisible}
         setModalIsVisible={setModalIsVisible}
-        comparedProduct={comparedProduct}
+        comparedProductData={comparedProductData}
         currentProductData={currentProductData}
         modalXY={modalXY}
       />
