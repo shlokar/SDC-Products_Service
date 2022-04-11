@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
@@ -44,7 +44,18 @@ const StyledArrowPadding = styled.div`
   ${({ right }) => right && 'margin-right: 20px;'}
 `;
 
-function ImageGalleryContainer({ data, expandedImgWidth }) {
+const getDim = () => (window.innerWidth < 1400 ? window.innerWidth : 1400);
+
+function ImageGalleryContainer({ data }) {
+  const [expandedImgWidth, setExpandedImgWidth] = useState(getDim());
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      const dim = getDim();
+      setExpandedImgWidth(dim);
+    });
+  }, []);
+
   return (
     <GalleryProvider newData={{ data, expandedImgWidth }}>
       <StyledImageGallery />
@@ -57,7 +68,6 @@ ImageGalleryContainer.propTypes = {
     thumbnail_url: propTypes.string.isRequired,
     url: propTypes.string.isRequired,
   })).isRequired,
-  expandedImgWidth: propTypes.number.isRequired,
 };
 
 function ImageGallery({ className }) {
