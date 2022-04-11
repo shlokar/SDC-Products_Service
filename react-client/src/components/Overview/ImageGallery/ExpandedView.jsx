@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
@@ -28,6 +28,13 @@ const IconListContainer = styled.div`
   position: absolute;
   bottom: 50px;
   z-index: 999;
+  visibility: visible;
+  opacity: 1;
+  ${({ isVisible }) => !isVisible && `
+  opacity: 0;
+  visibility: hidden;
+  `}
+  transition: all 1s;
 `;
 
 function ExpandedView({ className }) {
@@ -41,15 +48,21 @@ function ExpandedView({ className }) {
     firstImgIsSelected,
     lastImgIsSelected,
   } = useContext(GalleryContext);
+  const [isScaled, setIsScaled] = useState(false);
 
   return (
     <div className={className}>
       <LeftArrowContainer>
-        <StyledLeftArrow isVisible={!firstImgIsSelected()} clickHandler={() => goToPrevImg()} />
+        <StyledLeftArrow
+          isVisible={!firstImgIsSelected() && !isScaled}
+          clickHandler={() => goToPrevImg()}
+        />
       </LeftArrowContainer>
       {imgsArr.map((img) => (
         <StyledAnimateImg key={img.id} selected={currImg.id === img.id}>
           <StyledExpandedImage
+            isScaled={isScaled}
+            setIsScaled={(bool) => setIsScaled(bool)}
             src={img.url}
             alt="#"
             clickHandler={() => setExpandedViewVisible(false)}
@@ -57,9 +70,12 @@ function ExpandedView({ className }) {
         </StyledAnimateImg>
       ))}
       <RightArrowContainer>
-        <StyledRightArrow isVisible={!lastImgIsSelected()} clickHandler={() => goToNextImg()} />
+        <StyledRightArrow
+          isVisible={!lastImgIsSelected() && !isScaled}
+          clickHandler={() => goToNextImg()}
+        />
       </RightArrowContainer>
-      <IconListContainer>
+      <IconListContainer isVisible={!isScaled}>
         <StyledIconList
           imgs={imgsArr}
           selectedImg={currImg}
