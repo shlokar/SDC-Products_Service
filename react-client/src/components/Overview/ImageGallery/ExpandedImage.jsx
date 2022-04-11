@@ -8,7 +8,7 @@ const StyledInput = styled.input`
   cursor: zoom-in;
   ${({ isScaled }) => isScaled && 'cursor: crosshair;'}
   ${({ isScaled }) => isScaled && 'transform: scale(3);'}
-  transform-origin: ${({ isScaled, x, y }) => isScaled && `${x}% ${y}%`};
+  // transform-origin: ${({ isScaled, x, y }) => isScaled && `${x}% ${y}%`};
   transition: 1s all;
 `;
 
@@ -23,9 +23,8 @@ const StyledContainer = styled.div`
 `;
 
 function ExpandedImage({
-  className, src, alt, clickHandler,
+  className, src, alt, clickHandler, isScaled, setIsScaled,
 }) {
-  const [isScaled, setIsScaled] = useState(false);
   const [xAxis, setXAxis] = useState(0);
   const [yAxis, setYAxis] = useState(0);
   const node = createRef();
@@ -51,6 +50,7 @@ function ExpandedImage({
         }}
       >
         <StyledInput
+          style={{ transformOrigin: `${xAxis}% ${yAxis}%` }}
           isScaled={isScaled}
           type="image"
           x={xAxis}
@@ -76,6 +76,8 @@ ExpandedImage.propTypes = {
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
   clickHandler: propTypes.func.isRequired,
+  isScaled: propTypes.bool.isRequired,
+  setIsScaled: propTypes.func.isRequired,
 };
 
 const StyledExpandedImage = styled(ExpandedImage)`
