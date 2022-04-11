@@ -30,12 +30,6 @@ const Background = styled.div`
 export default function Modal({ showModal, setShowModal, addQuestion, setAddedQuestion }) {
   return (
     <>
-        {/* {showModal ? (
-          <Background>
-            <ModalWrapper showModal={showModal}></ModalWrapper>
-            <h1>hi</h1>>
-          </Background>
-        ): null} */}
         {showModal ? <NewQuestion addQuestion={addQuestion} setAddedQuestion={setAddedQuestion}/> : null}
     </>
   )
