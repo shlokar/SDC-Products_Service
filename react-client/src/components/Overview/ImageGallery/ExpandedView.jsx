@@ -10,6 +10,7 @@ import StyledExpandedImage from './ExpandedImage';
 import { StyledLeftArrow, StyledRightArrow } from './Arrows';
 import StyledAnimateImg from './AnimateImg';
 import StyledIconList from './IconList';
+import StyledCloseBtn from './CloseBtn';
 
 const ArrowContainer = styled.div`
   position: absolute;
@@ -22,6 +23,20 @@ const LeftArrowContainer = styled(ArrowContainer)`
 
 const RightArrowContainer = styled(ArrowContainer)`
   right: 0;
+`;
+
+const CloseBtnContainer = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  z-index: 999;
+  visibility: visible;
+  opacity: 1;
+  ${({ isVisible }) => !isVisible && `
+  opacity: 0;
+  visibility: hidden;
+  `}
+  transition: all 1s;
 `;
 
 const IconListContainer = styled.div`
@@ -52,6 +67,9 @@ function ExpandedView({ className }) {
 
   return (
     <div className={className}>
+      <CloseBtnContainer isVisible={!isScaled}>
+        <StyledCloseBtn clickHandler={() => setExpandedViewVisible(false)} />
+      </CloseBtnContainer>
       <LeftArrowContainer>
         <StyledLeftArrow
           isVisible={!firstImgIsSelected() && !isScaled}
@@ -65,7 +83,7 @@ function ExpandedView({ className }) {
             setIsScaled={(bool) => setIsScaled(bool)}
             src={img.url}
             alt="#"
-            clickHandler={() => setExpandedViewVisible(false)}
+            clickHandler={() => setIsScaled(false)}
           />
         </StyledAnimateImg>
       ))}
