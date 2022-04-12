@@ -6,7 +6,7 @@ import uniqid from 'uniqid';
 // Components
 import StyledThumbnail from './Thumbnail';
 
-function ThumbnailContainer({ className, thumbnailsArr }) {
+function ThumbnailContainer({ className, thumbnailsArr, clickHandler }) {
   const [data] = useState(thumbnailsArr.slice());
   const [selected, setSelected] = useState(thumbnailsArr[0]);
 
@@ -19,7 +19,10 @@ function ThumbnailContainer({ className, thumbnailsArr }) {
             src={thumbnail.thumbnail_url}
             alt="#"
             selected={selected.style_id === thumbnail.style_id}
-            clickHandler={() => setSelected(thumbnail)}
+            clickHandler={() => {
+              setSelected(thumbnail);
+              clickHandler(thumbnail.style_id);
+            }}
           />
         </li>
       ))}
@@ -42,6 +45,7 @@ ThumbnailContainer.propTypes = {
     style_id: propTypes.number.isRequired,
     thumbnail_url: propTypes.string.isRequired,
   })).isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 export default StyledThumbnailContainer;
