@@ -3,19 +3,19 @@ import styled from 'styled-components';
 import propTypes from 'prop-types';
 
 // Components
-import Overview from './Overview/Overview.jsx';
-import QAndAs from './QuestionsAndAnswers/QAndAs.jsx';
-import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews.jsx';
-import Suggestions from './Suggestions/Suggestions.jsx';
-import StyledNav from './ExtraComponents/Header/Heading.jsx';
-import Banner from './ExtraComponents/Banner.jsx';
+import StyledOverview from './Overview/Overview';
+import QAndAs from './QuestionsAndAnswers/QAndAs';
+import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews';
+import Suggestions from './Suggestions/Suggestions';
+import StyledNav from './ExtraComponents/Header/Heading';
+import Banner from './ExtraComponents/Banner';
 
 function App({ className }) {
   return (
     <div className={className}>
       <StyledNav />
       <Banner />
-      <Overview />
+      <StyledOverview />
       <QAndAs />
       <RatingsAndReviews />
       <Suggestions />
