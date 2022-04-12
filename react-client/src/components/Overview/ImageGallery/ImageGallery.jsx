@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
+import uniqid from 'uniqid';
 
 // Assets
 import { GalleryProvider, GalleryContext } from './ImageGalleryContext';
+import useTracker from './ThumbnailContent/useTracker';
 
 // Components
 import StyledThumbnailsContainer from './ThumbnailContent/ThumbnailsContainer';
@@ -46,7 +48,19 @@ const StyledArrowPadding = styled.div`
 
 const getDim = () => (window.innerWidth < 1400 ? window.innerWidth : 1400);
 
+const updateImgsArr = (arr) => {
+  const arrCopy = arr.map((obj) => {
+    const newObj = { ...obj };
+    newObj.id = uniqid();
+    newObj.alt = '#';
+    return newObj;
+  });
+
+  return useTracker(arrCopy).arr;
+};
+
 function ImageGalleryContainer({ data }) {
+  const newData = updateImgsArr(data);
   const [expandedImgWidth, setExpandedImgWidth] = useState(getDim());
 
   useEffect(() => {
@@ -57,7 +71,7 @@ function ImageGalleryContainer({ data }) {
   }, []);
 
   return (
-    <GalleryProvider newData={{ data, expandedImgWidth }}>
+    <GalleryProvider newData={{ newData, expandedImgWidth }}>
       <StyledImageGallery />
     </GalleryProvider>
   );
