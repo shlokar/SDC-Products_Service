@@ -62,21 +62,11 @@ const StyledThumbnailImg = styled(ThumbnailImg)`
 
 ThumbnailImg.propTypes = {
   className: propTypes.string.isRequired,
-  id: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
   clickHandler: propTypes.func.isRequired,
 };
-
-/**
- * PROPERTIES
- *
- * id: (string) - a unique identifier
- * src: (string) - image source
- * alt: (string) - text that describes the image
- * selected: (bool) - true or false depending on if the image is supposed to be selected.
- * clickHandler: (func) - what you want to occur when the thumbnail is clicked.
- */
 
 function Thumbnail({
   className, id, src, alt, selected, clickHandler,
@@ -98,7 +88,7 @@ const StyledThumbnail = styled(Thumbnail)`
 
 Thumbnail.propTypes = {
   className: propTypes.string.isRequired,
-  id: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
   selected: propTypes.bool.isRequired,
