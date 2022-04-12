@@ -3,16 +3,16 @@ import propTypes from 'prop-types';
 import axios from 'axios';
 
 // Components
-import RelatedItems from './RelatedItems.jsx';
-import YourOutfit from './YourOutfit.jsx';
-import Compare from './Compare.jsx';
+import RelatedItems from './RelatedItems';
+import YourOutfit from './YourOutfit';
+import Compare from './Compare';
 
 // Secret Key
-import secretKey from './config.js';
+import secretKey from './config';
 
-// Helper Functions (3):
+// Helper Functions (4):
 // These helper functions take a product id (Number) and return a promise with data from the API
-// endpoint in question (product, reviews, or styles).
+// endpoint in question ((1) product; (2) reviews; (3) styles; or (4) related-items).
 
 // (1)
 function getProductDataFromAPI(productIdParam) {
@@ -39,6 +39,7 @@ function getReviewsDataFromAPI(productIdParam) {
         product_id: productIdParam,
       },
     }).then((results) => {
+      // Note: This helper function transforms the data
       const ratingsLookup = {
         id: Number(results.data.product),
         reviewsCount: results.data.results.length,
@@ -60,7 +61,7 @@ function getStylesDataFromAPI(productIdParam) {
       },
     })
       .then((results) => {
-        resolve(results.data); // returns a Promise with the styles data for the given product id#
+        resolve(results.data);
       });
   });
 }
@@ -96,56 +97,27 @@ function Suggestions({ currentProduct }) {
   const [favPosn, setFavPosn] = useState(0);
 
   function fetchRelatedItemsDataFromAPI(productIdParam) {
-    // This function gets a list of product IDs related to the passed in product ID which should be
-    // the current product ID and populates the data for (1) related products product information,
-    // (2) related product reviews, and (3) related product styles
     getRelatedItemsArrayFromAPI(productIdParam)
-      .then((results) => {
-        const arrayOfRelatedProductIDs = results;
-
-        // The following code saves the related items for the current product id
-        // let relatedCache;
-        // if (localStorage.getItem('relatedcache') === null) {
-        //   relatedCache = [];
-        // } else {
-        //   relatedCache = JSON.parse(localStorage.getItem('relatedcache'));
-        // }
-        // if (relatedCache.filter(e => Object.keys(e)[0] == currentProductID).length === 0) {
-        //   relatedCache.push({ [currentProductID]: res.data });
-        //   localStorage.setItem('relatedcache', JSON.stringify(relatedCache));
-        // }
-        // console.log('Testing Related Cache');
-        // console.log(relatedCache);
-
-        // Get product information for the product IDs that are related to the current product
+      .then((arrayOfRelatedProductIDs) => {
         Promise.all(arrayOfRelatedProductIDs.map((e) => getProductDataFromAPI(e)))
-          .then((results) => {
-            // (1) Set Related Products
-            setRelatedProductData(results);
+          .then((res) => {
+            setRelatedProductData(res);
           });
-        // Get reviews for each Related Product
-        // Run Promise.all to get all of the stars and #ratings info
-        // Calculate the average of .results[i].rating for each related product
+
         Promise.all(arrayOfRelatedProductIDs.map((e) => getReviewsDataFromAPI(e)))
-          .then((results) => {
-            // (2) Set Ratings state variable (which contains star rating information)
-            setRelatedReviewsData(results);
+          .then((res) => {
+            setRelatedReviewsData(res);
           });
-        // Get styles for each Related Product
         Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
-          .then((results) => {
-            // (3) Set RelatedStyles variable (which contains an array of styles information
-            // for each related product of current product)
-            setRelatedStylesData(results);
+          .then((res) => {
+            setRelatedStylesData(res);
           });
       });
   }
 
   useEffect(() => {
-    // if currentProductID changes, make an HTTP request to get new data for currentProductData
     getProductDataFromAPI(currentProductID)
       .then((data) => setCurrentProductData(data));
-    // if currentProductID changes, make an HTTP request to get product data for related items
     fetchRelatedItemsDataFromAPI(currentProductID);
   }, [currentProductID]);
 
@@ -187,7 +159,7 @@ function Suggestions({ currentProduct }) {
 }
 
 Suggestions.propTypes = {
-  currentProduct: propTypes.number.isRequired,
+  currentProduct: propTypes.number,
 };
 
 export default Suggestions;

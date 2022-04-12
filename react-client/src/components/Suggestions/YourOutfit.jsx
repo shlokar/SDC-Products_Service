@@ -7,36 +7,36 @@ import plusSignSrc from '../Overview/AddToCart/plus-sign-icon.svg';
 import deleteIcon from './iconmonstr-x-mark-4.svg';
 
 // Components
-import StyledStarsList from '../Overview/Stars/StarsList.jsx';
-import ArrowBtn from './ArrowBtn.jsx';
+import StyledStarsList from '../Overview/Stars/StarsList';
+import ArrowBtn from './ArrowBtn';
 
 const Card = styled.div`
-display: inline-block;
-position: relative;
-top: 0px;
-width: 175px;
-height: 360px;
-margin: 5px;
-border: 2px lightgray solid;
-vertical-align: text-top;
-align-items: center;
-text-align: center;
-cursor: pointer;
+  display: inline-block;
+  position: relative;
+  top: 0px;
+  width: 175px;
+  height: 360px;
+  margin: 5px;
+  border: 2px lightgray solid;
+  vertical-align: text-top;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
 `;
 
 const Button = styled.div`
-position: absolute;
-top: 5px;
-right: 5px;
-cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
 `;
 
 const Carousel = styled.div`
-display: inline-block;
-position: relative;
-top: 0px;
-whiteSpace: nowrap;
-margin: 5px;
+  display: inline-block;
+  position: relative;
+  top: 0px;
+  whiteSpace: nowrap;
+  margin: 5px;
 `;
 
 const UnorderedList = styled.ul`
@@ -126,32 +126,32 @@ function YourOutfit({
         </Card>
         {favoriteProductData.length > 0
           ? favoriteProductData.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
-            <Card>
-              <Button onClick={() => {
+            <Card key={`${e.id}-your-outfit-card`}>
+              <Button key={`${e.id}-your-outfit-delete-btn`} onClick={() => {
                 const favsCopy = [...favoriteProductData];
                 favsCopy.splice(i + favPosn, 1);
                 localStorage.setItem('Your Outfit', JSON.stringify(favsCopy));
                 setFavoriteProductData(favsCopy);
               }}
               >
-                <img src={deleteIcon} alt="delete icon" />
+                <img key={`${e.id}-your-outfit-delete-img`} src={deleteIcon} alt="delete icon" />
               </Button>
-              <UnorderedList>
-                <li>
-                  {favoriteStylesData ? (favoriteStylesData.filter((element) => element.product_id == e.id).length !== 0 ? <Image src={favoriteStylesData.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url} /> : "loading") : "loading"}
+              <UnorderedList key={`${e.id}-your-outfit-ul`}>
+                <li key={`${e.id}-your-outfit-li-img`}>
+                  {favoriteStylesData ? (favoriteStylesData.filter((element) => element.product_id == e.id).length !== 0 ? <Image key={`${e.id}-your-outfit-li-img-img`} src={favoriteStylesData.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url} /> : "loading") : "loading"}
                 </li>
-                <li>{e.category}</li>
-                <li>{e.name}</li>
-                <li>
+                <li key={`${e.id}-your-outfit-category`}>{e.category}</li>
+                <li key={`${e.id}-your-outfit-name`}>{e.name}</li>
+                <li key={`${e.id}-your-outfit-price`}>
                   $
                   {e.default_price}
                 </li>
-                <li>
+                <li key={`${e.id}-your-outfit-li-stars`}>
                   {favoriteReviewsData.filter((el) => el.id == e.id)[0]
-                    ? <StyledStarsList rating={favoriteReviewsData.filter((el) => el.id == e.id)[0].averageScore} />
+                    ? <StyledStarsList key={`${e.id}-your-outfit-styled-stars-list`} rating={favoriteReviewsData.filter((el) => el.id == e.id)[0].averageScore} />
                     : 'loading'}
                 </li>
-                <li>
+                <li key={`${e.id}-your-outfit-reviews`}>
                   {favoriteReviewsData.filter((el) => el.id == e.id)[0]
                     ? favoriteReviewsData.filter((el) => el.id == e.id)[0].reviewsCount
                     : 'loading'}
@@ -168,8 +168,8 @@ function YourOutfit({
 }
 
 YourOutfit.propTypes = {
-  currentProductData: propTypes.object.isRequired, // an ProductData object for currentProductID
-  favoriteProductData: propTypes.array.isRequired, // an array of ProductData objects for favorited
+  currentProductData: propTypes.object, // an ProductData object for currentProductID
+  favoriteProductData: propTypes.array, // an array of ProductData objects for favorited
   setFavoriteProductData: propTypes.func.isRequired,
   favPosn: propTypes.number.isRequired,
   setFavPosn: propTypes.func.isRequired,

@@ -5,26 +5,6 @@ import styled from 'styled-components';
 // Assets
 import checkMarkSrc from './iconmonstr-check-mark-1.svg';
 
-// const modalWrapper = {
-//   position: 'fixed',
-//   width: '100%',
-//   height: '100%',
-//   top: 0,
-//   backgroundColor: 'rgba(0, 0, 0, 0.2)',
-//   visibility: modalIsVisible ? 'visible' : 'hidden',
-// };
-
-// const ModalWrapper = styled.div`
-//   position: fixed;
-//   width: 100%;
-//   height: 100%;
-//   top: 0;
-//   backgroundColor: rgba(0, 0, 0, 0.2);
-//   ${({ modalIsVisible }) => (modalIsVisible ? 'visible' : 'hidden')}
-// `;
-
-
-
 function Compare({
   comparedProductData,
   currentProductData,
@@ -112,8 +92,8 @@ function Compare({
 Compare.propTypes = {
   modalIsVisible: propTypes.bool.isRequired,
   setModalIsVisible: propTypes.func.isRequired,
-  comparedProductData: propTypes.object.isRequired,
-  currentProductData: propTypes.object.isRequired,
+  comparedProductData: propTypes.object,
+  currentProductData: propTypes.object,
   modalXY: propTypes.arrayOf(propTypes.number).isRequired,
 };
 

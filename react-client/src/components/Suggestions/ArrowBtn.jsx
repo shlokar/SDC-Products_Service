@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import styled from 'styled-components';
 
 // Components
-import { StyledLeftArrow, StyledRightArrow } from '../Overview/ImageGallery/Arrows.jsx';
+import { StyledLeftArrow, StyledRightArrow } from '../Overview/ImageGallery/Arrows';
 
 const ArrowBtnContainer = styled.div`
   display: inline-block;
@@ -71,12 +71,12 @@ function ArrowBtn({
 ArrowBtn.propTypes = {
   type: propTypes.string.isRequired, // 'rel' for Related Items, 'fav' for Your Outfit
   dir: propTypes.string.isRequired, // '<' or '>'
-  relPosn: propTypes.number.isRequired, // offset for Related Items, initial value = 0
-  setRelPosn: propTypes.func.isRequired,
-  favPosn: propTypes.number.isRequired, // offset for Your Outfit, initial value = 0
-  setFavPosn: propTypes.func.isRequired,
-  relLength: propTypes.number.isRequired, // length of Related Items list
-  favLength: propTypes.number.isRequired, // length of Your Outfit List
+  relPosn: propTypes.number, // offset for Related Items, initial value = 0
+  setRelPosn: propTypes.func,
+  favPosn: propTypes.number, // offset for Your Outfit, initial value = 0
+  setFavPosn: propTypes.func,
+  relLength: propTypes.number, // length of Related Items list
+  favLength: propTypes.number, // length of Your Outfit List
 };
 
 export default ArrowBtn;
