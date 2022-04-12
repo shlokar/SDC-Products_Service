@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
@@ -9,10 +9,15 @@ import StyledAddToCartBtn from './AddToCartBtn.jsx';
 import StyledAlert from './Alert.jsx';
 
 function AddToCartContainer({ className, items }) {
-  const [selectedItem, setSelectedItem] = useState({ stock: 0 });
+  const [selectedItem, setSelectedItem] = useState(items[0]);
   const [userSelection, setUserSelection] = useState({ size: '', qty: '0' });
   const [alertVisible, setAlertVisible] = useState(false);
   const hasStylesInStock = items.some((item) => item.stock > 0);
+  useEffect(() => {
+    setSelectedItem(items[0]);
+    setUserSelection({ size: '', qty: '0' });
+    setAlertVisible(false);
+  }, [items]);
 
   const updateSelectedItem = (id) => {
     if (selectedItem.id !== id) {
