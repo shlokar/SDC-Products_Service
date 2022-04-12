@@ -20,6 +20,7 @@ function getProductDataFromAPI(productIdParam) {
     const tempArray = localStorage.getItem('cachedProductData')
       ? JSON.parse(localStorage.getItem('cachedProductData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      console.log('saved one API call');
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}`, {
@@ -42,6 +43,7 @@ function getReviewsDataFromAPI(productIdParam) {
     const tempArray = localStorage.getItem('cachedReviewsData')
       ? JSON.parse(localStorage.getItem('cachedReviewsData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      console.log('saved one API call');
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
       axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
@@ -75,6 +77,7 @@ function getStylesDataFromAPI(productIdParam) {
       ? JSON.parse(localStorage.getItem('cachedStylesData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+      console.log('saved one API call');
     } else {
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
         headers: {
@@ -97,6 +100,7 @@ function getRelatedItemsArrayFromAPI(productIdParam) {
       ? JSON.parse(localStorage.getItem('cachedRelatedItemsArrays')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+      console.log('saved one API call');
     } else {
       axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/related`, {
         headers: {
@@ -131,16 +135,15 @@ function Suggestions({ currentProduct }) {
   function fetchRelatedItemsDataFromAPI(productIdParam) {
     getRelatedItemsArrayFromAPI(productIdParam)
       .then((arrayOfRelatedProductIDs) => {
-        Promise.all(arrayOfRelatedProductIDs.map((e) => getProductDataFromAPI(e)))
+        axios.all(arrayOfRelatedProductIDs.map((e) => getProductDataFromAPI(e)))
           .then((res) => {
             setRelatedProductData(res);
           });
-
-        Promise.all(arrayOfRelatedProductIDs.map((e) => getReviewsDataFromAPI(e)))
+        axios.all(arrayOfRelatedProductIDs.map((e) => getReviewsDataFromAPI(e)))
           .then((res) => {
             setRelatedReviewsData(res);
           });
-        Promise.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
+        axios.all(arrayOfRelatedProductIDs.map((e) => getStylesDataFromAPI(e)))
           .then((res) => {
             setRelatedStylesData(res);
           });
