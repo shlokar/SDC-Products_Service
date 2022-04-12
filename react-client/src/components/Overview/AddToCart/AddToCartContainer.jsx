@@ -13,6 +13,7 @@ function AddToCartContainer({ className, items }) {
   const [userSelection, setUserSelection] = useState({ size: '', qty: '0' });
   const [alertVisible, setAlertVisible] = useState(false);
   const hasStylesInStock = items.some((item) => item.stock > 0);
+
   useEffect(() => {
     setSelectedItem(items[0]);
     setUserSelection({ size: '', qty: '0' });
