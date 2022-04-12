@@ -59,7 +59,7 @@ function YourOutfit({
   const [favoriteReviewsData, setFavoriteReviewsData] = useState([]);
   const [favoriteStylesData, setFavoriteStylesData] = useState([]);
 
-  function getRatingsLookup(favoritesArray) {
+  function fetchFavoriteReviewsData(favoritesArray) {
     if (favoritesArray.length > 0) {
       Promise.all(favoritesArray.map((e) => getReviewsDataFromAPI(e)))
         .then((results) => {
@@ -68,7 +68,7 @@ function YourOutfit({
     }
   }
 
-  function getFavoriteStylesData(favoritesArray) {
+  function fetchFavoriteStylesData(favoritesArray) {
     if (favoritesArray.length > 0) {
       Promise.all(favoritesArray.map((e) => getStylesDataFromAPI(e)))
         .then((results) => {
@@ -78,8 +78,8 @@ function YourOutfit({
   }
 
   useEffect(() => {
-    getRatingsLookup(favoriteProductData.map((e) => e.id));
-    getFavoriteStylesData(favoriteProductData.map((e) => e.id));
+    fetchFavoriteReviewsData(favoriteProductData.map((e) => e.id));
+    fetchFavoriteStylesData(favoriteProductData.map((e) => e.id));
   }, [favoriteProductData]);
 
   const plusStyle = {
@@ -97,8 +97,6 @@ function YourOutfit({
     } else {
       tempCopyOfFavs.push(currentProductData);
     }
-    console.log(favoriteStylesData);
-    getRatingsLookup(tempCopyOfFavs.map((e) => e.id));
     setFavoriteProductData(tempCopyOfFavs);
     localStorage.setItem('Your Outfit', JSON.stringify(tempCopyOfFavs));
   }

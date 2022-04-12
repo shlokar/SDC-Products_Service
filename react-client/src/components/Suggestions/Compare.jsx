@@ -73,11 +73,11 @@ function Compare({
             {currentProductData !== null
             && comparedProductData !== null
             && createDataTable(currentProductData.features, comparedProductData.features)
-              .map((e) => (
-                <tr style={trStyle}>
-                  <td>{e[Object.keys(e)[0]].a ? (e[Object.keys(e)[0]].a === 'Yes' ? <img src={checkMarkSrc} /> : e[Object.keys(e)[0]].a ) : ''}</td>
-                  <td>{Object.keys(e)[0]}</td>
-                  <td>{e[Object.keys(e)[0]].b ? (e[Object.keys(e)[0]].b === 'Yes' ? <img src={checkMarkSrc} /> : e[Object.keys(e)[0]].b ) : ''}</td>
+              .map((e, i) => (
+                <tr key={`feature-${i}-tr`} style={trStyle}>
+                  <td key={`feature-${i}-td1`}>{e[Object.keys(e)[0]].a ? (e[Object.keys(e)[0]].a === 'Yes' ? <img key={`feature-${i}-td1-img`} src={checkMarkSrc} /> : e[Object.keys(e)[0]].a ) : ''}</td>
+                  <td key={`feature-${i}-td2`}>{Object.keys(e)[0]}</td>
+                  <td key={`feature-${i}-td3`}>{e[Object.keys(e)[0]].b ? (e[Object.keys(e)[0]].b === 'Yes' ? <img key={`feature-${i}-td3-img`} src={checkMarkSrc} /> : e[Object.keys(e)[0]].b ) : ''}</td>
                 </tr>
               ))}
 

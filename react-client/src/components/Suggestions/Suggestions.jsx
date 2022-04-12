@@ -17,66 +17,98 @@ import secretKey from './config';
 // (1)
 function getProductDataFromAPI(productIdParam) {
   return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}`, {
-      headers: {
-        authorization: secretKey,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      });
+    const tempArray = localStorage.getItem('cachedProductData')
+      ? JSON.parse(localStorage.getItem('cachedProductData')) : [];
+    if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+    } else {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}`, {
+        headers: {
+          authorization: secretKey,
+        },
+      })
+        .then((results) => {
+          resolve(results.data);
+          tempArray.push(results.data);
+          localStorage.setItem('cachedProductData', JSON.stringify(tempArray));
+        });
+    }
   });
 }
 
 // (2)
 function getReviewsDataFromAPI(productIdParam) {
   return new Promise((resolve) => {
-    axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
-      headers: {
-        authorization: secretKey,
-      },
-      params: {
-        product_id: productIdParam,
-      },
-    }).then((results) => {
-      // Note: This helper function transforms the data
-      const ratingsLookup = {
-        id: Number(results.data.product),
-        reviewsCount: results.data.results.length,
-        averageScore: results.data.results.map((element) => element.rating)
-          .reduce((a, b) => a + b) / results.data.results.length,
-        results: results.data.results,
-      };
-      resolve(ratingsLookup);
-    });
+    const tempArray = localStorage.getItem('cachedReviewsData')
+      ? JSON.parse(localStorage.getItem('cachedReviewsData')) : [];
+    if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+    } else {
+      axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
+        headers: {
+          authorization: secretKey,
+        },
+        params: {
+          product_id: productIdParam,
+        },
+      }).then((results) => {
+        // Note: This helper function transforms the data
+        const transformedResults = {
+          id: Number(results.data.product),
+          reviewsCount: results.data.results.length,
+          averageScore: results.data.results.map((element) => element.rating)
+            .reduce((a, b) => a + b) / results.data.results.length,
+          results: results.data.results,
+        };
+        resolve(transformedResults);
+        tempArray.push(transformedResults);
+        localStorage.setItem('cachedReviewsData', JSON.stringify(tempArray));
+      });
+    }
   });
 }
 
 // (3)
 function getStylesDataFromAPI(productIdParam) {
   return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
-      headers: {
-        authorization: secretKey,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      });
+    const tempArray = localStorage.getItem('cachedStylesData')
+      ? JSON.parse(localStorage.getItem('cachedStylesData')) : [];
+    if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+    } else {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
+        headers: {
+          authorization: secretKey,
+        },
+      })
+        .then((results) => {
+          resolve(results.data);
+          tempArray.push(results.data);
+          localStorage.setItem('cachedStylesData', JSON.stringify(tempArray));
+        });
+    }
   });
 }
 
 // (4)
 function getRelatedItemsArrayFromAPI(productIdParam) {
   return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/related`, {
-      headers: {
-        authorization: secretKey,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      });
+    const tempArray = localStorage.getItem('cachedRelatedItemsArrays')
+      ? JSON.parse(localStorage.getItem('cachedRelatedItemsArrays')) : [];
+    if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
+      resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
+    } else {
+      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/related`, {
+        headers: {
+          authorization: secretKey,
+        },
+      })
+        .then((results) => {
+          resolve(results.data);
+          tempArray.push(results.data);
+          localStorage.setItem('cachedRelatedItemsArrays', JSON.stringify(tempArray));
+        });
+    }
   });
 }
 
