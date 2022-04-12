@@ -1,22 +1,72 @@
-import React from 'react';
+import React, { useState, createRef } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
 const StyledInput = styled.input`
-  position: absolute;
-  box-sizing: border-box;
+  width: 100%;
   object-fit: cover;
-  width: 80%;
+  cursor: zoom-in;
+  ${({ isScaled }) => isScaled && 'cursor: crosshair;'}
+  ${({ isScaled }) => isScaled && 'transform: scale(3);'}
+  // transform-origin: ${({ isScaled, x, y }) => isScaled && `${x}% ${y}%`};
+  transition: 1s all;
+`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  position: absolute;
+  width: 60%;
+  ${({ isScaled }) => isScaled && 'width: 70%;'}
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-  cursor: zoom-out;
+  overflow: hidden;
+  transition: all 1s;
 `;
 
 function ExpandedImage({
-  className, src, alt, clickHandler,
+  className, src, alt, clickHandler, isScaled, setIsScaled,
 }) {
+  const [xAxis, setXAxis] = useState(0);
+  const [yAxis, setYAxis] = useState(0);
+  const node = createRef();
+
   return (
-    <div tabIndex="0" role="button" className={className} onClick={() => clickHandler()} onKeyDown={() => clickHandler()}>
-      <StyledInput id="expanded-img" type="image" src={src} alt={alt} />
+    <div className={className}>
+      <StyledContainer
+        ref={node}
+        isScaled={isScaled}
+        xAxis={xAxis}
+        yAxis={yAxis}
+        onMouseMove={(e) => {
+          if (isScaled) {
+            const data = node.current.getBoundingClientRect();
+
+            const offsetX = e.nativeEvent.layerX;
+            const offsetY = e.nativeEvent.layerY;
+            const xPercent = Math.ceil(((offsetX / data.width) * 100));
+            const yPercent = Math.ceil((offsetY / data.height) * 100);
+            setXAxis(xPercent);
+            setYAxis(yPercent);
+          }
+        }}
+      >
+        <StyledInput
+          style={{ transformOrigin: `${xAxis}% ${yAxis}%` }}
+          isScaled={isScaled}
+          type="image"
+          x={xAxis}
+          y={yAxis}
+          src={src}
+          alt={alt}
+          onClick={() => {
+            if (!isScaled) {
+              setIsScaled(true);
+            } else {
+              setIsScaled(false);
+              clickHandler();
+            }
+          }}
+        />
+      </StyledContainer>
     </div>
   );
 }
@@ -26,29 +76,18 @@ ExpandedImage.propTypes = {
   src: propTypes.string.isRequired,
   alt: propTypes.string.isRequired,
   clickHandler: propTypes.func.isRequired,
+  isScaled: propTypes.bool.isRequired,
+  setIsScaled: propTypes.func.isRequired,
 };
 
 const StyledExpandedImage = styled(ExpandedImage)`
-  z-index: 999;
-  visibility: hidden;
-  opacity: 0;
-  ${({ visible }) => visible && `
-  visibility: visible;
-  opacity: 1;
-  `}
+  width: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  transition: all .4s;
-  cursor: zoom-out;
-  backdrop-filter: blur(10px);
 `;
 
 export default StyledExpandedImage;
