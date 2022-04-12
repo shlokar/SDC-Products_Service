@@ -8,7 +8,7 @@ import pinterestSrc from './icons/pinterest-icon.svg';
 import twitterSrc from './icons/twitter-icon.svg';
 
 // Components
-import StyledSocialBtn from './SocialBtn.jsx';
+import StyledSocialBtn from './SocialBtn';
 
 /**
  *
@@ -20,13 +20,13 @@ import StyledSocialBtn from './SocialBtn.jsx';
  */
 
 function SocialBtns({
-  className, facebook, twitter, pinterest,
+  className, facebookRedirect, twitterRedirect, pinterestRedirect,
 }) {
   return (
     <div className={className}>
-      <StyledSocialBtn src={facebookSrc} alt="Facebook icon" redirect={facebook} />
-      <StyledSocialBtn src={twitterSrc} alt="Twitter icon" redirect={twitter} />
-      <StyledSocialBtn src={pinterestSrc} alt="Pinterest icon" redirect={pinterest} />
+      <StyledSocialBtn src={facebookSrc} alt="Facebook icon" redirect={facebookRedirect} />
+      <StyledSocialBtn src={twitterSrc} alt="Twitter icon" redirect={twitterRedirect} />
+      <StyledSocialBtn src={pinterestSrc} alt="Pinterest icon" redirect={pinterestRedirect} />
     </div>
   );
 }
@@ -34,14 +34,13 @@ function SocialBtns({
 const StyledSocialBtns = styled(SocialBtns)`
   display: inline-flex;
   gap: 20px;
-  padding: 25px 0;
 `;
 
 SocialBtns.propTypes = {
   className: propTypes.string.isRequired,
-  facebook: propTypes.string.isRequired,
-  twitter: propTypes.string.isRequired,
-  pinterest: propTypes.string.isRequired,
+  facebookRedirect: propTypes.string.isRequired,
+  twitterRedirect: propTypes.string.isRequired,
+  pinterestRedirect: propTypes.string.isRequired,
 };
 
 export default StyledSocialBtns;
