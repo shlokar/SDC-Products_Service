@@ -1,11 +1,36 @@
 import React from 'react';
+import styled from 'styled-components';
+import propTypes from 'prop-types';
 
-function App() {
+// Components
+import StyledOverview from './Overview/Overview';
+import QAndAs from './QuestionsAndAnswers/QAndAs';
+import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews';
+import Suggestions from './Suggestions/Suggestions';
+import StyledNav from './ExtraComponents/Header/Heading';
+import Banner from './ExtraComponents/Banner';
+
+function App({ className }) {
   return (
-    <div>
-      This is the App Component. Add components in the components sub-directory.
+    <div className={className}>
+      <StyledNav />
+      <Banner />
+      <StyledOverview />
+      <QAndAs />
+      <RatingsAndReviews />
+      <Suggestions />
     </div>
   );
 }
 
-export default App;
+App.propTypes = {
+  className: propTypes.string.isRequired,
+};
+
+const StyledApp = styled(App)`
+  position: relative;
+  max-width: 1400px;
+  margin: auto;
+`;
+
+export default StyledApp;
