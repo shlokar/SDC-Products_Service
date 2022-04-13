@@ -21,7 +21,7 @@ const StyledDefaultCost = styled(DefaultCost)`
 
 DefaultCost.propTypes = {
   className: propTypes.string.isRequired,
-  cost: propTypes.number.isRequired,
+  cost: propTypes.string.isRequired,
 };
 
 function SaleCost({ className, cost }) {
@@ -39,7 +39,7 @@ const StyledSaleCost = styled(SaleCost)`
 
 SaleCost.propTypes = {
   className: propTypes.string.isRequired,
-  cost: propTypes.number.isRequired,
+  cost: propTypes.string.isRequired,
 };
 
 export { StyledDefaultCost, StyledSaleCost };

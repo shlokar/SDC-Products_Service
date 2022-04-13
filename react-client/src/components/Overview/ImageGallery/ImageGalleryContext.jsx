@@ -1,24 +1,11 @@
-import React, { createContext, useState, useMemo, useEffect } from 'react';
-import uniqid from 'uniqid';
-
-// Assets
-import useTracker from './ThumbnailContent/useTracker';
+import React, {
+  createContext, useState, useMemo, useEffect,
+} from 'react';
 
 const GalleryContext = createContext();
 
-const updateImgsArr = (arr) => {
-  const arrCopy = arr.map((obj) => {
-    const newObj = { ...obj };
-    newObj.id = uniqid();
-    newObj.alt = '#';
-    return newObj;
-  });
-
-  return useTracker(arrCopy).arr;
-};
-
 function GalleryProvider({ children, newData }) {
-  const [imgsArr] = useState(updateImgsArr(newData.data));
+  const imgsArr = newData.newData;
   const [currImg, setCurrImg] = useState(imgsArr[0]);
   const [expandedViewVisible, setExpandedViewVisible] = useState(false);
   const [expandedImgWidth, setExpandedImgWidth] = useState(newData.expandedImgWidth);
@@ -52,13 +39,17 @@ function GalleryProvider({ children, newData }) {
     firstImgIsSelected,
     lastImgIsSelected,
     expandedImgWidth,
-  }), [currImg, expandedViewVisible, expandedImgWidth]);
+  }), [imgsArr, currImg, expandedViewVisible, expandedImgWidth]);
 
   useEffect(() => {
     if (window.innerWidth <= 1400) {
       setExpandedImgWidth(window.innerWidth);
     }
   }, [window.innerWidth]);
+
+  useEffect(() => {
+    setCurrImg(imgsArr[0]);
+  }, imgsArr);
 
   return (
     <GalleryContext.Provider

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
-import { StyledDefaultCost, StyledSaleCost } from './Costs.jsx';
+import { StyledDefaultCost, StyledSaleCost } from './Costs';
 
 function Price({
   className, cost, onSale, saleCost,
@@ -26,9 +26,9 @@ Price.defaultProps = {
 
 Price.propTypes = {
   className: propTypes.string.isRequired,
-  cost: propTypes.number.isRequired,
+  cost: propTypes.string.isRequired,
   onSale: propTypes.bool.isRequired,
-  saleCost: propTypes.number,
+  saleCost: propTypes.string,
 };
 
 export default StyledPrice;

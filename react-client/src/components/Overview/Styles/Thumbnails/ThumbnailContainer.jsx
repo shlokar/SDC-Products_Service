@@ -4,60 +4,25 @@ import propTypes from 'prop-types';
 import uniqid from 'uniqid';
 
 // Components
-import StyledThumbnail from './Thumbnail.jsx';
+import StyledThumbnail from './Thumbnail';
 
-/**
- * PROPERTIES
- *
- * thumbnailData: (array)
- *   - array of objects that NEEDS to have the following properties per object.
- *     - id: (string) - a uniqie identifier.
- *     - src: (string) - the image source.
- *     - alt: (string) - text describing the image.
- *     - selected: (bool) - true or false depending if you want the item to be selected.
- *       note: the thumbnailData should only have one item as selected.
- */
-
-function ThumbnailContainer({ className, thumbnailData }) {
-  const [data, setData] = useState(thumbnailData.slice());
-
-  const updateSelectedThumbnail = (id) => {
-    const selectedTrue = (obj) => obj.selected === true
-    const matchingIds = (obj) => obj.id === id;
-
-    const dataCopy = data.slice();
-
-    for (let i = 0; i < dataCopy.length; i++) {
-      const currObj = dataCopy[i];
-      if (selectedTrue(currObj) && !matchingIds(currObj)) {
-        dataCopy[i].selected = false;
-        break;
-      } else if (selectedTrue(currObj) && matchingIds(currObj)) {
-        return;
-      }
-    }
-
-    for (let i = 0; i < dataCopy.length; i++) {
-      const currObj = dataCopy[i];
-      if (matchingIds(currObj)) {
-        dataCopy[i].selected = true;
-        break;
-      }
-    }
-
-    setData(dataCopy);
-  };
+function ThumbnailContainer({ className, thumbnailsArr, clickHandler }) {
+  const [data] = useState(thumbnailsArr.slice());
+  const [selected, setSelected] = useState(thumbnailsArr[0]);
 
   return (
     <ul className={className}>
       {data.map((thumbnail) => (
         <li key={uniqid()}>
           <StyledThumbnail
-            id={thumbnail.id}
-            src={thumbnail.src}
-            alt={thumbnail.alt}
-            selected={thumbnail.selected}
-            clickHandler={updateSelectedThumbnail}
+            id={thumbnail.style_id}
+            src={thumbnail.thumbnail_url}
+            alt="#"
+            selected={selected.style_id === thumbnail.style_id}
+            clickHandler={() => {
+              setSelected(thumbnail);
+              clickHandler(thumbnail.style_id);
+            }}
           />
         </li>
       ))}
@@ -75,13 +40,12 @@ const StyledThumbnailContainer = styled(ThumbnailContainer)`
 
 ThumbnailContainer.propTypes = {
   className: propTypes.string.isRequired,
-  thumbnailData:
+  thumbnailsArr:
   propTypes.arrayOf(propTypes.shape({
-    id: propTypes.string.isRequired,
-    src: propTypes.string.isRequired,
-    alt: propTypes.string.isRequired,
-    selected: propTypes.bool.isRequired,
+    style_id: propTypes.number.isRequired,
+    thumbnail_url: propTypes.string.isRequired,
   })).isRequired,
+  clickHandler: propTypes.func.isRequired,
 };
 
 export default StyledThumbnailContainer;
