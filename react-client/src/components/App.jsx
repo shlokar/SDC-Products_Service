@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
+
+// Assets
+import getAllUserData from './serverFunctions';
 
 // Components
 import StyledOverview from './Overview/Overview';
@@ -11,14 +14,64 @@ import StyledNav from './ExtraComponents/Header/Heading';
 import Banner from './ExtraComponents/Banner';
 
 function App({ className }) {
+  const [currProdId, setCurrProdId] = useState('65631');
+  const [currProdData, setCurrProdData] = useState();
+  const [currProdStyleData, setCurrProdStyleData] = useState();
+  const [currProdReviewData, setCurrProdReviewData] = useState();
+  const [currProdQsData, setCurrProdQsData] = useState();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const updateAllData = (id) => {
+    getAllUserData(id)
+      .then((data) => {
+        const dataArr = data.data;
+        setCurrProdData(dataArr[0]);
+        setCurrProdStyleData(dataArr[1]);
+        setCurrProdReviewData(dataArr[2]);
+        setCurrProdQsData(dataArr[3]);
+      })
+      .catch((err) => {
+        console.error(`Something wrong with the call to updating all data: ${err}`);
+      });
+  };
+
+  // SETUP
+  useEffect(() => {
+    updateAllData(currProdId);
+  }, []);
+
+  // LOADING CHECK
+  useEffect(() => {
+    if (currProdData && currProdStyleData && currProdReviewData && currProdQsData) {
+      setIsLoaded(true);
+    }
+  }, [currProdData, currProdStyleData, currProdReviewData, currProdQsData]);
+
   return (
     <div className={className}>
-      <StyledNav />
-      <Banner />
-      <StyledOverview />
-      <QAndAs />
-      <RatingsAndReviews />
-      <Suggestions />
+      {!isLoaded
+        ? <div>LOADING...</div>
+        : (
+          <div>
+            <StyledNav />
+            <Banner />
+            <StyledOverview
+              prodData={currProdData}
+              stylesData={currProdStyleData}
+              reviewData={currProdReviewData}
+            />
+            <QAndAs prodName={currProdData.name} questionsData={currProdQsData} />
+            <RatingsAndReviews />
+            <Suggestions
+              currProdId={currProdId}
+              currProdData={currProdData}
+              updateAllData={(id) => {
+                updateAllData(id);
+                setCurrProdId(id);
+              }}
+            />
+          </div>
+        )}
     </div>
   );
 }
