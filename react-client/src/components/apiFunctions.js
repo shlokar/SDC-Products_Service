@@ -70,5 +70,5 @@ function getProdQsDataFromAPI(productID) {
 }
 
 export {
-  getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI
+  getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI,
 };
