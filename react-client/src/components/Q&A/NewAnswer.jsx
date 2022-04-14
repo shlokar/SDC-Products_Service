@@ -42,7 +42,7 @@ font-size: 16px;
 cursor: pointer;
 `;
 
-export default function NewAnswer() {
+export default function NewAnswer({ prodName }) {
   const [body, setBody] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -66,7 +66,10 @@ export default function NewAnswer() {
   return (
     <ModalWrapper>
       <h2>Add Your Answer</h2>
-      <h4>About the (product name here)</h4>
+      <h4>
+        About the&nbsp;
+        {prodName}
+      </h4>
       <form onSubmit={handleSubmit}>
         <StyledBodyInput type="textarea" placeholder="Your Answer Here" value={body} onChange={(e) => setBody(e.target.value)} />
         <div>&nbsp;</div>
@@ -74,6 +77,7 @@ export default function NewAnswer() {
         <p>For privacy reasons, do not use your full name or email address</p>
         <StyledTextInput type="textarea" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.email)} />
         <p>For authentication reasons, you will not be emailed.</p>
+        <input type="file" accept="image/*" />
         <StyledButton type="submit" value="Submit Answer">Submit</StyledButton>
       </form>
     </ModalWrapper>

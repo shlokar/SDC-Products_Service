@@ -48,10 +48,10 @@ const StyledSearchBar = styled.input`
   background-repeat: no-repeat;
 `;
 
-export default function QuestionsAnswers() {
-  const questions = data;
+export default function QuestionsAnswers({ prodName, questionsData }) {
+  const questions = questionsData;
   const [searchTerm, setSearchTerm] = useState('');
-  const storedQuestions = questions.results.map((element) => <Questions key={element.question_id} question={element} />);
+  const storedQuestions = questions.results.map((element) => <Questions key={element.question_id} question={element} prodName={prodName} />);
   const [currentQs, setCurrentQs] = useState([storedQuestions[0], storedQuestions[1]]);
   const [showModal, setShowModal] = useState(false);
 
@@ -111,6 +111,7 @@ export default function QuestionsAnswers() {
         <Modal
           showModal={showModal}
           setShowModal={setShowModal}
+          prodName={prodName}
         />
       </Container>
     </div>
