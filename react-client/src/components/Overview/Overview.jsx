@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
-// Assets
-import { DummyProductData, DummyFocusData, DummyReviewsData } from './DummyData';
-
 // Components
 import ImageGalleryContainer from './ImageGallery/ImageGallery';
 import StyledStarsAndReviews from './Stars/StarsListAndReviews';
@@ -100,11 +97,11 @@ const getAverageRating = (arr) => {
   return (sum / arr.length);
 };
 
-function Overview({ className }) {
-  const [carouselImgs, setCarouselImgs] = useState(DummyProductData.results[0].photos.slice());
-  const [stylesImgsArr] = useState(createStylesImgsArr(DummyProductData));
-  const [selectedProduct, setSelectedProduct] = useState(DummyProductData.results[0]);
-  const [rating] = useState(getAverageRating(DummyReviewsData.results));
+function Overview({ className, prodData, stylesData, reviewData }) {
+  const [carouselImgs, setCarouselImgs] = useState(stylesData.results[0].photos.slice());
+  const [stylesImgsArr] = useState(createStylesImgsArr(stylesData));
+  const [selectedProduct, setSelectedProduct] = useState(stylesData.results[0]);
+  const [rating] = useState(getAverageRating(reviewData.results));
 
   return (
     <div className={className}>
@@ -113,21 +110,21 @@ function Overview({ className }) {
       </LeftDiv>
       <RightDiv>
         <InfoDiv>
-          <StyledStarsAndReviews rating={Number(rating)} internalLink="#" numOfReviews={DummyReviewsData.count} />
-          <StyledProductHeader title={DummyFocusData.name} category={DummyFocusData.category} />
+          <StyledStarsAndReviews rating={Number(rating)} internalLink="#" numOfReviews={reviewData.count} />
+          <StyledProductHeader title={prodData.name} category={prodData.category} />
           <StyledPrice
             cost={selectedProduct.original_price}
             onSale={Boolean(selectedProduct.sale_price)}
             saleCost={selectedProduct.sale_price}
           />
-          <StyledProductOverview text={DummyFocusData.description} />
+          <StyledProductOverview text={prodData.description} />
           <StyledSocialBtns facebookRedirect="#" twitterRedirect="#" pinterestRedirect="#" />
           <StyledTitleContainer styleName={selectedProduct.name} />
           <StyledThumbnailContainer
             thumbnailsArr={stylesImgsArr}
             clickHandler={(styleId) => {
-              const newProduct = createSelectedProduct(DummyProductData, styleId);
-              setCarouselImgs(createCarouselImgs(DummyProductData, styleId));
+              const newProduct = createSelectedProduct(stylesData, styleId);
+              setCarouselImgs(createCarouselImgs(stylesData, styleId));
               setSelectedProduct(newProduct);
             }}
           />
