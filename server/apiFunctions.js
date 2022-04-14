@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const key = '#';
+const key = process.env.EDGARS_GH_API_KEY;
 
 function getProdDataFromAPI(productID) {
   return new Promise((resolve) => {
