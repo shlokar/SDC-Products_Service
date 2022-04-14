@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
-import axios from 'axios';
 
 // Assets
-import {
-  getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI
-} from './apiFunctions';
+import getAllUserData from './serverFunctions';
 
 // Components
 import StyledOverview from './Overview/Overview';
@@ -15,19 +12,6 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews';
 import Suggestions from './Suggestions/Suggestions';
 import StyledNav from './ExtraComponents/Header/Heading';
 import Banner from './ExtraComponents/Banner';
-
-const getAllData = (productID) => {
-  const prodDataPromise = getProdDataFromAPI(productID);
-  const prodStyleDataPromise = getProdStyleDataFromAPI(productID);
-  const prodReviewDataPromise = getReviewsDataFromAPI(productID);
-  const prodQsDataPromise = getProdQsDataFromAPI(productID);
-  return new Promise((resolve) => {
-    axios.all([prodDataPromise, prodStyleDataPromise, prodReviewDataPromise, prodQsDataPromise])
-      .then((results) => {
-        resolve(results);
-      });
-  });
-};
 
 function App({ className }) {
   const [currProdId, setCurrProdId] = useState('65631');
@@ -38,15 +22,16 @@ function App({ className }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const updateAllData = (id) => {
-    getAllData(id)
+    getAllUserData(id)
       .then((data) => {
-        setCurrProdData(data[0]);
-        setCurrProdStyleData(data[1]);
-        setCurrProdReviewData(data[2]);
-        setCurrProdQsData(data[3]);
+        const dataArr = data.data;
+        setCurrProdData(dataArr[0]);
+        setCurrProdStyleData(dataArr[1]);
+        setCurrProdReviewData(dataArr[2]);
+        setCurrProdQsData(dataArr[3]);
       })
-      .catch(() => {
-        console.error('Something wrong with the call to updating all data.');
+      .catch((err) => {
+        console.error(`Something wrong with the call to updating all data: ${err}`);
       });
   };
 

@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const key = '#';
 
@@ -69,6 +69,6 @@ function getProdQsDataFromAPI(productID) {
   });
 }
 
-export {
+module.exports = {
   getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI,
 };
