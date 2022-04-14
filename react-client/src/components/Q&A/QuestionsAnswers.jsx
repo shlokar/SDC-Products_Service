@@ -10,9 +10,9 @@ import secretKey from './secrets.js';
 const { data } = require('./serverData.js');
 
 const Container = styled.div`
-  display: flex;
+  // display: flex;
   padding: 16px 32px;
-  margin: auto;
+  // margin: auto;
   justify-content: auto;
   align-items: center;
   height: 15vh;
@@ -22,10 +22,12 @@ const StyledHeader = styled.p`
   font-weight: normal;
 `;
 const Button = styled.button`
+  font-weight: bold;
   // min-width: 100px;
   padding: 8px 16px;
-  // border-radius: 1px;
+  // border-radius: .5px;
   border: solid;
+  border-width: thin;
   background: #fff;
   color: #141414;
   font-size: 16px;
@@ -49,7 +51,7 @@ const StyledSearchBar = styled.input`
 export default function QuestionsAnswers() {
   const questions = data;
   const [searchTerm, setSearchTerm] = useState('');
-  const storedQuestions = questions.results.map((element) => <Questions question={element} />);
+  const storedQuestions = questions.results.map((element) => <Questions key={element.question_id} question={element} />);
   const [currentQs, setCurrentQs] = useState([storedQuestions[0], storedQuestions[1]]);
   const [showModal, setShowModal] = useState(false);
 
@@ -61,20 +63,10 @@ export default function QuestionsAnswers() {
     setCurrentQs(storedQuestions);
   };
 
-  const [questionButton, setQuestionButton] = useState(
-    <Button
-      type="button"
-      onClick={() => {
-        handleQuestionButtonClick();
-        hiddenButton();
-      }}
-    >
-      More Answered Questions
-    </Button>,
-  );
+  const [questionButton, setQuestionButton] = useState(true);
 
   const hiddenButton = () => {
-    setQuestionButton(<> </>);
+    setQuestionButton((prev) => !prev);
   };
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -91,7 +83,8 @@ export default function QuestionsAnswers() {
         matchedQuestions.push(questions.results[question]);
       }
     }
-    setCurrentQs(matchedQuestions.map((element) => <Questions question={element} />));
+    setCurrentQs(matchedQuestions.map((element) => <Questions key={element.question_id} question={element} />));
+    setQuestionButton(true);
   };
 
   return (
@@ -105,7 +98,15 @@ export default function QuestionsAnswers() {
         {currentQs}
       </div>
       <Container>
-        <span>{questionButton}</span>
+        {questionButton ? <Button
+          type="button"
+          onClick={() => {
+            handleQuestionButtonClick();
+            hiddenButton();
+          }}>
+          More Answered Questions
+        </Button> : null}
+          <span> &nbsp;</span>
         <Button onClick={openModal}>Add a Question +</Button>
         <Modal
           showModal={showModal}

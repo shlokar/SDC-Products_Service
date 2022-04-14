@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const ModalWrapper = styled.div`
+const ModalWrapper = styled.span`
 position: absolute;
-position-right: 75%;
+left: 30%;
 border: 3px solid #000;
 background-color: #fff;
+z-index: 3;
 `;
 
 const StyledTextInput = styled.input`
@@ -19,13 +20,14 @@ padding-left: 15px;
 background-repeat: no-repeat;
 `;
 
-const StyledBodyInput = styled.input`
+const StyledBodyInput = styled.textarea`
+postion: relative;
 font-weight: bold;
 border-style: solid;
 border-width: 1px;
 border-color: black;
 width: 95%;
-height: 20px;
+height: 200px;
 padding-left: 15px;
 `;
 

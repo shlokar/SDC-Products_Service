@@ -56,13 +56,14 @@ export default function Questions({ question }) {
   };
 
   const storedAnswers = Object.keys(question.answers).map(
-    (element) => <Answers answer={question.answers[element]} />,
+    (element) => <Answers key={question.answers[element].id} answer={question.answers[element]} />,
   );
 
   const [loadedAnswers, setLoadedAnswers] = useState([storedAnswers[0], storedAnswers[1]]);
 
   useEffect(() => {
     setLoadedAnswers([storedAnswers[0], storedAnswers[1]]);
+    setShowButton(true);
   }, [question]);
 
   const openModal = () => {
@@ -113,6 +114,7 @@ export default function Questions({ question }) {
       <div>
         {showButton ? <LoadButton onClick={handleClick}>LOAD MORE ANSWERS</LoadButton> : null}
       </div>
+      <div>&nbsp;</div>
     </span>
   );
 }

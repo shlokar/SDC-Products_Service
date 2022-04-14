@@ -32,6 +32,7 @@ const StyledAnswerBody = styled.span`
 
 export default function Answers({ answer }) {
   const [answerIsClicked, setClicked] = useState(false);
+  const [reportStatus, setReportStatus] = useState('Report');
 
   const handleIncrement = (element) => {
     if (answerIsClicked === false) {
@@ -39,6 +40,10 @@ export default function Answers({ answer }) {
       setClicked(true);
     }
   };
+
+  const report = () => {
+    setReportStatus('Reported');
+  }
 
   return (
     <div>
@@ -64,13 +69,13 @@ export default function Answers({ answer }) {
                 onClick={() => handleIncrement(answer)}>Yes</AnswerFunctions>
               <AnswerFunctions> (
                 {answer.helpfulness}
-                ) | Report
+                ) |&nbsp;
+                <span style={{ textDecorationLine: 'underline' }} onClick={report}>{ reportStatus }</span>
               </AnswerFunctions>
             </AnswerFunctionsWrapper>
           </div>
         </div>
       </div>
-      <div>&nbsp;</div>
     </div>
   );
 }

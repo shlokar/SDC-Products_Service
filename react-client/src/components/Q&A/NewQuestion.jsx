@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+const BigWrapper = styled.div`
+  position: 'fixed';
+  width: '100%';
+  height: '100%';
+  backgroundColor: 'rgba(0, 0, 0, 0.2)';
+`;
+
 const ModalWrapper = styled.div`
 position: absolute;
-position-left: 25%;
+left: 30%;
 border: 3px solid #000;
 background-color: #fff;
 `;
 
 const StyledTextInput = styled.input`
 font-weight: bold;
+padding: 5px;
 border-style: solid;
 border-width: 1px;
 border-color: black;
@@ -19,24 +27,28 @@ padding-left: 15px;
 background-repeat: no-repeat;
 `;
 
-const StyledBodyInput = styled.input`
+const StyledBodyInput = styled.textarea`
+postion: relative;
 font-weight: bold;
 border-style: solid;
 border-width: 1px;
 border-color: black;
 width: 95%;
-height: 20px;
+height: 200px;
 padding-left: 15px;
 `;
 
 const StyledButton = styled.button`
 // min-width: 100px;
+font-weight: bold;
+text-align: center;
+height: 31px;
 padding: 8px 16px;
 // border-radius: 1px;
-border: solid;
+border: none;
 background: #fff;
 color: #141414;
-font-size: 16px;
+font-size: 14px;
 cursor: pointer;
 `;
 
@@ -68,11 +80,12 @@ export default function NewQuestion({ addQuestion, setAddedQuestion }) {
   };
 
   return (
+    <BigWrapper>
     <ModalWrapper>
       <h2>Ask Your Question</h2>
       <h4>About the (product name here)</h4>
       <form onSubmit={handleSubmit}>
-        <StyledBodyInput type="textarea" placeholder="Why did you like the product or not?" value={body} onChange={(e) => setBody(e.target.value)} />
+        <StyledBodyInput type="text" placeholder="Why did you like the product or not?" value={body} onChange={(e) => setBody(e.target.value)} />
         <div>&nbsp;</div>
         <StyledTextInput type="textarea" placeholder="Example: jackson11!" value={name} onChange={(e) => setName(e.target.value)} />
         <p>For privacy reasons, do not use your full name or email address</p>
@@ -81,5 +94,6 @@ export default function NewQuestion({ addQuestion, setAddedQuestion }) {
         <StyledButton type="submit" value="Submit Question">Submit</StyledButton>
       </form>
     </ModalWrapper>
+    </BigWrapper>
   );
 }
