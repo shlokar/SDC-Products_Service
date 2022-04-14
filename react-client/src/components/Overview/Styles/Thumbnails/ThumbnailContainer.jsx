@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 import uniqid from 'uniqid';
@@ -7,8 +7,12 @@ import uniqid from 'uniqid';
 import StyledThumbnail from './Thumbnail';
 
 function ThumbnailContainer({ className, thumbnailsArr, clickHandler }) {
-  const [data] = useState(thumbnailsArr.slice());
+  const [data, setData] = useState(thumbnailsArr.slice());
   const [selected, setSelected] = useState(thumbnailsArr[0]);
+
+  useEffect(() => {
+    setData(thumbnailsArr.slice());
+  }, [thumbnailsArr]);
 
   return (
     <ul className={className}>
