@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import NewAnswer from './NewAnswer.jsx';
+import NewAnswer from './NewAnswer';
 
 const ModalWrapper = styled.div`
   width: 800px;
@@ -29,8 +29,8 @@ const Background = styled.div`
 
 export default function AnswerModal({ showModal, setShowModal }) {
   return (
-    <>
+    <div>
       {showModal ? <NewAnswer /> : null}
-    </>
+    </div>
   );
 }

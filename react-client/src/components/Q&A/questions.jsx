@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import Answers from './answers.jsx';
-import AnswerModal from './AnswerModal.jsx'
+import Answers from './answers';
+import AnswerModal from './AnswerModal';
 
 const AnswerButton = styled.span`
   text-decoration: underline;
@@ -53,10 +53,11 @@ export default function Questions({ question }) {
       question.question_helpfulness += 1;
       setClicked(true);
     }
-  }
+  };
 
-  const storedAnswers = Object.keys(question.answers).map((element) =><Answers
-    answer={question.answers[element]} />);
+  const storedAnswers = Object.keys(question.answers).map(
+    (element) => <Answers answer={question.answers[element]} />,
+  );
 
   const [loadedAnswers, setLoadedAnswers] = useState([storedAnswers[0], storedAnswers[1]]);
 

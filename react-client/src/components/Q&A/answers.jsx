@@ -44,31 +44,31 @@ export default function Answers({ answer }) {
     <div>
       <div>
         <div>
-      <AnswerA>
-        A:
-      </AnswerA>
-      <StyledAnswerBody>{answer.body}</StyledAnswerBody>
-      <div>
-        <AnswerFunctionsWrapper>
-        <AnswerFunctions>
-          by&nbsp;
-          {answer.answerer_name} &nbsp;|
-          &nbsp;
-          {moment(answer.question_date).format('MMMM, D, YYYY')}
-          &nbsp; | &nbsp;
-        </AnswerFunctions>
-        <AnswerFunctions>
-          Helpful?
-        </AnswerFunctions>
-        <AnswerFunctions style={{ textDecorationLine: 'underline' }}
-        onClick={() => handleIncrement(answer)}>Yes</AnswerFunctions>
-        <AnswerFunctions> (
-          {answer.helpfulness}
-          ) | Report
-        </AnswerFunctions>
-        </AnswerFunctionsWrapper>
-      </div>
-    </div>
+          <AnswerA>
+            A:
+          </AnswerA>
+          <StyledAnswerBody>{answer.body}</StyledAnswerBody>
+          <div>
+            <AnswerFunctionsWrapper>
+              <AnswerFunctions>
+                by&nbsp;
+                {answer.answerer_name} &nbsp;|
+                &nbsp;
+                {moment(answer.question_date).format('MMMM, D, YYYY')}
+                &nbsp; | &nbsp;
+              </AnswerFunctions>
+              <AnswerFunctions>
+                Helpful?
+              </AnswerFunctions>
+              <AnswerFunctions style={{ textDecorationLine: 'underline' }}
+                onClick={() => handleIncrement(answer)}>Yes</AnswerFunctions>
+              <AnswerFunctions> (
+                {answer.helpfulness}
+                ) | Report
+              </AnswerFunctions>
+            </AnswerFunctionsWrapper>
+          </div>
+        </div>
       </div>
       <div>&nbsp;</div>
     </div>

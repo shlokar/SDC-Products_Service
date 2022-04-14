@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import NewQuestion from './newQuestion.jsx';
+import NewQuestion from './NewQuestion';
 
 const ModalWrapper = styled.div`
   width: 800px;
@@ -25,12 +25,12 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align items: center;
-`
+`;
 
 export default function Modal({ showModal, setShowModal, addQuestion, setAddedQuestion }) {
   return (
-    <>
-        {showModal ? <NewQuestion addQuestion={addQuestion} setAddedQuestion={setAddedQuestion}/> : null}
-    </>
-  )
+    <div>
+      {showModal ? <NewQuestion addQuestion={addQuestion} setAddedQuestion={setAddedQuestion} /> : null}
+    </div>
+  );
 }
