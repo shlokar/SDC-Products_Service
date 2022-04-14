@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 
@@ -97,11 +97,20 @@ const getAverageRating = (arr) => {
   return (sum / arr.length);
 };
 
-function Overview({ className, prodData, stylesData, reviewData }) {
+function Overview({
+  className, prodData, stylesData, reviewData,
+}) {
   const [carouselImgs, setCarouselImgs] = useState(stylesData.results[0].photos.slice());
-  const [stylesImgsArr] = useState(createStylesImgsArr(stylesData));
+  const [stylesImgsArr, setStylesImgsArr] = useState(createStylesImgsArr(stylesData));
   const [selectedProduct, setSelectedProduct] = useState(stylesData.results[0]);
-  const [rating] = useState(getAverageRating(reviewData.results));
+  const [rating, setRating] = useState(getAverageRating(reviewData.results));
+
+  useEffect(() => {
+    setCarouselImgs(stylesData.results[0].photos.slice());
+    setStylesImgsArr(createStylesImgsArr(stylesData));
+    setSelectedProduct(stylesData.results[0]);
+    setRating(getAverageRating(reviewData.results));
+  }, [stylesData, reviewData]);
 
   return (
     <div className={className}>

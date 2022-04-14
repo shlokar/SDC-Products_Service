@@ -63,7 +63,9 @@ function ThumbnailsContainer({
   useEffect(() => {
     lowerImgsContainer(selectedThumbnail.index + 1);
     riseImgsContainer(selectedThumbnail.index - 1);
-    clickHandler(selectedThumbnail);
+    if (selectedThumbnail.url !== selectedImg.url) {
+      clickHandler(selectedThumbnail);
+    }
   }, [selectedThumbnail]);
 
   useEffect(() => {
