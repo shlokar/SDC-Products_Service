@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import propTypes from 'prop-types';
+import axios from 'axios';
 
 // Assets
-import axios from 'axios';
+import {
+  getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI
+} from './apiFunctions';
 
 // Components
 import StyledOverview from './Overview/Overview';
@@ -12,75 +15,6 @@ import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews';
 import Suggestions from './Suggestions/Suggestions';
 import StyledNav from './ExtraComponents/Header/Heading';
 import Banner from './ExtraComponents/Banner';
-
-const key = '#';
-
-function getProdDataFromAPI(productID) {
-  return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}`, {
-      headers: {
-        authorization: key,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-}
-
-function getProdStyleDataFromAPI(productID) {
-  return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/styles`, {
-      headers: {
-        authorization: key,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-}
-
-function getReviewsDataFromAPI(productIdParam) {
-  return new Promise((resolve) => {
-    axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
-      headers: {
-        authorization: key,
-      },
-      params: {
-        product_id: productIdParam,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-}
-
-function getProdQsDataFromAPI(productID) {
-  return new Promise((resolve) => {
-    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions?product_id=${productID}`, {
-      headers: {
-        authorization: key,
-      },
-    })
-      .then((results) => {
-        resolve(results.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  });
-}
 
 const getAllData = (productID) => {
   const prodDataPromise = getProdDataFromAPI(productID);
