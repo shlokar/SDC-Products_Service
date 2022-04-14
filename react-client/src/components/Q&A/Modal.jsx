@@ -13,7 +13,7 @@ const ModalWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   position: relative;
-  z-index: 10:
+  // z-index: 10:
   border-radius: 10px;
 `;
 

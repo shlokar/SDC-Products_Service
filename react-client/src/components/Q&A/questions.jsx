@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -31,12 +30,24 @@ const QuestionFunctions = styled.span`
 const QuestionFunctionsWrapper = styled.div`
   position: relative;
   top: -18px;
-  left: 70%;
+  left: 82%;
+`;
+
+const LoadButton = styled.span`
+  min-width: 50px;
+  padding: 8px 22px ;
+  border-radius: 4px;
+  background: #fff;
+  color: #141414;
+  font-size: 10px;
+  cursor: pointer;
+  font-weight: bold;
 `;
 
 export default function Questions({ question }) {
   const [isClicked, setClicked] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showButton, setShowButton] = useState(true);
   const handleIncrement = () => {
     if (isClicked === false) {
       question.question_helpfulness += 1;
@@ -44,8 +55,31 @@ export default function Questions({ question }) {
     }
   }
 
+  const storedAnswers = Object.keys(question.answers).map((element) =><Answers
+    answer={question.answers[element]} />);
+
+  const [loadedAnswers, setLoadedAnswers] = useState([storedAnswers[0], storedAnswers[1]]);
+
+  useEffect(() => {
+    setLoadedAnswers([storedAnswers[0], storedAnswers[1]]);
+  }, [question]);
+
   const openModal = () => {
     setShowModal((prev) => !prev);
+  };
+  const updateAnswers = (answer) => {
+    setLoadedAnswers(answer);
+  };
+  const handleClick = () => {
+    const newLoad = loadedAnswers.slice();
+    if ((loadedAnswers.length !== storedAnswers.length)) {
+      newLoad.push(storedAnswers[loadedAnswers.length]);
+      newLoad.push(storedAnswers[loadedAnswers.length - 1]);
+    }
+    if (loadedAnswers.length === storedAnswers.length) {
+      setShowButton((prev) => !prev);
+    }
+    updateAnswers(newLoad);
   };
 
   return (
@@ -74,7 +108,10 @@ export default function Questions({ question }) {
         showModal={showModal}
         setShowModal={setShowModal}
       />
-      <Answers answer={question.answers} />
+      {loadedAnswers}
+      <div>
+        {showButton ? <LoadButton onClick={handleClick}>LOAD MORE ANSWERS</LoadButton> : null}
+      </div>
     </span>
   );
 }

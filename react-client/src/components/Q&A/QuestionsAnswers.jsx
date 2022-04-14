@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+
 // components
 import Questions from './questions.jsx';
 import Modal from './Modal.jsx'
+import secretKey from './secrets.js';
 
 const { data } = require('./serverData.js');
 
@@ -48,7 +50,20 @@ const StyledSearchBar = styled.input`
   background-repeat: no-repeat;
 `;
 
+const newData = axios({
+  method: 'GET',
+  url: 'https://app-hrsei-api.herokuapp.com/api/fec2/rfp/qa/questions?product_id=62635',
+  headers: {
+    authorization: secretKey.secretKey,
+  },
+}).then((results) => {
+  Promise.resolve(results.data);
+  console.log(results.data);
+});
+
 export default function QuestionsAnswers() {
+  console.log(newData);
+
   const questions = data;
   const [searchTerm, setSearchTerm] = useState('');
   const storedQuestions = questions.results.map((element) => <Questions question={element} />);
@@ -83,7 +98,7 @@ export default function QuestionsAnswers() {
     if (searchTerm.length > 1) {
       search(searchTerm);
     } else if (searchTerm.length < 2) {
-      setCurrentQs([storedQuestions[0], storedQuestions[1]])
+      setCurrentQs([storedQuestions[0], storedQuestions[1]]);
     }
   };
   const search = (term) => {
@@ -93,10 +108,9 @@ export default function QuestionsAnswers() {
         matchedQuestions.push(questions.results[question]);
       }
     }
-     setCurrentQs(matchedQuestions.map((element) => {
-      return <Questions question={element}/>
-    }));
-  }
+    setCurrentQs(matchedQuestions.map((element) =>
+    <Questions question={element} />));
+  };
 
   return (
     <div>
