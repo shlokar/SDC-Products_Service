@@ -7,11 +7,15 @@ import getAllUserData from './serverFunctions';
 
 // Components
 import StyledOverview from './Overview/Overview';
-import QAndAs from './QuestionsAndAnswers/QAndAs';
+import QAndAs from './Q&A/QuestionsAnswers';
 import RatingsAndReviews from './RatingsAndReviews/RatingsAndReviews';
 import Suggestions from './Suggestions/Suggestions';
 import StyledNav from './ExtraComponents/Header/Heading';
 import Banner from './ExtraComponents/Banner';
+
+const StyledDivider = styled.div`
+  height: 250px;
+`;
 
 function App({ className }) {
   const [currProdId, setCurrProdId] = useState('65631');
@@ -60,7 +64,9 @@ function App({ className }) {
               stylesData={currProdStyleData}
               reviewData={currProdReviewData}
             />
+            <StyledDivider />
             <QAndAs prodName={currProdData.name} questionsData={currProdQsData} />
+            <StyledDivider />
             <RatingsAndReviews />
             <Suggestions
               currProdId={currProdId}

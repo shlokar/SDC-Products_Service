@@ -15,7 +15,6 @@ import StyledAddToCartContainer from './AddToCart/AddToCartContainer';
 
 const LeftDiv = styled.div`
   position: relative;
-  background-color: blue;
   z-index: 999;
   right: 0;
 `;
