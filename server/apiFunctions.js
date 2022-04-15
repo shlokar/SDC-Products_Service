@@ -69,6 +69,26 @@ function getProdQsDataFromAPI(productID) {
   });
 }
 
+function getRelatedProdsFromAPI(productID) {
+  return new Promise((resolve) => {
+    axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productID}/related`, {
+      headers: {
+        authorization: key,
+      },
+    })
+      .then((results) => {
+        resolve(results.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+}
+
 module.exports = {
-  getProdDataFromAPI, getProdStyleDataFromAPI, getReviewsDataFromAPI, getProdQsDataFromAPI,
+  getProdDataFromAPI,
+  getProdStyleDataFromAPI,
+  getReviewsDataFromAPI,
+  getProdQsDataFromAPI,
+  getRelatedProdsFromAPI,
 };
