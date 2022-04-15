@@ -27,10 +27,10 @@ const Background = styled.div`
   align items: center;
 `;
 
-export default function AnswerModal({ showModal, setShowModal }) {
+export default function AnswerModal({ showModal, setShowModal, prodName }) {
   return (
     <div>
-      {showModal ? <NewAnswer /> : null}
+      {showModal ? <NewAnswer prodName={prodName} /> : null}
     </div>
   );
 }

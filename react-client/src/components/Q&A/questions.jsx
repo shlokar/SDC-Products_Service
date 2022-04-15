@@ -44,7 +44,7 @@ const LoadButton = styled.span`
   font-weight: bold;
 `;
 
-export default function Questions({ question }) {
+export default function Questions({ question, prodName }) {
   const [isClicked, setClicked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showButton, setShowButton] = useState(true);
@@ -109,6 +109,7 @@ export default function Questions({ question }) {
       <AnswerModal
         showModal={showModal}
         setShowModal={setShowModal}
+        prodName={prodName}
       />
       {loadedAnswers}
       <div>

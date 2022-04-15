@@ -13,6 +13,7 @@ position: absolute;
 left: 30%;
 border: 3px solid #000;
 background-color: #fff;
+z-index: 3;
 `;
 
 const StyledTextInput = styled.input`
@@ -52,7 +53,7 @@ font-size: 14px;
 cursor: pointer;
 `;
 
-export default function NewQuestion({ addQuestion, setAddedQuestion }) {
+export default function NewQuestion({ prodName, setAddedQuestion }) {
   const [body, setBody] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -83,7 +84,10 @@ export default function NewQuestion({ addQuestion, setAddedQuestion }) {
     <BigWrapper>
     <ModalWrapper>
       <h2>Ask Your Question</h2>
-      <h4>About the (product name here)</h4>
+      <h4>
+        About the&nbsp;
+        {prodName}
+      </h4>
       <form onSubmit={handleSubmit}>
         <StyledBodyInput type="text" placeholder="Why did you like the product or not?" value={body} onChange={(e) => setBody(e.target.value)} />
         <div>&nbsp;</div>
