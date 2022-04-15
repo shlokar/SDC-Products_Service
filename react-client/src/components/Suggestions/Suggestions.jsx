@@ -7,9 +7,6 @@ import RelatedItems from './RelatedItems';
 import YourOutfit from './YourOutfit';
 import Compare from './Compare';
 
-// Secret Key
-import secretKey from './config';
-
 // Helper Functions (4):
 // These helper functions take a product id (Number) and return a promise with data from the API
 // endpoint in question ((1) product; (2) reviews; (3) styles; or (4) related-items).
@@ -20,14 +17,9 @@ function getProductDataFromAPI(productIdParam) {
     const tempArray = localStorage.getItem('cachedProductData')
       ? JSON.parse(localStorage.getItem('cachedProductData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
-      console.log('saved one API call');
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}`, {
-        headers: {
-          authorization: secretKey,
-        },
-      })
+      axios.get(`http://localhost:3000/user/data-product?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
@@ -43,17 +35,9 @@ function getReviewsDataFromAPI(productIdParam) {
     const tempArray = localStorage.getItem('cachedReviewsData')
       ? JSON.parse(localStorage.getItem('cachedReviewsData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
-      console.log('saved one API call');
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get('http://app-hrsei-api.herokuapp.com/api/fec2/rfp/reviews/', {
-        headers: {
-          authorization: secretKey,
-        },
-        params: {
-          product_id: productIdParam,
-        },
-      }).then((results) => {
+      axios.get(`http://localhost:3000/user/data-reviews?product_id=${productIdParam}`).then((results) => {
         // Note: This helper function transforms the data
         const transformedResults = {
           id: Number(results.data.product),
@@ -77,13 +61,8 @@ function getStylesDataFromAPI(productIdParam) {
       ? JSON.parse(localStorage.getItem('cachedStylesData')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
-      console.log('saved one API call');
     } else {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/styles`, {
-        headers: {
-          authorization: secretKey,
-        },
-      })
+      axios.get(`http://localhost:3000/user/data-styles?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
@@ -100,13 +79,8 @@ function getRelatedItemsArrayFromAPI(productIdParam) {
       ? JSON.parse(localStorage.getItem('cachedRelatedItemsArrays')) : [];
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
-      console.log('saved one API call');
     } else {
-      axios.get(`https://app-hrsei-api.herokuapp.com/api/fec2/rfp/products/${productIdParam}/related`, {
-        headers: {
-          authorization: secretKey,
-        },
-      })
+      axios.get(`http://localhost:3000/user/related?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
@@ -116,21 +90,22 @@ function getRelatedItemsArrayFromAPI(productIdParam) {
   });
 }
 
-function Suggestions({ currentProduct }) {
+function Suggestions({ currProdId, currProdData, updateAllData }) {
   const dummyIDs = [65665, 65692, 65858, 66077, 66114, 66148, 65778, 65917, 66021, 66326];
   // Display a random product from dummyIDs if no product id is passed in
-  const [currentProductID, setCurrentProductID] = useState(currentProduct
+  const [currentProductID, setCurrentProductID] = useState(currProdId
     || dummyIDs[Math.floor(Math.random() * dummyIDs.length)]);
-  const [currentProductData, setCurrentProductData] = useState(null);
+  // const [currentProductData, setCurrentProductData] = useState(currProdData);
   const [comparedProductData, setComparedProductData] = useState(null);
-  const [relatedProductData, setRelatedProductData] = useState([]);
-  const [relatedStylesData, setRelatedStylesData] = useState([]);
+  const [relatedProductData, setRelatedProductData] = useState(null);
+  const [relatedStylesData, setRelatedStylesData] = useState(null);
   const [relatedReviewsData, setRelatedReviewsData] = useState(null);
   const [favoriteProductData, setFavoriteProductData] = useState(localStorage.getItem('Your Outfit') !== null ? JSON.parse(localStorage.getItem('Your Outfit')) : []);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [modalXY, setModalXY] = useState([200, 200]);
   const [relPosn, setRelPosn] = useState(0);
   const [favPosn, setFavPosn] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   function fetchRelatedItemsDataFromAPI(productIdParam) {
     getRelatedItemsArrayFromAPI(productIdParam)
@@ -151,44 +126,56 @@ function Suggestions({ currentProduct }) {
   }
 
   useEffect(() => {
-    getProductDataFromAPI(currentProductID)
-      .then((data) => setCurrentProductData(data));
-    fetchRelatedItemsDataFromAPI(currentProductID);
-  }, [currentProductID]);
+    fetchRelatedItemsDataFromAPI(currProdId);
+  }, [currProdId]);
+
+  // LOADING CHECK
+  useEffect(() => {
+    if (relatedProductData && relatedReviewsData && relatedStylesData && favoriteProductData && !isLoaded) {
+      setIsLoaded(true);
+    }
+  }, [relatedProductData, relatedReviewsData, relatedStylesData, favoriteProductData]);
 
   return (
     <div>
-      <RelatedItems
-        relatedProductData={relatedProductData}
-        relatedReviewsData={relatedReviewsData}
-        currentProductData={currentProductData}
-        setModalIsVisible={setModalIsVisible}
-        currentProductID={currentProductID}
-        setCurrentProductID={setCurrentProductID}
-        setComparedProductData={setComparedProductData}
-        setModalXY={setModalXY}
-        relPosn={relPosn}
-        setRelPosn={setRelPosn}
-        relatedStylesData={relatedStylesData}
-      />
-      <YourOutfit
-        currentProductID={currentProductID}
-        relatedReviewsData={relatedReviewsData}
-        favoriteProductData={favoriteProductData}
-        setFavoriteProductData={setFavoriteProductData}
-        currentProductData={currentProductData}
-        favPosn={favPosn}
-        setFavPosn={setFavPosn}
-        getStylesDataFromAPI={getStylesDataFromAPI}
-        getReviewsDataFromAPI={getReviewsDataFromAPI}
-      />
-      <Compare
-        modalIsVisible={modalIsVisible}
-        setModalIsVisible={setModalIsVisible}
-        comparedProductData={comparedProductData}
-        currentProductData={currentProductData}
-        modalXY={modalXY}
-      />
+      {!isLoaded
+        ? <div>Loading</div>
+        : (
+          <div>
+            <RelatedItems
+              relatedProductData={relatedProductData}
+              relatedReviewsData={relatedReviewsData}
+              currentProductData={currProdData}
+              setModalIsVisible={setModalIsVisible}
+              currentProductID={currProdId}
+              setCurrentProductID={updateAllData}
+              setComparedProductData={setComparedProductData}
+              setModalXY={setModalXY}
+              relPosn={relPosn}
+              setRelPosn={setRelPosn}
+              relatedStylesData={relatedStylesData}
+            />
+            <YourOutfit
+              currentProductID={currProdId}
+              relatedReviewsData={relatedReviewsData}
+              favoriteProductData={favoriteProductData}
+              setFavoriteProductData={setFavoriteProductData}
+              currentProductData={currProdData}
+              setCurrentProductID={updateAllData}
+              favPosn={favPosn}
+              setFavPosn={setFavPosn}
+              getStylesDataFromAPI={getStylesDataFromAPI}
+              getReviewsDataFromAPI={getReviewsDataFromAPI}
+            />
+            <Compare
+              modalIsVisible={modalIsVisible}
+              setModalIsVisible={setModalIsVisible}
+              comparedProductData={comparedProductData}
+              currentProductData={currProdData}
+              modalXY={modalXY}
+            />
+          </div>
+        )}
     </div>
   );
 }

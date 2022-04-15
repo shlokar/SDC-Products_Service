@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
+import axios from 'axios';
 
 // Assets
 import plusSignSrc from '../Overview/AddToCart/plus-sign-icon.svg';
@@ -55,13 +56,14 @@ function YourOutfit({
   setFavPosn,
   getStylesDataFromAPI,
   getReviewsDataFromAPI,
+  setCurrentProductID,
 }) {
   const [favoriteReviewsData, setFavoriteReviewsData] = useState([]);
   const [favoriteStylesData, setFavoriteStylesData] = useState([]);
 
   function fetchFavoriteReviewsData(favoritesArray) {
     if (favoritesArray.length > 0) {
-      Promise.all(favoritesArray.map((e) => getReviewsDataFromAPI(e)))
+      axios.all(favoritesArray.map((e) => getReviewsDataFromAPI(e)))
         .then((results) => {
           setFavoriteReviewsData(results);
         });
@@ -70,7 +72,7 @@ function YourOutfit({
 
   function fetchFavoriteStylesData(favoritesArray) {
     if (favoritesArray.length > 0) {
-      Promise.all(favoritesArray.map((e) => getStylesDataFromAPI(e)))
+      axios.all(favoritesArray.map((e) => getStylesDataFromAPI(e)))
         .then((results) => {
           setFavoriteStylesData(results);
         });
@@ -93,7 +95,7 @@ function YourOutfit({
     const tempCopyOfFavs = [...favoriteProductData];
     // if the array doesn't have currentProductData.id in it don't set
     if (tempCopyOfFavs.filter((e) => e.id == currentProductData.id).length > 0) {
-      console.log('Duplicate!');
+      // console.log('Duplicate!');
     } else {
       tempCopyOfFavs.push(currentProductData);
     }
@@ -124,8 +126,14 @@ function YourOutfit({
         </Card>
         {favoriteProductData.length > 0
           ? favoriteProductData.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
-            <Card key={`${e.id}-your-outfit-card`}>
-              <Button key={`${e.id}-your-outfit-delete-btn`} onClick={() => {
+            <Card
+              key={`${e.id}-your-outfit-card`}
+              onClick={() => {
+                setCurrentProductID(e.id);
+              }}
+            >
+              <Button key={`${e.id}-your-outfit-delete-btn`} onClick={(event) => {
+                event.stopPropagation();
                 const favsCopy = [...favoriteProductData];
                 favsCopy.splice(i + favPosn, 1);
                 localStorage.setItem('Your Outfit', JSON.stringify(favsCopy));
@@ -169,6 +177,7 @@ YourOutfit.propTypes = {
   currentProductData: propTypes.object, // an ProductData object for currentProductID
   favoriteProductData: propTypes.array, // an array of ProductData objects for favorited
   setFavoriteProductData: propTypes.func.isRequired,
+  setCurrentProductID: propTypes.func.isRequired,
   favPosn: propTypes.number.isRequired,
   setFavPosn: propTypes.func.isRequired,
   getStylesDataFromAPI: propTypes.func.isRequired,

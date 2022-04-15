@@ -46,7 +46,7 @@ function App({ className }) {
 
   // LOADING CHECK
   useEffect(() => {
-    if (currProdData && currProdStyleData && currProdReviewData && currProdQsData) {
+    if (currProdData && currProdStyleData && currProdReviewData && currProdQsData && !isLoaded) {
       setIsLoaded(true);
     }
   }, [currProdData, currProdStyleData, currProdReviewData, currProdQsData]);

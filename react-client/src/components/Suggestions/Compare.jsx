@@ -37,11 +37,11 @@ function Compare({
     const table = {};
     featuresArrayA.forEach((e) => {
       if (table[e.feature] === undefined) table[e.feature] = {};
-      table[e.feature].a = e.value ? e.value.slice(1, e.value.length - 1) : 'Yes';
+      table[e.feature].a = e.value ? e.value : 'Yes';
     });
     featuresArrayB.forEach((e) => {
       if (table[e.feature] === undefined) table[e.feature] = {};
-      table[e.feature].b = e.value ? e.value.slice(1, e.value.length - 1) : 'Yes';
+      table[e.feature].b = e.value ? e.value : 'Yes';
     });
     const array = [];
     for (const key in table) {
