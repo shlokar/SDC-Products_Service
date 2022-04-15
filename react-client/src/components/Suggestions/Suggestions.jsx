@@ -19,7 +19,7 @@ function getProductDataFromAPI(productIdParam) {
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get(`http://localhost:3000/user/data-product?product_id=${productIdParam}`)
+      axios.get(`/user/data-product?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
@@ -37,7 +37,7 @@ function getReviewsDataFromAPI(productIdParam) {
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get(`http://localhost:3000/user/data-reviews?product_id=${productIdParam}`).then((results) => {
+      axios.get(`/user/data-reviews?product_id=${productIdParam}`).then((results) => {
         // Note: This helper function transforms the data
         const transformedResults = {
           id: Number(results.data.product),
@@ -62,7 +62,7 @@ function getStylesDataFromAPI(productIdParam) {
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get(`http://localhost:3000/user/data-styles?product_id=${productIdParam}`)
+      axios.get(`/user/data-styles?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
@@ -80,7 +80,7 @@ function getRelatedItemsArrayFromAPI(productIdParam) {
     if (tempArray.filter((e) => e.id === productIdParam).length > 0) {
       resolve(tempArray.filter((e) => e.id === productIdParam)[0]);
     } else {
-      axios.get(`http://localhost:3000/user/related?product_id=${productIdParam}`)
+      axios.get(`/user/related?product_id=${productIdParam}`)
         .then((results) => {
           resolve(results.data);
           tempArray.push(results.data);
