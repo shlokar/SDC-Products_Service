@@ -1,6 +1,5 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import styled from 'styled-components';
 
 // Assets
 import checkMarkSrc from './iconmonstr-check-mark-1.svg';
@@ -17,7 +16,7 @@ function Compare({
     width: '100%',
     height: '100%',
     top: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
     visibility: modalIsVisible ? 'visible' : 'hidden',
   };
 
