@@ -108,6 +108,7 @@ function YourOutfit({
   setFavoriteProductData,
   favPosn,
   setFavPosn,
+  setRelPosn,
   getStylesDataFromAPI,
   getReviewsDataFromAPI,
   setCurrentProductID,
@@ -184,6 +185,8 @@ function YourOutfit({
               key={`${e.id}-your-outfit-card`}
               onClick={() => {
                 setCurrentProductID(e.id);
+                setRelPosn(0);
+                window.scrollTo(0, 0);
               }}
             >
               <Button key={`${e.id}-your-outfit-delete-btn`} onClick={(event) => {
@@ -234,6 +237,7 @@ YourOutfit.propTypes = {
   setCurrentProductID: propTypes.func.isRequired,
   favPosn: propTypes.number.isRequired,
   setFavPosn: propTypes.func.isRequired,
+  setRelPosn: propTypes.func.isRequired,
   getStylesDataFromAPI: propTypes.func.isRequired,
   getReviewsDataFromAPI: propTypes.func.isRequired,
 };

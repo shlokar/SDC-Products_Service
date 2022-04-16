@@ -164,6 +164,7 @@ function Suggestions({ currProdId, currProdData, updateAllData }) {
               setCurrentProductID={updateAllData}
               favPosn={favPosn}
               setFavPosn={setFavPosn}
+              setRelPosn={setRelPosn}
               getStylesDataFromAPI={getStylesDataFromAPI}
               getReviewsDataFromAPI={getReviewsDataFromAPI}
             />

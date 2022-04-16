@@ -128,6 +128,7 @@ function RelatedItems({
               onClick={() => {
                 setRelPosn(0);
                 setCurrentProductID(e.id);
+                window.scrollTo(0, 0);
               }}
             >
               <Button
