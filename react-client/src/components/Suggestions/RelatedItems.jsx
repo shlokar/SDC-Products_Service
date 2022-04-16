@@ -19,8 +19,11 @@ const Card = styled.div`
   border: 2px lightgray solid;
   vertical-align: text-top;
   align-items: center;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
+  background-color: var(--clr-soft-peach);
+  overflow: hidden;
+  box-shadow: 2px 2px 2px gray;
 `;
 
 const Button = styled.div`
@@ -43,7 +46,54 @@ const UnorderedList = styled.ul`
 `;
 
 const Image = styled.img`
-  width: 175px;
+  height: 250px;
+  min-width: 175px;
+`;
+
+const CarouselTitle = styled.div`
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+`;
+
+const CategoryListItem = styled.li`
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-left: 13px;
+  margin-top: 5px;
+  margin-bottom: 1px;
+`;
+
+const ProductNameListItem = styled.li`
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  font-family: var(--fnt-dark);
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const PriceListItem = styled.li`
+  font-size: 0.8rem;
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const StarsListItem = styled.li`
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const ReviewCountListItem = styled.li`
+  font-size: 0.85rem;
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+  text-decoration: underline;
 `;
 
 function RelatedItems({
@@ -60,7 +110,7 @@ function RelatedItems({
 }) {
   return (
     <div id="related-items">
-      <div>
+      <CarouselTitle>
         Related Items (
         {relatedProductData.length}
         {') (viewing '}
@@ -68,7 +118,7 @@ function RelatedItems({
         {' - '}
         {Math.min(relPosn + 1 + 3, relatedProductData.length)}
         )
-      </div>
+      </CarouselTitle>
       <Carousel>
         <ArrowBtn dir="<" type="rel" relPosn={relPosn} setRelPosn={setRelPosn} relLength={relatedProductData.length} />
         {relatedProductData.slice(0 + relPosn, 4 + relPosn)
@@ -93,12 +143,12 @@ function RelatedItems({
               </Button>
               <UnorderedList key={`${e.id}-related-items-ul`}>
                 <li key={`${e.id}-related-items-img`}>{relatedStylesData ? (relatedStylesData.filter((element) => element.product_id == e.id).length !== 0 ? <Image src={relatedStylesData.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url} /> : "loading") : "loading"}</li>
-                <li key={`${e.id}-related-items-category`}>{e.category}</li>
-                <li key={`${e.id}-related-items-name`}>{e.name}</li>
-                <li key={`${e.id}-related-items-price`}>${e.default_price}</li>
-                <li key={`${e.id}-related-items-stars`}>{relatedReviewsData ? (relatedReviewsData.filter((el) => el.id === e.id).length > 0 ? <StyledStarsList rating={relatedReviewsData.filter((el) => el.id === e.id)[0].averageScore} /> : "loading") : "loading"}</li>
-                <li key={`${e.id}-related-items-reviews`}>
-                  {relatedReviewsData ? relatedReviewsData.filter((el) => el.id === e.id).length > 0 ? relatedReviewsData.filter((el) => el.id === e.id)[0].reviewsCount : 'loading' : 'loading'} reviews</li>
+                <CategoryListItem key={`${e.id}-related-items-category`}>{e.category}</CategoryListItem>
+                <ProductNameListItem key={`${e.id}-related-items-name`}>{e.name}</ProductNameListItem>
+                <PriceListItem key={`${e.id}-related-items-price`}>${e.default_price.slice(0,-3)}</PriceListItem>
+                <StarsListItem key={`${e.id}-related-items-stars`}>{relatedReviewsData ? (relatedReviewsData.filter((el) => el.id === e.id).length > 0 ? <StyledStarsList rating={relatedReviewsData.filter((el) => el.id === e.id)[0].averageScore} /> : "loading") : "loading"}</StarsListItem>
+                <ReviewCountListItem key={`${e.id}-related-items-reviews`}>
+                  {relatedReviewsData ? relatedReviewsData.filter((el) => el.id === e.id).length > 0 ? relatedReviewsData.filter((el) => el.id === e.id)[0].reviewsCount : 'loading' : 'loading'} reviews</ReviewCountListItem>
               </UnorderedList>
               <br />
             </Card>

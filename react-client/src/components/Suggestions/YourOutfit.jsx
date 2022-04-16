@@ -21,8 +21,15 @@ const Card = styled.div`
   border: 2px lightgray solid;
   vertical-align: text-top;
   align-items: center;
-  text-align: center;
+  text-align: left;
   cursor: pointer;
+  background-color: var(--clr-soft-peach);
+  overflow: hidden;
+  box-shadow: 2px 2px 2px gray;
+`;
+
+const AddCard = styled(Card)`
+  text-align:center;
 `;
 
 const Button = styled.div`
@@ -45,7 +52,54 @@ const UnorderedList = styled.ul`
 `;
 
 const Image = styled.img`
-  width: 175px;
+  height: 250px;
+  min-width: 175px;
+`;
+
+const CarouselTitle = styled.div`
+text-transform: uppercase;
+font-size: 1.2rem;
+margin-top: 40px;
+margin-bottom: 10px;
+margin-left: 50px;
+`;
+
+const CategoryListItem = styled.li`
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-left: 13px;
+  margin-top: 5px;
+  margin-bottom: 1px;
+`;
+
+const ProductNameListItem = styled.li`
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  font-family: var(--fnt-dark);
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const PriceListItem = styled.li`
+  font-size: 0.8rem;
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const StarsListItem = styled.li`
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+`;
+
+const ReviewCountListItem = styled.li`
+  font-size: 0.85rem;
+  margin-left: 13px;
+  margin-top: 2px;
+  margin-bottom: 1px;
+  text-decoration: underline;
 `;
 
 function YourOutfit({
@@ -105,7 +159,7 @@ function YourOutfit({
 
   return (
     <div id="your-outfit">
-      <div>
+      <CarouselTitle>
         Your Outfit (
         {favoriteProductData.length}
         {') (viewing '}
@@ -113,17 +167,17 @@ function YourOutfit({
         {' - '}
         {Math.min(favPosn + 1 + 2, favoriteProductData.length)}
         )
-      </div>
+      </CarouselTitle>
 
       <Carousel>
         <ArrowBtn dir="<" type="fav" favPosn={favPosn} setFavPosn={setFavPosn} favLength={favoriteProductData.length} />
-        <Card onClick={addToYourOutfit}>
+        <AddCard onClick={addToYourOutfit}>
           <div style={plusStyle}>
             <img src={plusSignSrc} alt="p[us sign" />
             <br />
             {' Add to Your Outfit'}
           </div>
-        </Card>
+        </AddCard>
         {favoriteProductData.length > 0
           ? favoriteProductData.slice(0 + favPosn, 3 + favPosn).map((e, i) => (
             <Card
@@ -146,23 +200,23 @@ function YourOutfit({
                 <li key={`${e.id}-your-outfit-li-img`}>
                   {favoriteStylesData ? (favoriteStylesData.filter((element) => element.product_id == e.id).length !== 0 ? <Image key={`${e.id}-your-outfit-li-img-img`} src={favoriteStylesData.filter((element) => element.product_id == e.id)[0].results[0].photos[0].thumbnail_url} /> : "loading") : "loading"}
                 </li>
-                <li key={`${e.id}-your-outfit-category`}>{e.category}</li>
-                <li key={`${e.id}-your-outfit-name`}>{e.name}</li>
-                <li key={`${e.id}-your-outfit-price`}>
+                <CategoryListItem key={`${e.id}-your-outfit-category`}>{e.category}</CategoryListItem>
+                <ProductNameListItem key={`${e.id}-your-outfit-name`}>{e.name}</ProductNameListItem>
+                <PriceListItem key={`${e.id}-your-outfit-price`}>
                   $
-                  {e.default_price}
-                </li>
-                <li key={`${e.id}-your-outfit-li-stars`}>
+                  {e.default_price.slice(0, -3)}
+                </PriceListItem>
+                <StarsListItem key={`${e.id}-your-outfit-li-stars`}>
                   {favoriteReviewsData.filter((el) => el.id == e.id)[0]
                     ? <StyledStarsList key={`${e.id}-your-outfit-styled-stars-list`} rating={favoriteReviewsData.filter((el) => el.id == e.id)[0].averageScore} />
                     : 'loading'}
-                </li>
-                <li key={`${e.id}-your-outfit-reviews`}>
+                </StarsListItem>
+                <ReviewCountListItem key={`${e.id}-your-outfit-reviews`}>
                   {favoriteReviewsData.filter((el) => el.id == e.id)[0]
                     ? favoriteReviewsData.filter((el) => el.id == e.id)[0].reviewsCount
                     : 'loading'}
                   {' reviews'}
-                </li>
+                </ReviewCountListItem>
               </UnorderedList>
               <br />
             </Card>
